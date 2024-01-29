@@ -1,0 +1,46 @@
+{% load sponsors %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{{ WAFER_CONFERENCE_NAME }}{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block wafer_css %}
+    <link href="{% static 'vendor/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
+    <link href="{% static 'vendor/@fortawesome/fontawesome-free/css/fontawesome.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/@fortawesome/fontawesome-free/css/solid.css' %}" rel="stylesheet">
+    <link href="{% static 'css/wafer.css' %}" rel="stylesheet" media="screen">
+    <link href="{% static 'css/pyconza2024.css' %}" rel="stylesheet" media="screen">
+    {% endblock %}
+    {% block extra_head %}
+    <link href="{% static 'img/favicon.ico' %}" rel="shortcut icon">
+    <link href="//fonts.googleapis.com/css?family=Alegreya|Pacifico|Oswald|PT+Sans|Source+Sans+Pro" rel="stylesheet" type="text/css">
+    <link href="https://fosstodon.org/@pyconza" rel="me">
+    {% endblock %}
+</head>
+<body>
+    {% include "wafer/nav.html" %}
+    <div id="wrap">
+        <div id="main" class="container">
+{% block content %}
+    <h1>{{ WAFER_CONFERENCE_NAME }}</h1>
+{% endblock %}
+          <br clear="all">
+        </div>
+        <div id="logos" class="container">
+          {% sponsors_footer %}
+        </div>
+        <div id="legal" class="container">
+          &copy; 2024 Python Software Society of South Africa.
+        </div>
+        <div id="logo_bottom"><img src="{{ STATIC_URL }}img/logo_bottom.png" /></div>
+    </div>
+    {% block wafer_js %}
+    <script src="{% static 'vendor/jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
+    {% endblock %}
+    {% block extra_foot %}{% endblock %}
+</body>
+</html>

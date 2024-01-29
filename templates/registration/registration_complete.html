@@ -1,0 +1,12 @@
+{% extends 'wafer/base_form.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load wafer_crispy %}
+{% load wafer_sso %}
+
+{% block title %}{% trans "Activation email sent" %}{% endblock %}
+
+{% block content %}
+<p>{% trans "Please check your email, {{ request.session.registration_email }}, to complete the registration process." %}</p>
+{% endblock %}
+

@@ -1,0 +1,16 @@
+{% extends "wafer.users/profile.html" %}
+{% block preamble %}
+  <h1>
+    {% if profile.homepage %}
+      <a href="{{ profile.homepage_url }}">
+    {% endif %}
+    {{ profile.display_name }}
+    {% if profile.homepage %}
+      </a>
+    {% endif %}
+  </h1>
+{% endblock preamble %}
+
+{% block name %}
+  {# We replace the name block because we put it in the preamble #}
+{% endblock name %}

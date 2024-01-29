@@ -1,0 +1,14 @@
+{% extends 'wafer.talks/talk_form.html' %}
+{% load crispy_forms_tags %}
+{% block talkform %}
+  {# Only show 'accept conditions' on first submission #}
+  <form method="post">
+    {% if not can_edit and can_submit %}
+      <div>
+        <label>I have read the FAQ and acknowledge that speakers are required to purchase tickets to the conference</label>
+        <input type="checkbox" required>
+      </div>
+    {% endif %}
+    {% crispy form %}
+  </form>
+{% endblock talkform %}

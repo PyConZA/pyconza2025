@@ -1,0 +1,42 @@
+{% extends 'wafer/base_form.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load wafer_crispy %}
+{% load wafer_sso %}
+{% block title %}Login - {{ WAFER_CONFERENCE_NAME }}{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <section>
+                <h1>{% trans 'Log in' %}</h1>
+                {% wafer_form_helper 'wafer.registration.forms.LoginFormHelper' as form_helper %}
+                {% crispy form form_helper %}
+            </section>
+        </div>
+        <div class="col-md-6">
+            <section>
+            <h1>{% trans 'Sign up' %}</h1>
+            {% url 'registration_register' as signup_url %}
+            {% blocktrans %}
+            Not registered? Please <a href="{{signup_url}}">sign up</a>.
+            {% endblocktrans %}
+            <div class="alert alert-light" role="alert">
+                {% blocktrans %}
+                Please note that accounts are not carried over from past PyConZA websites. You will have to register
+                a new account for the 2023 site.
+                {% endblocktrans %}
+            </div>
+            </section>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <section>
+                <h1>{% trans 'Reset password' %}</h1>
+                Forgot your password? You can <a href="/accounts/password/reset/">request a password reset here</a>.
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}

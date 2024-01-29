@@ -1,0 +1,5 @@
+wafer >= 0.15.0
+Django >=3.1
+psycopg2-binary
+mdx_variables
+mdx_staticfiles
