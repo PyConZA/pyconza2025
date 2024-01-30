@@ -4,6 +4,9 @@
 {% block title %}{% trans "Activation email sent" %}{% endblock %}
 
 {% block content %}
-<p>Please check your email, {{ request.session.registration_email }}, to complete the registration process.<p>
+<section>
+   <h1>Activation Email Sent</h1>
+   <p>Please check your email -- {{ request.session.registration_email }} -- to complete the registration process.<p>
+</section>
 {% endblock %}
 
