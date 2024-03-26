@@ -1,5 +1,5 @@
 html {
-  background: linear-gradient(to left, #6a3c59, #2e0219);
+  background: linear-gradient(to left, #5c5579, #28212d);
 }
 
 body {
@@ -15,7 +15,7 @@ body {
 }
 
 #main {
-  color: black;
+  color: white;
   padding-top: 1em;
 }
 
@@ -46,11 +46,11 @@ body {
   padding: 0 24px;
   line-height: 47px;
   background-color: black;
-  background-image: linear-gradient(to left, #6a3c59, #2e0219);
+  background-image: linear-gradient(to left, #5c5579, #28212d);
   font-family: 'Oswald';
   font-size: 30px;
   font-weight: bold;
-  color: #c96b9c;
+  color: #8b554f;
 }
 
 #main section {
@@ -58,16 +58,16 @@ body {
   float: left;
   padding: 0 10px 10px 10px;
   color: black;
-  background: #a7c4c2;
+  background: #a6a6b9;
   margin-bottom: 1em;
-  background-image: linear-gradient(to left, #ebcad8, #e3f1f0);
+  background-image: linear-gradient(to left, #f9c784, #c7c3c9);
   border-radius: 25px;
-  box-shadow: 2px 2px 15px -5px #4a001f;
+  box-shadow: 2px 2px 15px -5px #8c6275;
 }
 
 #main section section {
   background: rgba(227, 241, 240, 0.75);
-  box-shadow: 2px 2px 15px -5px #4a001f;
+  box-shadow: 2px 2px 15px -5px #8c6275;
 }
 
 #main section h1,
@@ -75,10 +75,10 @@ body {
   margin: 0 -10px;
   padding: 0 24px;
   background-color: black;
-  background-image: linear-gradient(to left, #237771, #6a0f49);
+  background-image: linear-gradient(to left, #4e598c, #775567);
   font-family: 'Oswald';
   font-weight: bold;
-  color: #fcf282;
+  color: #ff8c42;
   margin-bottom: 0.5em;
   border-radius: 25px 25px 0px 0px;
 }
@@ -105,33 +105,33 @@ body {
 }
 
 #main table tr {
-  border-bottom: 1px solid #a7c4c2;
+  border-bottom: 1px solid #a6a6b9;
 }
 
 #main table th,
 #main table td {
   padding: 8px 12px;
   text-align: left;
-  border: 1px solid #e3f1f0;
-  background: #ebcad8;
+  border: 1px solid #a6a6b9;
+  background: #f9c784;
   font-size: 16px;
   color: black;
 }
 
 #main table td.title {
   background-color: black;
-  background-image: linear-gradient(to left, #6a3c59, #2e0219);
-  border: 1px solid #ebcad8;
+  background-image: linear-gradient(to left, #5c5579, #28212d);
+  border: 1px solid #a6a6b9;
   font-size: 16px;
-  color: #ebcad8;
+  color: #f9c784;
   line-height: 26px;
 }
 
 #main table th,
 #main table td.scheduleslot {
-  background: #6a3c59;
+  background: #5c5579;
   color: white;
-  border: 1px solid #ebcad8;
+  border: 1px solid #a6a6b9;
   font-weight: normal;
   vertical-align: top;
 }
@@ -141,20 +141,20 @@ body {
 }
 
 #main table td a {
-  color: #2e0219;
+  color: #28212d;
 }
 
 #main table td.title a {
-  color: #ebcad8;
+  color: #f9c784;
 }
 
 #main table td a:hover {
-  color: #6a3c59;
+  color: #5c5579;
 }
 
 #main table th a:hover,
 #main table td.title a:hover {
-  color: #c96b9c;
+  color: #8b554f;
 }
 
 #main table th span {
@@ -165,39 +165,39 @@ body {
 }
 
 #notes a {
-  color: #2e0219;
+  color: #28212d;
 }
 
 /* Highlights */
 
 #main table td.schedule {
-  background: #e3f1f0;
-  border: solid 1px #a7c4c2;
+  background: #c7c3c9;
+  border: solid 1px #a6a6b9;
 }
 
 #main table td.schedule-break {
-  background: #237771;
-  color: #e3f1f0;
+  background: #4e598c;
+  color: #c7c3c9;
   text-align: center;
   vertical-align: middle;
 }
 
 #main table td.talk-type-keynote {
-  background: #ebcad8;
-  background-image: linear-gradient(to left, #c96b9c, #97efe9);
+  background: #f9c784;
+  background-image: linear-gradient(to left, #8b554f, #fcaf58);
   text-align: center;
 }
 
 #main table td.talk-type-panel {
-  background: #ebcad8;
-  background-image: linear-gradient(to left, #c96b9c, #a7c4c2);
+  background: #f9c784;
+  background-image: linear-gradient(to left, #8b554f, #a6a6b9);
   text-align: center;
 }
 
 #main table td.unavailable {
-  background: #a7c4c2;
+  background: #a6a6b9;
   font-size: 16px;
-  color: #a7c4c2;
+  color: #a6a6b9;
   line-height: 26px;
   text-align: center;
   vertical-align: middle;
@@ -208,44 +208,44 @@ body {
 }
 
 #main table td.schedule-highlight-venue a {
-   color: #c96b9c;
+   color: #8b554f;
 }
 
 /* We unset the highlight-venue effect for breaks using CSS ordering */
 #main table td.schedule-break a {
-  color: #e3f1f0;
+  color: #c7c3c9;
 }
 
 #main table td.schedule-break a:hover {
-  color: #a7c4c2;
+  color: #a6a6b9;
 }
 
 #main table td.talk-type-keynote a,
 #main table td.talk-type-panel a {
-  color: #2e0219;
+  color: #28212d;
 }
 
 #main table td.talk-type-keynote a:hover,
 #main table td.talk-type-panel a:hover {
-  color: #6a0f49;
+  color: #775567;
 }
 
 #main table td.schedule-placeholder {
-  background: repeating-linear-gradient(135deg, #e3f1f0, #e3f1f0 10px, #a7c4c2 10px, #a7c4c2 20px);
-  border: solid 1px #a7c4c2;
+  background: repeating-linear-gradient(135deg, #c7c3c9, #c7c3c9 10px, #a6a6b9 10px, #a6a6b9 20px);
+  border: solid 1px #a6a6b9;
 }
 
 #main table td.schedule-placeholder a {
-  color: #6a3c59;
+  color: #5c5579;
 }
 
 #main table td.schedule-placeholder a:hover {
-  color: #2e0219;
+  color: #28212d;
 }
 
 #main table td.unavailable a {
   font-style: italic;
-  color: #e3f1f0;
+  color: #c7c3c9;
 }
 
 #logos {
@@ -256,8 +256,7 @@ body {
 }
 
 #logos img {
-  color: black;
-  text-shadow: white 0px 0px 5px;
+  color: white;
   padding: 10px 20px;
 }
 
@@ -265,8 +264,8 @@ body {
   text-align: center;
   font-family: 'Oswald';
   font-size: 30px;
-  color: black;
-  text-shadow: white 0px 0px 25px;
+  color: white;
+  text-shadow: black 0px 0px 25px;
   padding-bottom: 15px;
 }
 
@@ -274,13 +273,13 @@ body {
   text-align: center;
   font-family: 'Oswald';
   font-size: 20px;
-  color: #237771;
+  color: #4e598c;
   line-height: 22px;
   padding-bottom: 20px;
 }
 
 #credits a {
-  color: #6a3c59;
+  color: #5c5579;
 }
 
 #logo_bottom {
@@ -289,11 +288,11 @@ body {
   text-align: center;
 }
 
-#237771ter {
+#4e598cter {
   position: fixed;
   bottom: 0;
   background: black;
-  color: #237771;
+  color: #4e598c;
   width: 100%;
   clear: both;
   padding: 10px 0px;
@@ -307,7 +306,7 @@ body {
 
 .wafer-speakers .wafer-speakers-logo img {
   border-radius: 50%;
-  border: 4px dashed #6a3c59;
+  border: 4px dashed #5c5579;
   padding: 10px;
 }
 
@@ -328,7 +327,7 @@ body {
 
 .wafer-profile #profile-avatar img {
   border-radius: 50%;
-  border: 4px dashed #6a3c59;
+  border: 4px dashed #5c5579;
   padding: 10px;
   margin-left: 10px;
 }
@@ -350,17 +349,17 @@ h3.card-title {
 /* Talks on profile pages */
 
 .card {
-    background: #ebcad8;
+    background: #f9c784;
     border-radius: 25px;
 }
 
 .card a {
-    color: #2e0219;
+    color: #28212d;
 }
 
 .card a:hover,
 .card a:focus {
-  color: #237771;
+  color: #4e598c;
 }
 
 /* fix icons on top nav bar */
@@ -368,9 +367,13 @@ ul.navbar-nav li.icon a {
   padding: 12px;
 }
 
-/* dark magic to add matching hover colours to the icons */
+/* dark magic to add matching colours to the svg icons */
+.nav-item.icon .nav-link, .nav-item.icon .nav-link {
+    filter: brightness(0) saturate(100%) invert(80%) sepia(33%) saturate(588%) hue-rotate(338deg) brightness(102%) contrast(95%);
+}
+
 .nav-item.icon .nav-link:hover, .nav-item.icon .nav-link:focus {
-    filter: brightness(0) saturate(100%) invert(63%) sepia(11%) saturate(2208%) hue-rotate(282deg) brightness(82%) contrast(90%);
+    filter: brightness(0) saturate(100%) invert(60%) sepia(59%) saturate(692%) hue-rotate(330deg) brightness(103%) contrast(101%);
 }
 
 /* override buttons */
@@ -381,7 +384,7 @@ ul.btn-group {
 
 .btn-primary {
   margin: 0 0 2px 2px;
-  background-color: #6a3c59;
+  background-color: #5c5579;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   color: white !important;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
@@ -391,22 +394,22 @@ ul.btn-group {
 .btn-primary:focus,
 .btn-primary:active,
 .btn-primary.active {
-  background-color: #6a0f49;
+  background-color: #775567;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  color: #6a3c59;
+  color: #5c5579;
   text-shadow: none;
 }
 
 .btn-primary.disabled,
 .btn-primary[disabled] {
-  background-color: #237771;
+  background-color: #4e598c;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   color: rgba(255, 255, 255, 0.5);
 }
 
 .btn-secondary {
   margin: 0 0 4px 4px;
-  background-color: #6a3c59;
+  background-color: #5c5579;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   color: white !important;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
@@ -416,20 +419,20 @@ ul.btn-group {
 .btn-secondary:focus,
 .btn-secondary:active,
 .btn-secondary.active {
-  background-color: #6a0f49;
+  background-color: #775567;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   color: white;
 }
 
 .btn-secondary.disabled,
 .btn-secondary[disabled] {
-  background-color: #237771;
+  background-color: #4e598c;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   color: rgba(255, 255, 255, 0.5);
 }
 
 a {
-  color: #6a0f49;
+  color: #28212d;
   font-weight: bold;
   text-decoration: underline;
 }
@@ -440,22 +443,22 @@ a.btn, table a, nav a, #wafer-sponsors a {
 
 a:hover,
 a:focus {
-  color: #237771;
+  color: #c7c3c9;
 }
 
 #main section a, #main section section a {
-  color: #2e0219;
+  color: #28212d;
 }
 
 #main section a:hover,
 #main section a:focus,
 #main section section a:hover,
 #main section section a:focus {
-  color: #237771;
+  color: #4e598c;
 }
 
 #main section h1 a, #main section section h2 a {
-  color: #c96b9c;
+  color: #8b554f;
   text-decoration: none;
 }
 
@@ -463,14 +466,14 @@ a:focus {
 #main section h1 a:focus,
 #main section section h2 a:hover,
 #main section section h2 a:focus {
-  color: #a7c4c2;
+  color: #a6a6b9;
   text-decoration: none;
 }
 
 /* NAV */
 .navbar-brand,
 .navbar-nav .nav-link {
-  color: #fcf282;
+  color: #f9c784;
   padding: 10px;
   margin: 0px;
   line-height: 30px;
@@ -481,7 +484,7 @@ a:focus {
 .navbar-nav .nav-link:hover,
 .navbar-brand:focus,
 .navbar-nav .nav-link:focus {
-  color: #c96b9c;
+  color: #ff8c42;
 }
 
 .navbar-nav li.dropdown > .dropdown-toggle .caret,
@@ -494,8 +497,8 @@ a:focus {
 .dropdown-submenu:hover > a,
 .dropdown-submenu:focus > a {
   color: black;
-  background-color: #6a3c59;
-  background-image: linear-gradient(to left, #c96b9c, #97efe9);
+  background-color: #5c5579;
+  background-image: linear-gradient(to left, #ff8c42, #fcaf58);
 }
 
 .container-fluid {
@@ -504,7 +507,7 @@ a:focus {
 
 .navbar {
   margin-bottom: 0;
-  background: linear-gradient(to left, black, #237771) ! important;
+  background: linear-gradient(to left, black, #4e598c) ! important;
   font-family: 'Source Sans Pro', 'sans serif';
 }
 
@@ -518,20 +521,20 @@ a:focus {
 }
 
 form {
-  background: #a7c4c2;
-  background-image: linear-gradient(to left, #ebcad8, #a7c4c2);
+  background: #a6a6b9;
+  background-image: linear-gradient(to left, #f9c784, #a6a6b9);
   padding: 10px;
   color: black;
   border-radius: 25px;
 }
 
 .text-muted {
-    color: #2e0219 !important;
+    color: #28212d !important;
     font-style: italic;
 }
 
 @media only screen and (max-device-width:768px) {
-  #237771ter {
+  #4e598cter {
     position: static;
   }
 
@@ -565,42 +568,42 @@ form {
 /* Alerts */
 
 .alert-light {
-    background: #237771;
-    color: #e3f1f0;
+    background: #4e598c;
+    color: #f9c784;
     font-weight: bold;
-    border: solid 2px #e3f1f0;
+    border: solid 2px #f9c784;
 }
 
 .alert-primary {
-    background: #6a0f49;
-    color: #ebcad8;
+    background: #775567;
+    color: #fcaf58;
     font-weight: bold;
-    border: solid 2px #ebcad8;
+    border: solid 2px #fcaf58;
 }
 
 .alert-danger {
-    background: #6a3c59;
-    color: #fcf282;
+    background: #5c5579;
+    color: #ff8c42;
     font-weight: bold;
-    border: solid 2px #fcf282;
+    border: solid 2px #ff8c42;
 }
 
 .alert-light a {
-    color: #e3f1f0 !important;
+    color: #c7c3c9 !important;
 }
 
 .alert-primary a {
-    color: #ebcad8 !important;
+    color: #f9c784 !important;
 }
 
 .alert-light a:hover,
 .alert-light a:focus {
-    color: #97efe9 !important;
+    color: #fcaf58 !important;
 }
 
 .alert-primary a:hover,
 .alert-primary a:focus {
-    color: #c96b9c !important;
+    color: #8b554f !important;
 }
 
 /* Collapse nested card divs on sponsor package and sponsors page */
@@ -629,7 +632,7 @@ form {
 
 .wafer-sponsor img {
     background: none ! important;
-    border: 4px dashed #6a3c59;
+    border: 4px dashed #5c5579;
     border-radius: 25px;
     padding: 10px;
 }
