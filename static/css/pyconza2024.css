@@ -458,7 +458,7 @@ a:focus {
 }
 
 #main section h1 a, #main section section h2 a {
-  color: #8b554f;
+  color: #ff8c42;
   text-decoration: none;
 }
 
@@ -466,7 +466,7 @@ a:focus {
 #main section h1 a:focus,
 #main section section h2 a:hover,
 #main section section h2 a:focus {
-  color: #a6a6b9;
+  color: #fcaf58;
   text-decoration: none;
 }
 
