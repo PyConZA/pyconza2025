@@ -124,6 +124,12 @@ WAFER_MENUS += (
         "image": "/static/img/mastodon.svg",
         "url": "https://fosstodon.org/@pyconza",
     },
+    {
+        "name": "bluesky",
+        "label": "Bluesky",
+        "image": "/static/img/bluesky.svg",
+        "url": "https://bsky.app/profile/za.pycon.org",
+    },
 )
 
 
