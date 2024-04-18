@@ -232,8 +232,8 @@ WAFER_PUBLIC_ATTENDEE_LIST = False
 # INSTALLED_APPS = ('pyconza.funding', ) + INSTALLED_APPS
 # ROOT_URLCONF = 'urls'
 
-# Talks submissions are not yet open
-WAFER_TALKS_OPEN = False
+# Talks submissions are open
+WAFER_TALKS_OPEN = True
 
 # Ticket sales are not yet open
 WAFER_REGISTRATION_OPEN = False
