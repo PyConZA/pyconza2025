@@ -133,44 +133,44 @@ WAFER_MENUS += (
 )
 
 
-#_TICKET_TIERS = ("Student", "Pensioner", "Individual", "Corporate", "Sponsored")
-#_DURBAN_TICKET_TYPES = [
-#    f"{tier} ({kind})"
-#    for tier in _TICKET_TIERS
-#    for kind in ("Durban", "Durban, Early Bird")
-#]
-#_ONLINE_TICKET_TYPES = [
-#    f"{tier} ({kind})"
-#    for tier in _TICKET_TIERS
-#    for kind in ("Online", "Online, Early Bird")
-#]
+_TICKET_TIERS = ("Student", "Pensioner", "Individual", "Corporate", "Sponsored")
+_CAPE_TOWN_TICKET_TYPES = [
+    f"{tier} ({kind})"
+    for tier in _TICKET_TIERS
+    for kind in ("Cape Town", "Cape Town, Early Bird")
+]
+_ONLINE_TICKET_TYPES = [
+    f"{tier} ({kind})"
+    for tier in _TICKET_TIERS
+    for kind in ("Online", "Online, Early Bird")
+]
 
 #_TUTORIAL_AIRFLOW_TICKET_TYPES = [
 #        'Airflow - beyond the basics (and also some basics) (Durban)'
 #]
 
 
-#def tickets_sold(ticket_types):
-#    """ Return number of tickets sold. """
-#    from wafer.tickets.models import Ticket, TicketType
-#
-#    ticket_type_ids = TicketType.objects.filter(name__in=ticket_types)
-#    return Ticket.objects.filter(type_id__in=ticket_type_ids).count()
+def tickets_sold(ticket_types):
+    """ Return number of tickets sold. """
+    from wafer.tickets.models import Ticket, TicketType
+
+    ticket_type_ids = TicketType.objects.filter(name__in=ticket_types)
+    return Ticket.objects.filter(type_id__in=ticket_type_ids).count()
 
 
-#def durban_tickets_sold():
-#    """ Number of tickets sold for the Durban in-person conference. """
-#    return tickets_sold(_DURBAN_TICKET_TYPES)
+def cape_town_tickets_sold():
+    """ Number of tickets sold for the Durban in-person conference. """
+    return tickets_sold(_CAPE_TOWN_TICKET_TYPES)
 
 
-#def durban_tickets_remaining():
-#    """ Number of tickets remaining for the Durban in-person conference. """
-#    return max(0, 100 - durban_tickets_sold())
+def cape_town_tickets_remaining():
+    """ Number of tickets remaining for the Durban in-person conference. """
+    return max(0, 200 - cape_town_tickets_sold())
 
 
-#def online_tickets_sold():
-#    """ Number of tickets sold for the online conference. """
-#    return tickets_sold(_ONLINE_TICKET_TYPES)
+def online_tickets_sold():
+    """ Number of tickets sold for the online conference. """
+    return tickets_sold(_ONLINE_TICKET_TYPES)
 
 
 #def tutorial_airflow_tickets_sold():
@@ -192,18 +192,18 @@ MARKITUP_FILTER = (
             "mdx_variables",
             "mdx_staticfiles",
         ],
-#        "extension_configs": {
-#            "mdx_variables": {
-#                "vars": {
-#                    "durban_tickets_sold": durban_tickets_sold,
-#                    "durban_tickets_remaining": durban_tickets_remaining,
-#                    "online_tickets_sold": online_tickets_sold,
+        "extension_configs": {
+            "mdx_variables": {
+                "vars": {
+                    "cape_town_tickets_sold": cape_town_tickets_sold,
+                    "cape_town_tickets_remaining": cape_town_tickets_remaining,
+                    "online_tickets_sold": online_tickets_sold,
 #                    "tutorial_airflow_tickets_sold": (
 #                        tutorial_airflow_tickets_sold
 #                    ),
-#                }
-#            }
-#        },
+                }
+            }
+        },
     },
 )
 WAFER_PAGE_MARKITUP_FILTER = MARKITUP_FILTER
