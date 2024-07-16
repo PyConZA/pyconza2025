@@ -235,8 +235,8 @@ WAFER_PUBLIC_ATTENDEE_LIST = False
 # Talks submissions are open
 WAFER_TALKS_OPEN = True
 
-# Ticket sales are not yet open
-WAFER_REGISTRATION_OPEN = False
+# Ticket sales are open
+WAFER_REGISTRATION_OPEN = True
 WAFER_REGISTRATION_MODE = "ticket"
 
 
