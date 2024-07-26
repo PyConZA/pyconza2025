@@ -133,7 +133,8 @@ WAFER_MENUS += (
 )
 
 
-_TICKET_TIERS = ("Student", "Pensioner", "Individual", "Corporate", "Sponsored")
+_TICKET_TIERS = ("Student", "Pensioner", "Individual", "Corporate", "Sponsored",
+                 "takealot: Bulk", "Thinkst: Platinum Sponsor", "SARAO: Gold Sponsor")
 _CAPE_TOWN_TICKET_TYPES = [
     f"{tier} ({kind})"
     for tier in _TICKET_TIERS
