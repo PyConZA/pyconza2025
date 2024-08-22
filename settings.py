@@ -199,9 +199,7 @@ MARKITUP_FILTER = (
                     "cape_town_tickets_sold": cape_town_tickets_sold,
                     "cape_town_tickets_remaining": cape_town_tickets_remaining,
                     "online_tickets_sold": online_tickets_sold,
-#                    "tutorial_airflow_tickets_sold": (
-#                        tutorial_airflow_tickets_sold
-#                    ),
+                    "tutorial_modern_web_tickets_sold": tutorial_modern_web_tickets_sold,
                 }
             }
         },
