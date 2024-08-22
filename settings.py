@@ -146,9 +146,9 @@ _ONLINE_TICKET_TYPES = [
     for kind in ("Online", "Online, Early Bird")
 ]
 
-#_TUTORIAL_AIRFLOW_TICKET_TYPES = [
-#        'Airflow - beyond the basics (and also some basics) (Durban)'
-#]
+_TUTORIAL_MODERN_WEB_TICKET_TYPES = [
+        'Tutorial: Modern web frontend development with Python, HTMX and friends (Cape Town)'
+]
 
 
 def tickets_sold(ticket_types):
@@ -174,9 +174,9 @@ def online_tickets_sold():
     return tickets_sold(_ONLINE_TICKET_TYPES)
 
 
-#def tutorial_airflow_tickets_sold():
-#    """ Number of tickets sold for the devops tutorial. """
-#    return tickets_sold(_TUTORIAL_AIRFLOW_TICKET_TYPES)
+def tutorial_modern_web_tickets_sold():
+    """ Number of tickets sold for the devops tutorial. """
+    return tickets_sold(_TUTORIAL_MODERN_WEB_TICKET_TYPES)
 
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
