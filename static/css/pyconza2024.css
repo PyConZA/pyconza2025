@@ -585,6 +585,13 @@ form {
     max-width: 100% !important;
 }
 
+.wafer-sponsor h2 small {
+    font-size: .5em !important;
+    border: solid 1px;
+    padding: 2px;
+    vertical-align: middle;
+}
+
 /* Alerts */
 
 .alert-light {
