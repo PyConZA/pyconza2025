@@ -135,7 +135,8 @@ WAFER_MENUS += (
 
 _TICKET_TIERS = ("Student", "Pensioner", "Individual", "Corporate", "Sponsored",
                  "takealot: Bulk", "Thinkst: Platinum Sponsor", "SARAO: Gold Sponsor",
-                 "Praelexis: Bulk", "Afrolabs: Patron Sponsor")
+                 "Praelexis: Bulk", "Afrolabs: Patron Sponsor", "CHPC: Patron+Exhibitor",
+                 "CoCT: Silver+Extra Tickets" )
 _CAPE_TOWN_TICKET_TYPES = [
     f"{tier} ({kind})"
     for tier in _TICKET_TIERS
