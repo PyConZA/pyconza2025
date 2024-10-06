@@ -234,10 +234,10 @@ WAFER_PUBLIC_ATTENDEE_LIST = False
 # ROOT_URLCONF = 'urls'
 
 # Talks submissions are open
-WAFER_TALKS_OPEN = True
+WAFER_TALKS_OPEN = False
 
 # Ticket sales are open
-WAFER_REGISTRATION_OPEN = True
+WAFER_REGISTRATION_OPEN = False
 WAFER_REGISTRATION_MODE = "ticket"
 
 
