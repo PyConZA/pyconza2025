@@ -1,3 +1,6 @@
+"""These settings are just here as a reference and are not meant to be used directly. """
+
+raise Exception("dont use these settings")
 # -*- encoding: utf-8 -*-
 import os
 
@@ -29,20 +32,21 @@ WAFER_MENUS += (
         "menu": "talks",
         "label": _("Talks"),
         "items": [
-                       {
-                            "name": "schedule", "label": _("Schedule"),
-                            "url": reverse_lazy("wafer_full_schedule"),
-                       },
-                       {
-                           "name": "accepted-talks",
-                           "label": _("Accepted Talks"),
-                           "url": reverse_lazy("wafer_users_talks"),
-                       },
-                       {
-                           "name": "speakers",
-                           "label": _("Speakers"),
-                           "url": reverse_lazy("wafer_talks_speakers"),
-                       },
+            {
+                "name": "schedule",
+                "label": _("Schedule"),
+                "url": reverse_lazy("wafer_full_schedule"),
+            },
+            {
+                "name": "accepted-talks",
+                "label": _("Accepted Talks"),
+                "url": reverse_lazy("wafer_users_talks"),
+            },
+            {
+                "name": "speakers",
+                "label": _("Speakers"),
+                "url": reverse_lazy("wafer_talks_speakers"),
+            },
         ],
     },
     {"menu": "news", "label": _("News"), "items": []},
@@ -133,10 +137,21 @@ WAFER_MENUS += (
 )
 
 
-_TICKET_TIERS = ("Student", "Pensioner", "Individual", "Corporate", "Sponsored",
-                 "takealot: Bulk", "Thinkst: Platinum Sponsor", "SARAO: Gold Sponsor",
-                 "Praelexis: Bulk", "Afrolabs: Patron Sponsor", "CHPC: Patron+Exhibitor",
-                 "CoCT: Silver+Extra Tickets", "AWS: Silver Sponser")
+_TICKET_TIERS = (
+    "Student",
+    "Pensioner",
+    "Individual",
+    "Corporate",
+    "Sponsored",
+    "takealot: Bulk",
+    "Thinkst: Platinum Sponsor",
+    "SARAO: Gold Sponsor",
+    "Praelexis: Bulk",
+    "Afrolabs: Patron Sponsor",
+    "CHPC: Patron+Exhibitor",
+    "CoCT: Silver+Extra Tickets",
+    "AWS: Silver Sponser",
+)
 _CAPE_TOWN_TICKET_TYPES = [
     f"{tier} ({kind})"
     for tier in _TICKET_TIERS
@@ -149,12 +164,12 @@ _ONLINE_TICKET_TYPES = [
 ]
 
 _TUTORIAL_MODERN_WEB_TICKET_TYPES = [
-        'Tutorial: Modern web frontend development with Python, HTMX and friends (Cape Town)'
+    "Tutorial: Modern web frontend development with Python, HTMX and friends (Cape Town)"
 ]
 
 
 def tickets_sold(ticket_types):
-    """ Return number of tickets sold. """
+    """Return number of tickets sold."""
     from wafer.tickets.models import Ticket, TicketType
 
     ticket_type_ids = TicketType.objects.filter(name__in=ticket_types)
@@ -162,22 +177,22 @@ def tickets_sold(ticket_types):
 
 
 def cape_town_tickets_sold():
-    """ Number of tickets sold for the Durban in-person conference. """
+    """Number of tickets sold for the Durban in-person conference."""
     return tickets_sold(_CAPE_TOWN_TICKET_TYPES)
 
 
 def cape_town_tickets_remaining():
-    """ Number of tickets remaining for the Durban in-person conference. """
+    """Number of tickets remaining for the Durban in-person conference."""
     return max(0, 200 - cape_town_tickets_sold())
 
 
 def online_tickets_sold():
-    """ Number of tickets sold for the online conference. """
+    """Number of tickets sold for the online conference."""
     return tickets_sold(_ONLINE_TICKET_TYPES)
 
 
 def tutorial_modern_web_tickets_sold():
-    """ Number of tickets sold for the devops tutorial. """
+    """Number of tickets sold for the devops tutorial."""
     return tickets_sold(_TUTORIAL_MODERN_WEB_TICKET_TYPES)
 
 
@@ -239,5 +254,3 @@ WAFER_TALKS_OPEN = False
 # Ticket sales are open
 WAFER_REGISTRATION_OPEN = False
 WAFER_REGISTRATION_MODE = "ticket"
-
-

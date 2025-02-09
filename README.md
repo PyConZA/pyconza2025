@@ -1,13 +1,58 @@
-# PyConZA 2024 Conference Website
+# PyCon Africa 2025 Conference Website
 
-Based on [wafer](https://github.com/CTPUG/wafer).
+Based on the [PyConZA 2024](https://github.com/PyConZA/pyconza2024/) website, which is based on [wafer](https://github.com/CTPUG/wafer).
 
-# Running
+# Local development 
 
-1. Run `pip install -r requirements.txt`.
-1. Create a `localsettings.py` containing secrets and database credentials.
-1. Run `npm install`.
-1. Run `./manage.py collectstatic`.
-1. Run `./manage.py migrate`.
-1. Run `./manage.py createcachetable wafer_cache_table`.
-1. Run `./manage.py runserver`.
+## Installation
+
+We are using Python 3.13.12
+
+Install Python dependencies:
+
+```
+pip install -r requirements.txt
+```
+
+Set up the database and cache tables:
+
+```
+python manage.py migrate
+python manage.py createcachetable wafer_cache_table
+```
+
+Install Javascript dependencies:
+
+```
+npm install
+```
+
+Generate main css file:
+
+```
+npm run tailwind
+```
+
+Run the development server
+
+```
+python manage.py runserver
+```
+
+## Tailwind 
+
+We are using TailwindCSS for styling. If you make any changes to `static/css/main.css` or the tailwind classes used in any html file then you will need to rebuild the main tailwind file using `npm run tailwind`.
+
+If you are developing and want to automatically rebuild the css when changes are detected, use `npm run tailwind-w`.
+
+# Deployment 
+
+Make use of `settings_prod.py` when deploying to production. 
+
+To generate and collect static files, do the following:
+
+```
+npm install
+npm run tailwind
+python manage.py collectstatic
+```

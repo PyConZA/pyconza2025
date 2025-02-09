@@ -87,3 +87,24 @@ MIDDLEWARE = (
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = "/static/"
+STATIC_ROOT = ""
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+
+# List of finder classes that know how to find static files in
+# various locations.
+STATICFILES_FINDERS = (
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)
+
+
+# STORAGES = {
+#     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+#     "staticfiles": {
+#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+#     },
+# }
