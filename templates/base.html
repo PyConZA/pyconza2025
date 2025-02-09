@@ -1,0 +1,37 @@
+{% load sponsors %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{% block title %}{{ conference_name }}{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="{% static 'vendor/@fortawesome/fontawesome-free/css/fontawesome.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/@fortawesome/fontawesome-free/css/solid.css' %}" rel="stylesheet">
+
+</head>
+
+<body>
+    <!-- {% include "wafer/nav.html" %} -->
+    <div>
+        <div id="main">
+            {% block content %}
+            Override this in child templates
+            {% endblock %}
+        </div>
+
+        <!-- <div id="logos" class="container">
+            {% sponsors_footer %}
+        </div> -->
+        <div>
+            &copy; 2025 Python Software Society of South Africa.
+        </div>
+    </div>
+
+</body>
+
+</html>

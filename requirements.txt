@@ -1,5 +1,6 @@
-wafer >= 0.15.0
-Django >=3.1
-psycopg2-binary
+wafer == 0.16.1
+Django == 5.0.12
+psycopg2-binary==2.9.10
 mdx_variables
 mdx_staticfiles
+django-browser-reload==1.18.0
