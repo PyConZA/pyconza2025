@@ -1,4 +1,5 @@
 # Created stuff for the pyconza site
+gitignore/
 static/vendor
 node_modules/
 localstatic/
