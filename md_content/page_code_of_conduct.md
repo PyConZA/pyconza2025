@@ -43,10 +43,11 @@ Participants asked to stop any inappropriate behavior are expected to comply imm
 
 ## SCOPE
 
-This Code of Conduct applies to all participants at PyCon Africa 2024 events, including:
+This Code of Conduct applies to all participants at PyCon Africa 2025 events, including:
 
-Talks, workshops, parties, and any associated social events.
-Online interactions related to the conference, including posts related to the conference on social media.
+- Talks, workshops, parties, and any associated social events.
+- Online interactions related to the conference, including posts related to the conference on social media.
+
 The Code of Conduct applies both within conference spaces and in public spaces when an individual is representing PyCon Africa or its community. Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the event organizing team at coc@pycon.africa.
 
 **NB:** This code of conduct has been adapted from the [Python Software Foundation](https://www.python.org/psf/), under whose guidance local Python communities operate. The full original code of conduct can be found on their website.
