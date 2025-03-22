@@ -40,9 +40,8 @@
 </section>
 
 
-<section class="max-w-7xl mx-auto space-y-5 mt-20">
+<section class="max-w-7xl mx-auto space-y-20 mt-20 text-center">
     <p>
-
         Join us in the vibrant city of Johannesburg, South Africa, where we
         congregate with hundreds of developers, researchers, students and other professionals across Africa and beyond
         to
@@ -52,19 +51,19 @@
 
 
     <div class="flex flex-row  justify-between gap-x-5">
+        <c-card image_path="img/home/jhb.jpg" title="Johannesburg">
+            A major African technology and business hub.
+        </c-card>
 
-        <div class="h-56 w-64 overflow-hidden">
-            <img src="{% static 'img/home/jhb.jpg' %}" class="min-w-full min-h-full object-cover" />
-        </div>
+        <c-card image_path="img/home/group.jpg" title="Hundreds of programmers">
+            From around Africa and the world
+        </c-card>
 
-        <div class="h-56 w-64 overflow-hidden">
-            <img src="{% static 'img/home/group.jpg' %}" class="min-w-full min-h-full object-cover" />
-        </div>
-
-        <div class="h-56 w-64 overflow-hidden">
-            <img src="{% static 'img/home/sprint.jpg' %}" class="min-w-full min-h-full object-cover" />
-        </div>
+        <c-card image_path="img/home/sprint.jpg" title="Five days">
+            of talks, workshops and collaboration
+        </c-card>
     </div>
+
 
 </section>
 {% endblock %}

@@ -1,0 +1,9 @@
+{% load static %}
+
+<div class="text-center space-y-5">
+    <div class="h-56 w-64 overflow-hidden pb-3 mx-auto">
+        <img src="{% static image_path %}" class="min-w-full min-h-full object-cover" />
+    </div>
+    <p class="font-bold text-2xl text-center">{{ title }}</p>
+    <p>{{ slot }}</p>
+</div>
