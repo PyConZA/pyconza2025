@@ -14,25 +14,34 @@
     <link href="{% static 'vendor/@fortawesome/fontawesome-free/css/solid.css' %}" rel="stylesheet">
     <link href="{% static 'vendor/main.css' %}" rel="stylesheet">
 
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:400,300,500,600,700,800">
 
 </head>
 
 <body>
     <!-- {% include "wafer/nav.html" %} -->
-    <div>
-        <div id="main">
+
+    {% block header %}
+    <header class="bg-gray-700">
+        {% include "partial_header.html" %}
+    </header>
+    {% endblock %}
+
+    <main id="main">
+        {% block main %}
+        <div class="max-w-7xl mx-auto">
+            <h1 class="text-center py-5">{% block page_title %}Page title block {% endblock %}</h1>
             {% block content %}
             Override this in child templates
             {% endblock %}
         </div>
+        {% endblock %}
+    </main>
 
-        <!-- <div id="logos" class="container">
-            {% sponsors_footer %}
-        </div> -->
-        <div>
-            &copy; 2025 Python Software Society of South Africa.
-        </div>
-    </div>
+    <footer class="border-t-2 border-gray-200 mx-5 mt-5 pt-3">
+
+        &copy; 2025 Python Software Society of South Africa.
+    </footer>
 
 </body>
 

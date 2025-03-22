@@ -1,4 +1,5 @@
 from pathlib import Path
+from django.utils.translation import gettext_lazy as _
 
 from wafer.settings import *
 
@@ -108,3 +109,19 @@ STATICFILES_FINDERS = (
 #         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
 #     },
 # }
+from django.urls import reverse_lazy
+
+
+WAFER_MENUS += (
+    {
+        "menu": "about",
+        "label": _("About"),
+        "items": [
+            {
+                "name": "code_of_conduct",
+                "label": _("Code of Conduct"),
+                "url": reverse_lazy("page_code_of_conduct"),
+            }
+        ],
+    },
+)

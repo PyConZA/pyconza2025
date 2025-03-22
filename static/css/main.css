@@ -6,3 +6,42 @@
     /* --color-yellow */
 
 }
+
+
+@layer base {
+    :root {
+        /* --font-exo-2: "Exo 2", sans-serif; */
+        --font-open-sans: "Open Sans",
+            Helvetica,
+            Arial,
+            sans-serif;
+    }
+
+    a,
+    li,
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: var(--font-open-sans);
+    }
+
+    h1 {
+        @apply font-bold text-5xl;
+    }
+
+    a {
+        @apply cursor-pointer underline;
+    }
+}
+
+@layer components {
+    .nav-item {
+        @apply font-semibold text-gray-200 hover:text-white uppercase no-underline
+    }
+
+
+}
