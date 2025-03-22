@@ -117,11 +117,37 @@ WAFER_MENUS += (
         "menu": "about",
         "label": _("About"),
         "items": [
+            # {
+            #     "name": "about_us",
+            #     "label": _("About Us"),
+            #     "url": reverse_lazy("page_code_of_conduct"),
+            # },
+            # {
+            #     "name": "team",
+            #     "label": _("Team"),
+            #     "url": reverse_lazy("page_code_of_conduct"),
+            # },
             {
                 "name": "code_of_conduct",
                 "label": _("Code of Conduct"),
                 "url": reverse_lazy("page_code_of_conduct"),
-            }
+            },
+            # {
+            #     "name": "financial_assistance",
+            #     "label": _("Financial Assistance"),
+            #     "url": reverse_lazy("page_code_of_conduct"),
+            # },
+            # {
+            #     "name": "health_and_safety",
+            #     "label": _("Health and Safety"),
+            #     "url": reverse_lazy("page_code_of_conduct"),
+            # },
+            # {
+            #     "name": "privacy",
+            #     "label": _("Privacy Policy"),
+            #     "url": reverse_lazy("page_code_of_conduct"),
+            # },
         ],
     },
+    # {"menu": "speak_at_pycon", "label": _("Speak at PyCon Africa"), "items": []},
 )

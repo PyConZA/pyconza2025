@@ -36,6 +36,14 @@
     a {
         @apply cursor-pointer underline;
     }
+
+    button {
+        @apply cursor-pointer
+    }
+
+    p {
+        @apply text-lg
+    }
 }
 
 @layer components {

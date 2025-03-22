@@ -40,7 +40,7 @@
 </section>
 
 
-<section class="max-w-7xl mx-auto space-y-5 mt-5">
+<section class="max-w-7xl mx-auto space-y-5 mt-20">
     <p>
 
         Join us in the vibrant city of Johannesburg, South Africa, where we
@@ -51,7 +51,20 @@
     </p>
 
 
+    <div class="flex flex-row  justify-between gap-x-5">
+
+        <div class="h-56 w-64 overflow-hidden">
+            <img src="{% static 'img/home/jhb.jpg' %}" class="min-w-full min-h-full object-cover" />
+        </div>
+
+        <div class="h-56 w-64 overflow-hidden">
+            <img src="{% static 'img/home/group.jpg' %}" class="min-w-full min-h-full object-cover" />
+        </div>
+
+        <div class="h-56 w-64 overflow-hidden">
+            <img src="{% static 'img/home/sprint.jpg' %}" class="min-w-full min-h-full object-cover" />
+        </div>
+    </div>
+
 </section>
-
-
 {% endblock %}
