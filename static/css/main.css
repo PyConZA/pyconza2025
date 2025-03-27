@@ -68,4 +68,20 @@
     }
 
 
+
+    .btn {
+        @apply w-fit px-8 py-3 bg-yellow-600 no-underline rounded-xl text-white font-bold cursor-pointer hover:bg-yellow-500
+    }
+
+
+    .btn-success {
+        @apply bg-green-700 hover:bg-green-600
+    }
+
+    .btn-secondary {
+        @apply bg-orange-700 hover:bg-orange-600;
+    }
 }
+
+
+/* @apply w-fit px-8 py-3 bg-(--color-soft-green) text-[0.7rem] text-white font-semibold uppercase rounded-4xl shadow no-underline hover:text-white hover:bg-(--color-copper-bronze) transition-colors duration-300 text-center items-center */

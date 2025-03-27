@@ -5,3 +5,5 @@ mdx_variables
 mdx_staticfiles
 django-browser-reload==1.18.0
 django-cotton==2.0.1
+crispy-tailwind==1.0.3
+python-frontmatter==1.1.0

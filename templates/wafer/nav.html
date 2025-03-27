@@ -6,7 +6,9 @@
 
 {% elif item.url %}
 
-<a class="nav-item">two</a>
+<a class="nav-item" href="{{ item.url }}">
+  {{ item.label }}
+</a>
 
 {% else %}
 <div x-data="{open:false}" class="relative inline-block">

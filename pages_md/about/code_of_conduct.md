@@ -1,3 +1,9 @@
+---
+name: Code of Conduct 
+include_in_menu: True
+menu_order: 1
+---
+
 PyCon Africa 2024 is a community-driven conference designed for networking and collaboration among developers from all over Africa.
 
 We highly value each member's participation in the Python community and strive to ensure that all attendees enjoy a fulfilling experience. As such, respect and courtesy are expected from everyone during the conference and at all related events.
