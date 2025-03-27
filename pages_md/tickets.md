@@ -1,7 +1,7 @@
 ---
 name: Buy Tickets
 include_in_menu: True
-menu_order: 5
+menu_order: 10
 ---
 
 Ticket sales are not yet open. Watch this space!

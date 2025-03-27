@@ -67,10 +67,8 @@
         @apply font-semibold text-gray-200 hover:text-white uppercase no-underline
     }
 
-
-
     .btn {
-        @apply w-fit px-8 py-3 bg-yellow-600 no-underline rounded-xl text-white font-bold cursor-pointer hover:bg-yellow-500
+        @apply w-fit px-8 py-3 bg-yellow-600 no-underline rounded-xl text-white font-bold cursor-pointer hover:bg-yellow-500 text-center items-center
     }
 
 
