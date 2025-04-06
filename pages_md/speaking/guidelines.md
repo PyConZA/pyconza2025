@@ -4,6 +4,7 @@ include_in_menu: True
 ---
 
 We are glad you are interested in speaking at PyCon Africa!
+
 This document is a guide to help you submit the best possible proposal for PyCon Africa 2024 and offers tips to make your proposal more likely to be accepted. Please note that we receive many more proposals for talks, tutorials, and posters than we can accept. However, following the recommendations provided here can increase your chances of acceptance.
 
 ## Topics and Advice

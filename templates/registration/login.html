@@ -4,39 +4,40 @@
 {% load wafer_crispy %}
 {% load wafer_sso %}
 {% block title %}Login - {{ WAFER_CONFERENCE_NAME }}{% endblock %}
+
+{% block page_title %}Sign up / Log in{% endblock %}
+
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <section>
-                <h1>{% trans 'Log in' %}</h1>
-                {% wafer_form_helper 'wafer.registration.forms.LoginFormHelper' as form_helper %}
-                {% crispy form form_helper %}
-            </section>
-        </div>
-        <div class="col-md-6">
-            <section>
-            <h1>{% trans 'Sign up' %}</h1>
-            {% url 'registration_register' as signup_url %}
+
+<div class="grid grid-cols-2">
+
+    <section class="space-y-3">
+        <h2>{% trans 'Log in' %}</h2>
+        {% wafer_form_helper 'wafer.registration.forms.LoginFormHelper' as form_helper %}
+        {% crispy form form_helper %}
+
+        <h3>{% trans 'Reset password' %}</h3>
+        <p>
+            Forgot your password? You can <a href="/accounts/password/reset/">request a password reset here</a>.</p>
+    </section>
+
+    <section class="space-y-3">
+        <h2>{% trans 'Sign up' %}</h2>
+        {% url 'registration_register' as signup_url %}
+        {% blocktrans %}
+        <p>Not registered? Please <a href="{{signup_url}}">sign up</a>.</p>
+        {% endblocktrans %}
+        <div class="alert alert-light " role="alert">
             {% blocktrans %}
-            Not registered? Please <a href="{{signup_url}}">sign up</a>.
+            <p>Please note that accounts are not carried over from past PyConZA or PyCon Africa events. You will have to
+                register
+                a new account for the 2025 site.</p>
             {% endblocktrans %}
-            <div class="alert alert-light" role="alert">
-                {% blocktrans %}
-                Please note that accounts are not carried over from past PyConZA websites. You will have to register
-                a new account for the 2024 site.
-                {% endblocktrans %}
-            </div>
-            </section>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <section>
-                <h1>{% trans 'Reset password' %}</h1>
-                Forgot your password? You can <a href="/accounts/password/reset/">request a password reset here</a>.
-            </section>
-        </div>
-    </div>
+    </section>
 </div>
+
+
+
+
 {% endblock %}

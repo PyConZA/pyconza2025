@@ -1,5 +1,7 @@
 {% load i18n %}
 
+{% block navmenulist %}
+
 {% for item in WAFER_MENUS.items %}
 {% if item.image and item.url %}
 <a class="nav-item">one</a>
@@ -11,24 +13,47 @@
 </a>
 
 {% else %}
-<div x-data="{open:false}" class="relative inline-block">
-  <button class="nav-item" @click="open=! open">
-    {{ item.label }}
-    <i class="fa fa-chevron-up" aria-hidden="true" x-show="open"></i>
-    <i class="fa fa-chevron-down" aria-hidden="true" x-show="!open"></i>
 
-  </button>
-  <div x-show="open" @click.outside="open = false" class="absolute left-0 mt-2 min-w-fit bg-gray-800 border border-slate-700 rounded-md shadow-lg z-50 flex flex-col gap-5 p-2 text-nowrap
-" style="display: none;">
 
-    {% for subitem in item.items %}
-    <a class="nav-item" href="{{ subitem.url }}">
-      {{ subitem.label }}
-    </a>
-    {% endfor %}
+<c-nav-dropdown label="{{item.label}}" :items="item.items">
+</c-nav-dropdown>
 
-  </div>
-</div>
-
-{%endif%}
+{% endif %}
 {% endfor %}
+
+{% endblock navmenulist %}
+
+
+{% block navauthmenu %}
+
+{% if user.is_authenticated %}
+{% block navauthenticated %}
+
+<c-nav-dropdown label="{{ user.username }}">
+  <a class="nav-item" href="{% url 'wafer_user_profile' username=user.username %}">
+    {% blocktrans trimmed with name=user.userprofile.display_name %}
+    {{ name }}'s profile
+    {% endblocktrans %}
+  </a>
+
+  {% if user.is_staff %}
+  <a class="nav-item" href="{% url 'admin:index' %}">
+    {% trans 'Site admin' %}
+  </a>
+  {% endif %} <a class="nav-item" href="{% url 'auth_logout' %}">
+    {% trans 'Log out' %}
+  </a>
+</c-nav-dropdown>
+
+{% endblock navauthenticated %}
+
+{% elif not WAFER_HIDE_LOGIN %}
+{% block navnotauth %}
+<a class="nav-item" href="{% url 'auth_login' %}">
+  {% trans 'Sign up / Log In' %}
+</a>
+{% endblock navnotauth %}
+{% endif %}
+
+
+{% endblock navauthmenu %}
