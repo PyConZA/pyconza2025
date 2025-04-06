@@ -91,7 +91,6 @@ MIDDLEWARE = (
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = "/static/"
-STATIC_ROOT = ""
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
@@ -154,3 +153,16 @@ WAFER_REGISTRATION_OPEN = False
 # Set the timezone to the conference timezone
 USE_TZ = True
 TIME_ZONE = "Africa/Johannesburg"
+
+# Default static and media locations - we rely on apache to redirect
+# accordingly.
+# These are named to not clash with the repo contents
+STATIC_ROOT = BASE_DIR / "localstatic"
+MEDIA_ROOT = BASE_DIR / "localmedia"
+
+# Point static mirror away from the default, which is relative to the
+# wafer package
+BUILD_DIR = BASE_DIR / "mirror"
+
+# Hide non-speaker profiles
+WAFER_PUBLIC_ATTENDEE_LIST = False
