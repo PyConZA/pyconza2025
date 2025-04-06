@@ -29,8 +29,9 @@
 {% if user.is_authenticated %}
 {% block navauthenticated %}
 
-<c-nav-dropdown label="{{ user.username }}">
+<c-nav-dropdown label="<i class='fa-solid fa-user' aria-hidden='true'></i>  {{ user.username }}">
   <a class="nav-item" href="{% url 'wafer_user_profile' username=user.username %}">
+
     {% blocktrans trimmed with name=user.userprofile.display_name %}
     {{ name }}'s profile
     {% endblocktrans %}

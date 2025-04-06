@@ -1,7 +1,7 @@
 ---
 name: Privacy Policy
 include_in_menu: True
-menu_order: 1
+menu_order: 3
 ---
 
 The Python Software Community in South Africa only collects the information necessary to register you for PyCon and to provide you access to the PyCon content and services. Registrant contact information is NOT shared with third parties without your explicit opt-in consent.

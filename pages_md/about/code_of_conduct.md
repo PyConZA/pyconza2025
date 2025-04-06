@@ -1,7 +1,7 @@
 ---
 name: Code of Conduct 
 include_in_menu: True
-menu_order: 1
+menu_order: 2
 ---
 
 PyCon Africa is a community-driven conference designed for networking and collaboration among developers from all over Africa.
