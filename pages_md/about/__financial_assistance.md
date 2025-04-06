@@ -4,7 +4,7 @@ include_in_menu: True
 menu_order: 1
 ---
 
-We are delighted you are interested in attending PyCon Africa 2024, which will be held on 24th - 28th September in Accra, Ghana. As part of our commitment to fostering an inclusive community, we recognize that some individuals may need financial assistance to make conference participation possible.
+We are delighted you are interested in attending PyCon Africa 2025, which will be held on 24th - 28th September in Accra, Ghana. As part of our commitment to fostering an inclusive community, we recognize that some individuals may need financial assistance to make conference participation possible.
 
 ## Grant Availability and Coverage:
 Due to budget limitations, we can only support a small number of attendees with financial aid grants. These grants will be awarded based on financial need and responses provided in the application form. Please note that approved grants may only cover certain expenses (e.g. conference ticket but not accommodation). Any expenses not covered by your specific grant would remain your responsibility.
@@ -27,7 +27,7 @@ The financial assistance programme will prioritise:
 We will do our best to maximise the impact of our financial assistance funding.
 
 ## How to Apply
-Please complete our form before the deadline: July 19, 2024 (anywhere in the world). We will not accept applications after this date.
+Please complete our form before the deadline: July 19, 2025 (anywhere in the world). We will not accept applications after this date.
 
 Read the questions on the form carefully and answer them as best you can.
 

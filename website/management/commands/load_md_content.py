@@ -24,6 +24,9 @@ def create_or_update_page_from_file(md_path, slug=None, parent=None):
 
 
 def load_md_pages(parent, path):
+    if path.stem.startswith("__"):
+        # skip it completely
+        return
     if path.stem == "_page":
         return
     if path.is_dir():
