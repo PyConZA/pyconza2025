@@ -21,6 +21,12 @@ python manage.py migrate
 python manage.py createcachetable wafer_cache_table
 ```
 
+Set up the default auth groups:
+
+```
+python manage.py wafer_add_default_groups
+```
+
 Install Javascript dependencies:
 
 ```
