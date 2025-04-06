@@ -44,12 +44,13 @@ INSTALLED_APPS = (
     "registration",
     "django.contrib.admin",
     "django_browser_reload",  # https://github.com/adamchainz/django-browser-reload
+    "debug_toolbar",  # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
 )
 
 
 TEMPLATES = [
     {
-        "APP_DIRS": False,
+        "APP_DIRS": True,  # Changed to True for Debugtoolbar
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [BASE_DIR / "templates"],
         "OPTIONS": {
@@ -74,6 +75,7 @@ TEMPLATES = [
 
 
 MIDDLEWARE = (
+    "debug_toolbar.middleware.DebugToolbarMiddleware",  # see warning here: https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
     "django.middleware.common.CommonMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -125,3 +127,8 @@ CRISPY_TEMPLATE_PACK = "tailwind"
 WAFER_HIDE_LOGIN = False
 
 COTTON_SNAKE_CASED_NAMES = False
+
+
+INTERNAL_IPS = [  # needed for debugtoolbar
+    "127.0.0.1",
+]
