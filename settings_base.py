@@ -112,12 +112,25 @@ STATICFILES_FINDERS = (
 #         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
 #     },
 # }
-from django.urls import reverse_lazy
+# from django.urls import reverse_lazy
 
 
-WAFER_MENUS += (
-    # {"menu": "sponsors", "label": _("Sponsors"), "items": []},
-)
+SOCIAL_LINKS = [
+    {"url": "https://mastodon.social/@pyconafrica", "icon": "fa-brands fa-mastodon"},
+    {"url": "https://x.com/pyconafrica", "icon": "fa-brands fa-twitter"},
+    {"url": "https://www.instagram.com/pyconafrica", "icon": "fa-brands fa-instagram"},
+    {"url": "https://www.facebook.com/pyconafrica", "icon": "fa-brands fa-facebook"},
+    {
+        "url": "https://www.linkedin.com/company/pyconafrica/",
+        "icon": "fa-brands fa-linkedin",
+    },
+    {"url": "https://www.youtube.com/@PyconAfrica", "icon": "fa-brands fa-youtube"},
+]
+
+
+# WAFER_MENUS += (
+#     # {"menu": "sponsors", "label": _("Sponsors"), "items": []},
+# )
 
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"

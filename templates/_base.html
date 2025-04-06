@@ -10,8 +10,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="{% static 'vendor/@fortawesome/fontawesome-free/css/fontawesome.css' %}" rel="stylesheet">
-    <link href="{% static 'vendor/@fortawesome/fontawesome-free/css/solid.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/@fortawesome/fontawesome-free/css/all.css' %}" rel="stylesheet">
+
     <link href="{% static 'vendor/main.css' %}" rel="stylesheet">
 
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:400,300,500,600,700,800">
@@ -35,7 +35,7 @@
     <main id="main">
         {% block main %}
         <div class="max-w-7xl mx-auto">
-            <h1 class="text-center pt-10 pb-14">{% block page_title %}Page title block {% endblock %}</h1>
+            <h1 class="text-center pt-10 pb-14">{% block page_title %} {% endblock %}</h1>
             {% block content %}
             Override this in child templates
             {% endblock %}
@@ -43,9 +43,24 @@
         {% endblock %}
     </main>
 
-    <footer class="border-t-2 border-gray-200 mx-5 mt-5 pt-3">
+    <footer class="border-t-2 border-gray-200 mx-5 py-5 mt-10 text-gray-500 ">
+        <div class="flex items-center max-w-7xl mx-auto justify-between">
 
-        &copy; 2025 Python Software Society of South Africa.
+            <p class="">
+                &copy; 2025 Python Software Society of South Africa and PyCon Africa
+            </p>
+
+
+            <nav class="text-3xl space-x-1">
+
+                {% for link in social_links %}
+                <a href="{{link.url}}" target="_blank" class="no-underline hover:text-gray-800">
+                    <i class="{{link.icon}}"></i>
+                </a>
+                {% endfor %}
+            </nav>
+        </div>
+
     </footer>
 
 </body>
