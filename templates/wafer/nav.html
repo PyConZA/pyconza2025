@@ -40,9 +40,14 @@
   <a class="nav-item" href="{% url 'admin:index' %}">
     {% trans 'Site admin' %}
   </a>
-  {% endif %} <a class="nav-item" href="{% url 'auth_logout' %}">
-    {% trans 'Log out' %}
-  </a>
+  {% endif %}
+
+  <form method="POST" action="{% url 'auth_logout' %}">
+    {% csrf_token %}
+
+    <button type="submit" class="nav-item">{% trans 'Log out' %}</button>
+  </form>
+
 </c-nav-dropdown>
 
 {% endblock navauthenticated %}
