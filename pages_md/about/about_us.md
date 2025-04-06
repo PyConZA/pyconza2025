@@ -12,7 +12,13 @@ Python is an essential tool used by individuals from diverse backgrounds and car
 
 Unlike many developer conferences, PyCon Africa is a non-profit conference, run entirely by volunteers dedicated to contributing to the growth of technology on the continent.
 
-We are excited to welcome everyone back to PyCon Africa in person for the first time since 2019. The safety of our community is our highest priority, and we will implement comprehensive Health and Safety Guidelines for all attendees. These measures are designed to allow our community to reconnect in a safe and secure manner at the event.
+We are excited to welcome everyone back to PyCon Africa. The safety of our community is our highest priority, and we will implement comprehensive Health and Safety Guidelines for all attendees. These measures are designed to allow our community to reconnect in a safe and secure manner at the event.
+
+## PyConZA <3 PyCon Africa 
+
+This year, PyCon Africa is being hosted in South Africa. South Africa has a vibrant Python community and a well-established local conference - PyConZA. PyConZA has been running every year since 2012. 
+
+The PyConZA team are the local organisers of PyCon Africa. 
 
 ## The Program 
 
@@ -21,7 +27,6 @@ Throughout the conference, you can expect:
 - Talks delivered by speakers from across Africa and the world.
 - Interactive sessions with influential Pythonistas affecting the Python ecosystem on the continent.
 - Pan-African open source Python projects made within the continent.
-- You can check out our CFP page for more details.
 
 PyCon Africa is a diverse conference dedicated to providing an enjoyable experience for everyone. Help us ensure this by following our code of conduct.
 
