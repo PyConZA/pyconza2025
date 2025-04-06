@@ -149,3 +149,8 @@ INTERNAL_IPS = [  # needed for debugtoolbar
 
 WAFER_TALKS_OPEN = False
 WAFER_REGISTRATION_OPEN = False
+
+
+# Set the timezone to the conference timezone
+USE_TZ = True
+TIME_ZONE = "Africa/Johannesburg"
