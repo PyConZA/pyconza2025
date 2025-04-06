@@ -79,6 +79,12 @@
     .btn-secondary {
         @apply bg-orange-700 hover:bg-orange-600;
     }
+
+    input[type="submit"] {
+        @apply mt-3;
+    }
+
+
 }
 
 

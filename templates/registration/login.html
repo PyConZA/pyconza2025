@@ -14,6 +14,7 @@
     <section class="space-y-3">
         <h2>{% trans 'Log in' %}</h2>
         {% wafer_form_helper 'wafer.registration.forms.LoginFormHelper' as form_helper %}
+
         {% crispy form form_helper %}
 
         <h3>{% trans 'Reset password' %}</h3>
