@@ -132,3 +132,7 @@ COTTON_SNAKE_CASED_NAMES = False
 INTERNAL_IPS = [  # needed for debugtoolbar
     "127.0.0.1",
 ]
+
+
+WAFER_TALKS_OPEN = False
+WAFER_REGISTRATION_OPEN = False
