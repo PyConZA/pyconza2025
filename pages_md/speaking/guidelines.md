@@ -5,7 +5,7 @@ include_in_menu: True
 
 We are glad you are interested in speaking at PyCon Africa!
 
-This document is a guide to help you submit the best possible proposal for PyCon Africa 2024 and offers tips to make your proposal more likely to be accepted. Please note that we receive many more proposals for talks, tutorials, and posters than we can accept. However, following the recommendations provided here can increase your chances of acceptance.
+This document is a guide to help you submit the best possible proposal for PyCon Africa 2025 and offers tips to make your proposal more likely to be accepted. Please note that we receive many more proposals for talks, tutorials, and posters than we can accept. However, following the recommendations provided here can increase your chances of acceptance.
 
 ## Topics and Advice
 
@@ -24,10 +24,10 @@ There are also international community members who have blogged about the talk p
 
 ## Good Ideas
 
-- Submit your proposal early. The program committee will provide feedback to talks that come into our system, and we will work with you to improve your proposal if we have issues with it, but this is only feasible if your proposal is submitted well before the deadline.
+- Submit your proposal early. The program committee will endeavour to provide feedback to talks that come into our system, and we will work with you to improve your proposal if we have issues with it, but this is only feasible if your proposal is submitted well before the deadline. 
 - Be sure to answer some basic questions:
-- Who is the intended audience for your talk? (Be specific; "Python programmers" is not a good answer.)
-- What will attendees get out of your talk? When they leave the room, what will they know that they didn't know before?
+    - Who is the intended audience for your talk? (Be specific; "Python programmers" is not a good answer.)
+    - What will attendees get out of your talk? When they leave the room, what will they know that they didn't know before?
 - Your outline should be an enumeration of what you intend to say, along with time estimates.
 - It is not necessary to have completely written your talk already, but you should have an idea of what the points you intend to make are and roughly how long you will spend on each one.
 - If you are requesting a 45-minute slot, remember that these are in very limited supply. Be sure to explain how you will change your talk if we can only offer you a 30-minute slot.

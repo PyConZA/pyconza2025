@@ -8,12 +8,11 @@ Ticket sales are not yet open. Watch this space!
 
 ## Remote and in person tickets
 
-Online conference registration includes access to the online conference and talks on the two conference days (Thursday and Friday). All talks will be streamed to the online audience.
+Online conference registration includes access to the online conference and talks on the main conference days. All talks will be streamed to the online audience.
 
-Online tickets do not include access to the venue.
+Online tickets do not include access to the physical venue.
 
-
-In-person conference registration includes entrance to the venue, lunch, and access to all talks on the two conference days (Thursday and Friday). Note that the venue is in Cape Town, at Belmont Square.
+In-person conference registration includes entrance to the venue, lunch, and access to all talks on the main conference days (Thursday and Friday). Note that the venue is in Cape Town, at Belmont Square.
 
 In person tickets also grant access to the online conference.
 
