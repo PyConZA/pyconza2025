@@ -27,6 +27,12 @@ Set up the default auth groups:
 python manage.py wafer_add_default_groups
 ```
 
+Set up the pages by loading up the various Markdown files:
+
+```
+python manage.py load_md_content
+```
+
 Install Javascript dependencies:
 
 ```
