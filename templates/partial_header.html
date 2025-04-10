@@ -1,12 +1,14 @@
 {% load static %}
 
-<div class="max-w-7xl mx-auto py-5 flex flex-row justify-between items-center">
-    <a href="/"> <img src="{% static 'img/header-logo-w.png' %}" /></a>
-    <div class="space-x-5">
-
-        {% include "wafer/nav.html" %}
-
+<div class="max-w-7xl mx-auto py-5 px-5 flex flex-row justify-between items-center">
+    <div>
+        <a href="/"> <img src="{% static 'img/header-logo-w.png' %}" /></a>
     </div>
+
+    <div>
+        {% include "wafer/nav.html" %}
+    </div>
+
 </div>
 
 

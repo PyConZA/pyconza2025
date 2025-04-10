@@ -23,8 +23,8 @@
     {% endblock%}
 </head>
 
-<body>
-    <!-- {% include "wafer/nav.html" %} -->
+<body class="">
+
 
     {% block header %}
     <header class="bg-gray-700">
@@ -32,9 +32,11 @@
     </header>
     {% endblock %}
 
+
+
     <main id="main">
         {% block main %}
-        <div class="max-w-7xl mx-auto">
+        <div class="lg:max-w-7xl mx-auto px-3">
             <h1 class="text-center pt-10 pb-14">{% block page_title %} {% endblock %}</h1>
             {% block content %}
             Override this in child templates
@@ -44,14 +46,13 @@
     </main>
 
     <footer class="border-t-2 border-gray-200 mx-5 py-5 mt-10 text-gray-500 ">
-        <div class="flex items-center max-w-7xl mx-auto justify-between">
+        <div class="lg:flex lg:items-center max-w-7xl mx-auto lg:justify-between space-y-3 text-center ">
 
-            <p class="">
+            <p class="text-sm lg:text-base">
                 &copy; 2025 Python Software Society of South Africa and PyCon Africa
             </p>
 
-
-            <nav class="text-3xl space-x-1">
+            <nav class="text-3xl space-x-1 ">
 
                 {% for link in social_links %}
                 <a href="{{link.url}}" target="_blank" class="no-underline hover:text-gray-800">
@@ -63,15 +64,14 @@
 
     </footer>
 
-</body>
 
-{% comment %}
+    {% comment %}
 
-<div
-    class="appearance-none w-full leading-normal border-gray-300 border block bg-white px-4 focus:outline-none text-gray-700 py-2 rounded-lg">
-    these classes are used by crispy forms. They need to be explicitly included in our html so that the tailwind
-    build will pick them up and draw them
-</div>
-{% endcomment %}
+    <div
+        class="appearance-none w-full leading-normal border-gray-300 border block bg-white px-4 focus:outline-none text-gray-700 py-2 rounded-lg">
+        these classes are used by crispy forms. They need to be explicitly included in our html so that the tailwind
+        build will pick them up and draw them
+    </div>
+    {% endcomment %}
 
 </html>
