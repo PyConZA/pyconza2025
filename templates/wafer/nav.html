@@ -1,65 +1,96 @@
 {% load i18n %}
 
-{% block navmenulist %}
 
-{% for item in WAFER_MENUS.items %}
-{% if item.image and item.url %}
-<a class="nav-item">one</a>
-
-{% elif item.url %}
-
-<a class="nav-item" href="{{ item.url }}">
-  {{ item.label }}
-</a>
-
-{% else %}
+<div class="space-x-5 hidden lg:block">
 
 
-<c-nav-dropdown label="{{item.label}}" :items="item.items">
-</c-nav-dropdown>
+  {% for item in WAFER_MENUS.items %}
+  {% if item.image and item.url %}
+  <a class="nav-item">TODO</a>
 
-{% endif %}
-{% endfor %}
+  {% elif item.url %}
 
-{% endblock navmenulist %}
-
-
-{% block navauthmenu %}
-
-{% if user.is_authenticated %}
-{% block navauthenticated %}
-
-<c-nav-dropdown label="<i class='fa-solid fa-user' aria-hidden='true'></i>  {{ user.username }}">
-  <a class="nav-item" href="{% url 'wafer_user_profile' username=user.username %}">
-
-    {% blocktrans trimmed with name=user.userprofile.display_name %}
-    {{ name }}'s profile
-    {% endblocktrans %}
+  <a class="nav-item" href="{{ item.url }}">
+    {{ item.label }}
   </a>
 
-  {% if user.is_staff %}
-  <a class="nav-item" href="{% url 'admin:index' %}">
-    {% trans 'Site admin' %}
+  {% else %}
+
+
+  <c-nav-dropdown label="{{item.label}}" :items="item.items">
+  </c-nav-dropdown>
+
+  {% endif %}
+  {% endfor %}
+
+  {% if user.is_authenticated %}
+
+
+  <c-nav-dropdown label="<i class='fa-solid fa-user' aria-hidden='true'></i>  {{ user.username }}">
+    <a class="nav-item" href="{% url 'wafer_user_profile' username=user.username %}">
+
+      {% blocktrans trimmed with name=user.userprofile.display_name %}
+      {{ name }}'s profile
+      {% endblocktrans %}
+    </a>
+
+    {% if user.is_staff %}
+    <a class="nav-item" href="{% url 'admin:index' %}">
+      {% trans 'Site admin' %}
+    </a>
+    {% endif %}
+
+    <form method="POST" action="{% url 'auth_logout' %}">
+      {% csrf_token %}
+
+      <button type="submit" class="nav-item">{% trans 'Log out' %}</button>
+    </form>
+
+  </c-nav-dropdown>
+
+  {% elif not WAFER_HIDE_LOGIN %}
+  <a class="nav-item" href="{% url 'auth_login' %}">
+    {% trans 'Sign up / Log In' %}
   </a>
   {% endif %}
 
-  <form method="POST" action="{% url 'auth_logout' %}">
-    {% csrf_token %}
-
-    <button type="submit" class="nav-item">{% trans 'Log out' %}</button>
-  </form>
-
-</c-nav-dropdown>
-
-{% endblock navauthenticated %}
-
-{% elif not WAFER_HIDE_LOGIN %}
-{% block navnotauth %}
-<a class="nav-item" href="{% url 'auth_login' %}">
-  {% trans 'Sign up / Log In' %}
-</a>
-{% endblock navnotauth %}
-{% endif %}
+</div>
 
 
-{% endblock navauthmenu %}
+
+<div class="lg:hidden block relative pr-4" x-data="{ open: false }">
+
+  <button class="py-3 text-white font-bold cursor-pointer items-center" @click="open = !open">
+
+    <i class="fa fa-bars" aria-hidden="true" x-show="!open" style="display:hidden"></i>
+    <i class="fa fa-caret-down" aria-hidden="true" x-show="open" style="display:hidden"></i>
+  </button>
+
+  <div x-show="open" style="display:hidden;"
+    class="absolute w-80 right-3 mt-2  bg-gray-700 border border-gray-500 rounded-md shadow-lg z-50 flex flex-col gap-5 p-2 "
+    @click.outside="open = false">
+
+    {% for item in WAFER_MENUS.items %}
+    {% if item.image and item.url %}
+    <a class="nav-item">TODO</a>
+
+    {% elif item.url %}
+
+    <a class="nav-item " href="{{ item.url }}">
+      {{ item.label }}
+    </a>
+
+    {% else %}
+
+    <span class="nav-item">{{item.label}}</span>
+    {% for subitem in item.items %}
+    <a class="nav-item ml-4" href="{{ subitem.url }}">
+      {{ subitem.label }}
+    </a>
+    {% endfor %}
+
+    {% endif %}
+    {% endfor %}
+
+  </div>
+</div>
