@@ -6,34 +6,79 @@
 
 
 {% block main %}
+<section class="flex flex-col">
+    <div class="lg:h-screen bg-no-repeat bg-cover bg-center" style="background-image: url('/static/img/pycon-africa-2025-header-w-logo.png')">
+        <div class="bg-radial from-transparent to-black h-full flex flex-col">
 
-<section
-    class="lg:h-screen bg-no-repeat bg-[url(https://res.cloudinary.com/pycon-africa/image/upload/v1707128927/Asset_22yua0_gpgcif.png)] bg-cover bg-center  ">
-    <div class="bg-radial from-transparent to-black h-full flex flex-col">
+            <header class="bg-black">
+                {% include "partial_header.html" %}
+            </header>
 
-        <header class="bg-black">
-            {% include "partial_header.html" %}
-        </header>
+            <div class="hidden lg:flex lg:ml-12 w-2/5 md:w-3/5 text-white flex-grow items-center py-10">
 
-        <div class="mx-auto lg:w-fit text-white flex-grow flex  items-center py-10">
+                <div class="flex flex-col w-3/4 gap-y-5 text-left px-1 backdrop-blur-sm bg-black/30 p-4 rounded-lg">
+                    
+                    <h1 class="font-bold pb-4">
+                        <span class="text-6xl bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 via-yellow-300 to-yellow-500">
+                        <span class="text-pycon-green text-outline-white">PyCon Africa</span> and 
+                        <span class="text-pycon-blue text-outline-white">PyConZA</span> are 
+                        <span class="text-pycon-red text-outline-white">joining forces!</span>
+                        </span>
+                    </h1>
 
-            <div class="flex flex-col gap-y-5 text-center px-1">
+                    <ul class="text-2xl my-4">
 
-                <h1 class="text-yellow-500 text-4xl lg:text-6xl pb-8 font-bold">{{ conference_name }}</h1>
-                <p class="text-2xl lg:text-4xl">PyCon Africa and PyConZA are joining forces!</p>
+                        <li class="flex items-baseline space-x-2 list-custom">
+                            <span class="text-pycon-yellow font-bold">Where:</span>
+                            <span class="text-white">Johannesburg, South Africa</span>
+                        </li>
 
-                <ul class="text-xl lg:text-2xl">
-                    <li>
-                        <strong>Where:</strong> Johannesburg, South Africa
+                        <li class="flex items-baseline space-x-2 list-custom">
+                            <span class="text-pycon-yellow font-bold">When:</span>
+                            <span class="text-white">Late September / Early October</span>
+                        </li>
+
+                    </ul>
+
+                    <p class="text-pycon-light-blue text-xl italic">
+                        More details will be shared as they become available
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- For mobile/small screen -->
+    <div class="lg:hidden bg-black bg-no-repeat bg-cover bg-center py-0 px-0 h-screen flex flex-col" style="background-image: url('/static/img/pycon-africa-2025-header-w-logo-mobile.png')">
+        <div class="flex-grow-[2]"></div>
+        <div class="flex-grow-[3]"></div>
+        <div class="flex-grow-[4]"></div>
+        
+        <div class="flex-grow-[1] w-full bg-gradient-to-t from-black via-black/70 to-transparent pt-20">
+            <div class="max-w-md mx-auto flex flex-col gap-y-3 text-left p-4">
+                
+                <div class="text-xl font-bold text-white">
+                    <span class="text-pycon-green">PyCon Africa</span> and 
+                    <span class="text-pycon-blue">PyConZA</span> are 
+                    <span class="text-pycon-red">joining forces!</span>
+                </div>
+    
+                <ul class="text-lg my-2">
+                    <li class="flex items-baseline space-x-2 list-custom">
+                        <span class="text-pycon-yellow font-bold">Where:</span>
+                        <span class="text-white">Johannesburg, South Africa</span>
                     </li>
-                    <li>
-                        <strong>When:</strong> Late September / Early October
+                    <li class="flex items-baseline space-x-2 list-custom">
+                        <span class="text-pycon-yellow font-bold">When:</span>
+                        <span class="text-white">Late September / Early October</span>
                     </li>
                 </ul>
-
-                <p class="lg:text-xl">More details will be shared as they become available</p>
+    
+                <p class="text-pycon-light-blue italic text-sm">
+                    More details will be shared as they become available
+                </p>
             </div>
-
         </div>
 
     </div>
@@ -71,9 +116,6 @@
         title="YouTube video player" frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="mx-auto"></iframe>
-
-    <p>You can access the 2024 report <a
-            href="https://pycon-africa.gitbook.io/pycon-africa-2024-post-conference-report">here</a></p>
 
     <h2>Our Programme</h2>
 

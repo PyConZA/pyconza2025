@@ -15,6 +15,15 @@
             Helvetica,
             Arial,
             sans-serif;
+
+        --font-family-kanchenjunga: 'Kanchenjunga',
+            sans-serif;
+
+        --color-pycon-yellow: #FFD700;
+        --color-pycon-green: #4CAF50;
+        --color-pycon-blue: #2196F3;
+        --color-pycon-red: #F44336;
+        --color-pycon-light-blue: #90CAF9;
     }
 
     a,
@@ -26,7 +35,8 @@
     h4,
     h5,
     h6 {
-        font-family: var(--font-open-sans);
+        /* font-family: var(--font-open-sans); */
+        font-family: var(--font-family-kanchenjunga);
     }
 
     h1 {
@@ -86,3 +96,43 @@
 
 
 }
+
+@layer utilities {
+    .text-pycon-yellow {
+      color: var(--color-pycon-yellow);
+    }
+    
+    .text-pycon-green {
+      color: var(--color-pycon-green);
+    }
+    
+    .text-pycon-blue {
+      color: var(--color-pycon-blue);
+    }
+    
+    .text-pycon-red {
+      color: var(--color-pycon-red);
+    }
+    
+    .text-pycon-light-blue {
+      color: var(--color-pycon-light-blue);
+    }
+    
+    .bg-translucent {
+      background-color: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(4px);
+    }
+    
+    .list-custom {
+      list-style-type: none;
+      margin-left: 0;
+    }
+    .text-outline-white {
+      text-shadow: 
+        -1px -1px 0 #fff,
+        1px -1px 0 #fff,
+        -1px 1px 0 #fff,
+        1px 1px 0 #fff;
+    }
+  }
+  
