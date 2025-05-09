@@ -98,7 +98,13 @@
         @apply mt-3;
     }
 
+    .alert {
+        @apply border rounded-2xl p-3;
+    }
 
+    .alert-primary {
+        @apply border-orange-700 bg-orange-50
+    }
 }
 
 @layer utilities {

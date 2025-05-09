@@ -148,6 +148,8 @@ INTERNAL_IPS = [  # needed for debugtoolbar
 
 WAFER_TALKS_OPEN = True
 WAFER_REGISTRATION_OPEN = False
+# The form used for talk submission
+WAFER_TALK_FORM = "website.talks.forms.TalkForm"
 
 
 # Set the timezone to the conference timezone
