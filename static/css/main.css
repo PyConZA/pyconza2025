@@ -109,6 +109,10 @@
         @apply w-fit px-8 py-3 bg-yellow-600 no-underline rounded-xl text-white font-bold cursor-pointer hover:bg-yellow-500 text-center items-center
     }
 
+    .btn-small {
+        @apply py-1 px-4;
+    }
+
 
     .btn-success {
         @apply bg-green-700 hover:bg-green-600

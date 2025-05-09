@@ -14,6 +14,7 @@ ROOT_URLCONF = "urls"
 
 
 INSTALLED_APPS = (
+    "template_partials",
     "django_cotton",
     "website",  # for website static content that should be version controlled
     "django.contrib.auth",
