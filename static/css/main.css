@@ -74,6 +74,30 @@
     form {
         @apply space-y-3
     }
+
+    table {
+        @apply min-w-full border border-gray-300 text-left text-sm;
+    }
+
+    thead {
+        @apply bg-gray-100 border-b;
+    }
+
+    th {
+        @apply px-4 py-2 text-gray-700 font-bold;
+    }
+
+    tbody {
+        @apply divide-y divide-gray-200;
+    }
+
+    tr {
+        @apply hover:bg-gray-50;
+    }
+
+    td {
+        @apply px-4 py-2;
+    }
 }
 
 @layer components {
