@@ -70,6 +70,10 @@
     ol {
         @apply list-decimal list-inside space-y-2
     }
+
+    form {
+        @apply space-y-3
+    }
 }
 
 @layer components {
@@ -99,40 +103,40 @@
 
 @layer utilities {
     .text-pycon-yellow {
-      color: var(--color-pycon-yellow);
+        color: var(--color-pycon-yellow);
     }
-    
+
     .text-pycon-green {
-      color: var(--color-pycon-green);
+        color: var(--color-pycon-green);
     }
-    
+
     .text-pycon-blue {
-      color: var(--color-pycon-blue);
+        color: var(--color-pycon-blue);
     }
-    
+
     .text-pycon-red {
-      color: var(--color-pycon-red);
+        color: var(--color-pycon-red);
     }
-    
+
     .text-pycon-light-blue {
-      color: var(--color-pycon-light-blue);
+        color: var(--color-pycon-light-blue);
     }
-    
+
     .bg-translucent {
-      background-color: rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(4px);
+        background-color: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(4px);
     }
-    
+
     .list-custom {
-      list-style-type: none;
-      margin-left: 0;
+        list-style-type: none;
+        margin-left: 0;
     }
+
     .text-outline-white {
-      text-shadow: 
-        -1px -1px 0 #fff,
-        1px -1px 0 #fff,
-        -1px 1px 0 #fff,
-        1px 1px 0 #fff;
+        text-shadow:
+            -1px -1px 0 #fff,
+            1px -1px 0 #fff,
+            -1px 1px 0 #fff,
+            1px 1px 0 #fff;
     }
-  }
-  
+}
