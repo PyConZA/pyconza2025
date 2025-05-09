@@ -127,7 +127,15 @@
     }
 
     .alert-primary {
+        @apply border-yellow-700 bg-yellow-50
+    }
+
+    .alert-danger {
         @apply border-orange-700 bg-orange-50
+    }
+
+    .card {
+        @apply p-3
     }
 }
 
