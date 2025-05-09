@@ -7,6 +7,8 @@ localmedia/
 localsettings.py
 *uwsgi*
 ve/
+.venv/
+venv/
 wsgi.py
 __pycache__/
 package-lock.json

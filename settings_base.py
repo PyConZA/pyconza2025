@@ -68,7 +68,10 @@ TEMPLATES = [
                 "wafer.context_processors.menu_info",
                 "wafer.context_processors.registration_settings",
                 "context.context",
-            )
+            ),
+            "builtins": [
+                "django_browser_reload.templatetags.django_browser_reload"
+            ],
         },
     },
 ]
