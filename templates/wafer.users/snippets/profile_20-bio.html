@@ -1,7 +1,7 @@
 {% load i18n %}
 {% with profile=object.userprofile %}
 <section class="wafer-profile-bio space-y-5">
-  <div class="mx-auto w-fit flex items-center gap-5" id="profile-avatar">
+  <div class="mx-auto w-fit flex flex-col md:flex-row items-center gap-5" id="profile-avatar">
 
     {% block mugshot %}
     {% with profile.avatar_url as avatar_url %}
@@ -11,7 +11,7 @@
     {% endwith %}
     {% if can_edit %}
 
-    <div class=" border border-slate-300 rounded-md shadow-lg p-2 space-y-2 text-nowrap top-5 left-36 ">
+    <div class="border border-slate-300 rounded-md shadow-lg p-2 space-y-2 md:text-nowrap md:top-5 md:left-36 ">
       {% blocktrans trimmed %}
       <p>
 
