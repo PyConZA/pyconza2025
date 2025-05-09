@@ -17,5 +17,11 @@ def show_toolbar(request):
 
 
 DEBUG_TOOLBAR_CONFIG = {
-    "SHOW_TOOLBAR_CALLBACK": show_toolbar
+    "SHOW_TOOLBAR_CALLBACK": show_toolbar,
+    "RENDER_PANELS": True,
+    "RESULTS_CACHE_SIZE": 100,
+    "DISABLE_PANELS": [
+        "debug_toolbar.panels.redirects.RedirectsPanel",
+        "debug_toolbar.panels.templates.TemplatesPanel"
+    ]
 }
