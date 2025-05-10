@@ -70,6 +70,34 @@
     ol {
         @apply list-decimal list-inside space-y-2
     }
+
+    form {
+        @apply space-y-3
+    }
+
+    table {
+        @apply min-w-full border border-gray-300 text-left text-sm;
+    }
+
+    thead {
+        @apply bg-gray-100 border-b;
+    }
+
+    th {
+        @apply px-4 py-2 text-gray-700 font-bold;
+    }
+
+    tbody {
+        @apply divide-y divide-gray-200;
+    }
+
+    tr {
+        @apply hover:bg-gray-50;
+    }
+
+    td {
+        @apply px-4 py-2;
+    }
 }
 
 @layer components {
@@ -79,6 +107,10 @@
 
     .btn {
         @apply w-fit px-8 py-3 bg-yellow-600 no-underline rounded-xl text-white font-bold cursor-pointer hover:bg-yellow-500 text-center items-center
+    }
+
+    .btn-small {
+        @apply py-1 px-4;
     }
 
 
@@ -94,45 +126,59 @@
         @apply mt-3;
     }
 
+    .alert {
+        @apply border rounded-2xl p-3;
+    }
 
+    .alert-primary {
+        @apply border-yellow-700 bg-yellow-50
+    }
+
+    .alert-danger {
+        @apply border-orange-700 bg-orange-50
+    }
+
+    .card {
+        @apply p-3
+    }
 }
 
 @layer utilities {
     .text-pycon-yellow {
-      color: var(--color-pycon-yellow);
+        color: var(--color-pycon-yellow);
     }
-    
+
     .text-pycon-green {
-      color: var(--color-pycon-green);
+        color: var(--color-pycon-green);
     }
-    
+
     .text-pycon-blue {
-      color: var(--color-pycon-blue);
+        color: var(--color-pycon-blue);
     }
-    
+
     .text-pycon-red {
-      color: var(--color-pycon-red);
+        color: var(--color-pycon-red);
     }
-    
+
     .text-pycon-light-blue {
-      color: var(--color-pycon-light-blue);
+        color: var(--color-pycon-light-blue);
     }
-    
+
     .bg-translucent {
-      background-color: rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(4px);
+        background-color: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(4px);
     }
-    
+
     .list-custom {
-      list-style-type: none;
-      margin-left: 0;
+        list-style-type: none;
+        margin-left: 0;
     }
+
     .text-outline-white {
-      text-shadow: 
-        -1px -1px 0 #fff,
-        1px -1px 0 #fff,
-        -1px 1px 0 #fff,
-        1px 1px 0 #fff;
+        text-shadow:
+            -1px -1px 0 #fff,
+            1px -1px 0 #fff,
+            -1px 1px 0 #fff,
+            1px 1px 0 #fff;
     }
-  }
-  
+}

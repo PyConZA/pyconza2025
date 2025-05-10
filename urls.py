@@ -26,5 +26,3 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += debug_toolbar_urls()
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-# Pages occupy the entire URL space, and must come last
-# urlpatterns.append(re_path(r"", include("wafer.pages.urls")))

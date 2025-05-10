@@ -14,6 +14,7 @@ ROOT_URLCONF = "urls"
 
 
 INSTALLED_APPS = (
+    "template_partials",
     "django_cotton",
     "website",  # for website static content that should be version controlled
     "django.contrib.auth",
@@ -148,6 +149,8 @@ INTERNAL_IPS = [  # needed for debugtoolbar
 
 WAFER_TALKS_OPEN = False
 WAFER_REGISTRATION_OPEN = False
+# The form used for talk submission
+WAFER_TALK_FORM = "website.talks.forms.TalkForm"
 
 
 # Set the timezone to the conference timezone
