@@ -74,28 +74,9 @@
     ol {
         @apply list-decimal list-inside space-y-2
     }
-}
 
-@layer components {
-    .nav-item {
-        @apply font-semibold text-gray-200 hover:text-white uppercase no-underline
-    }
-
-    .btn {
-        @apply w-fit px-8 py-3 bg-yellow-600 no-underline rounded-xl text-white font-bold cursor-pointer hover:bg-yellow-500 text-center items-center
-    }
-
-
-    .btn-success {
-        @apply bg-green-700 hover:bg-green-600
-    }
-
-    .btn-secondary {
-        @apply bg-orange-700 hover:bg-orange-600;
-    }
-
-    input[type="submit"] {
-        @apply mt-3;
+    form {
+        @apply space-y-3
     }
 
     table {
@@ -121,8 +102,49 @@
     td {
         @apply px-4 py-2;
     }
+}
+
+@layer components {
+    .nav-item {
+        @apply font-semibold text-gray-200 hover:text-white uppercase no-underline
+    }
+
+    .btn {
+        @apply w-fit px-8 py-3 bg-yellow-600 no-underline rounded-xl text-white font-bold cursor-pointer hover:bg-yellow-500 text-center items-center
+    }
+
+    .btn-small {
+        @apply py-1 px-4;
+    }
 
 
+    .btn-success {
+        @apply bg-green-700 hover:bg-green-600
+    }
+
+    .btn-secondary {
+        @apply bg-orange-700 hover:bg-orange-600;
+    }
+
+    input[type="submit"] {
+        @apply mt-3;
+    }
+
+    .alert {
+        @apply border rounded-2xl p-3;
+    }
+
+    .alert-primary {
+        @apply border-yellow-700 bg-yellow-50
+    }
+
+    .alert-danger {
+        @apply border-orange-700 bg-orange-50
+    }
+
+    .card {
+        @apply p-3
+    }
 }
 
 @layer utilities {
