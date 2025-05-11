@@ -128,9 +128,7 @@ SOCIAL_LINKS = [
 ]
 
 
-# WAFER_MENUS += (
-#     # {"menu": "sponsors", "label": _("Sponsors"), "items": []},
-# )
+# WAFER_MENUS += ({"menu": "sponsors", "label": _("Sponsors"), "items": []},)
 
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
