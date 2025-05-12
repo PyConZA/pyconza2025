@@ -75,7 +75,6 @@ TEMPLATES = [
 
 
 MIDDLEWARE = (
-    "django_browser_reload.middleware.BrowserReloadMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",  # see warning here: https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
     "django.middleware.common.CommonMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -85,6 +84,7 @@ MIDDLEWARE = (
     "django.contrib.redirects.middleware.RedirectFallbackMiddleware",
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 )
 
 
@@ -144,6 +144,7 @@ COTTON_SNAKE_CASED_NAMES = False
 INTERNAL_IPS = [  # needed for debugtoolbar
     "127.0.0.1",
 ]
+
 
 WAFER_TALKS_OPEN = False
 WAFER_REGISTRATION_OPEN = False
