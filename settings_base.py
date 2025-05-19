@@ -17,6 +17,7 @@ INSTALLED_APPS = (
     "template_partials",
     "django_cotton",
     "website",  # for website static content that should be version controlled
+    "grants",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
