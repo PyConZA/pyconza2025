@@ -1,0 +1,83 @@
+{% extends "wafer/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Review Grant Application{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <h2 class="mb-4">Review Grant Application</h2>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Applicant Information</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Name:</dt>
+                        <dd class="col-sm-9">{{ object.user.get_full_name|default:object.user.username }}</dd>
+                        
+                        <dt class="col-sm-3">Email:</dt>
+                        <dd class="col-sm-9">{{ object.user.email }}</dd>
+                        
+                        <dt class="col-sm-3">Submitted:</dt>
+                        <dd class="col-sm-9">{{ object.created_at|date:"F j, Y" }}</dd>
+                    </dl>
+
+                    <h5 class="mt-4">Motivation</h5>
+                    <p class="text-muted">{{ object.motivation|linebreaks }}</p>
+
+                    <h5 class="mt-4">Contributions</h5>
+                    <p class="text-muted">{{ object.contribution|linebreaks }}</p>
+
+                    <h5 class="mt-4">Financial Need</h5>
+                    <p class="text-muted">{{ object.financial_need|linebreaks }}</p>
+
+                    <h5 class="mt-4">Requested Support</h5>
+                    <ul class="list-unstyled">
+                        {% if object.request_travel %}
+                        <li class="mb-2">
+                            <strong>Travel:</strong> ${{ object.travel_amount }}
+                            <br>
+                            <small class="text-muted">From: {{ object.travel_from }}</small>
+                        </li>
+                        {% endif %}
+
+                        {% if object.request_accommodation %}
+                        <li class="mb-2">
+                            <strong>Accommodation:</strong> {{ object.accommodation_nights }} nights
+                        </li>
+                        {% endif %}
+
+                        {% if object.request_ticket %}
+                        <li class="mb-2">
+                            <strong>Conference Ticket:</strong> Yes
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Review Decision</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary">Save Review</button>
+                            <a href="{% url 'grants:application_list' %}" class="btn btn-secondary">Back to List</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

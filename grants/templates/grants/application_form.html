@@ -1,0 +1,30 @@
+{% extends "wafer/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% if form.instance.pk %}Edit Grant Application{% else %}Apply for Grant{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="mb-4">{% if form.instance.pk %}Edit Your Grant Application{% else %}Apply for an Opportunity Grant{% endif %}</h2>
+            
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" class="form">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                {% if form.instance.pk %}Update Application{% else %}Submit Application{% endif %}
+                            </button>
+                            <a href="{% url 'grants:application_detail' %}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

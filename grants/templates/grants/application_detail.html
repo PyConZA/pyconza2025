@@ -1,0 +1,86 @@
+{% extends "wafer/base.html" %}
+
+{% block title %}Grant Application Details{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Grant Application Details</h2>
+                {% if application.can_edit %}
+                <a href="{% url 'grants:application_update' %}" class="btn btn-primary">Edit Application</a>
+                {% endif %}
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Status: <span class="badge {% if application.status == 'approved' %}bg-success{% elif application.status == 'rejected' %}bg-danger{% else %}bg-info{% endif %}">
+                        {{ application.get_status_display }}
+                    </span></h5>
+                </div>
+                <div class="card-body">
+                    <h5>Application Details</h5>
+                    <dl class="row">
+                        <dt class="col-sm-3">Submitted on:</dt>
+                        <dd class="col-sm-9">{{ application.created_at|date:"F j, Y" }}</dd>
+
+                        {% if application.reviewed_at %}
+                        <dt class="col-sm-3">Reviewed on:</dt>
+                        <dd class="col-sm-9">{{ application.reviewed_at|date:"F j, Y" }}</dd>
+                        {% endif %}
+
+                        {% if application.amount_granted %}
+                        <dt class="col-sm-3">Amount Granted:</dt>
+                        <dd class="col-sm-9">R{{ application.amount_granted }}</dd>
+                        {% endif %}
+                    </dl>
+
+                    <h5 class="mt-4">Your Motivation</h5>
+                    <p class="text-muted">{{ application.motivation|linebreaks }}</p>
+
+                    <h5 class="mt-4">Your Contributions</h5>
+                    <p class="text-muted">{{ application.contribution|linebreaks }}</p>
+
+                    <h5 class="mt-4">Financial Need</h5>
+                    <p class="text-muted">{{ application.financial_need|linebreaks }}</p>
+
+                    <h5 class="mt-4">Requested Support</h5>
+                    <ul class="list-unstyled">
+                        {% if application.request_travel %}
+                        <li>
+                            <strong>Travel:</strong> ${{ application.travel_amount }} 
+                            <small class="text-muted">(from {{ application.travel_from }})</small>
+                        </li>
+                        {% endif %}
+
+                        {% if application.request_accommodation %}
+                        <li>
+                            <strong>Accommodation:</strong> {{ application.accommodation_nights }} nights
+                        </li>
+                        {% endif %}
+
+                        {% if application.request_ticket %}
+                        <li>
+                            <strong>Conference Ticket:</strong> Yes
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+
+            {% if application.status == 'approved' %}
+            <div class="alert alert-success">
+                <h5>Congratulations!</h5>
+                <p>Your grant application has been approved. Please check your email for further instructions.</p>
+            </div>
+            {% elif application.status == 'rejected' %}
+            <div class="alert alert-danger">
+                <h5>Application Status</h5>
+                <p>We regret to inform you that your grant application has not been approved at this time.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 
