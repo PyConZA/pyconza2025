@@ -3,80 +3,80 @@
 {% block title %}Grant Application Details{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="container py-4">
     <div class="row">
         <div class="col-md-8 offset-md-2">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2>Grant Application Details</h2>
+            <div class="d-flex justify-content-between align-items-start pb-3">
+                <h1 class="h2 pb-3">Grant Application Details</h1>
                 {% if application.can_edit %}
-                <a href="{% url 'grants:application_update' %}" class="btn btn-primary">Edit Application</a>
+                <a href="{% url 'grants:application_update' %}" class="btn btn-warning flex">Edit Application</a>
                 {% endif %}
             </div>
 
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5 class="mb-0">Status: <span class="badge {% if application.status == 'approved' %}bg-success{% elif application.status == 'rejected' %}bg-danger{% else %}bg-info{% endif %}">
-                        {{ application.get_status_display }}
-                    </span></h5>
-                </div>
-                <div class="card-body">
-                    <h5>Application Details</h5>
-                    <dl class="row">
-                        <dt class="col-sm-3">Submitted on:</dt>
-                        <dd class="col-sm-9">{{ application.created_at|date:"F j, Y" }}</dd>
+            <div class="py-3">
+                <h5>Status: {{ application.get_status_display }}</h5>
+            </div>
 
-                        {% if application.reviewed_at %}
-                        <dt class="col-sm-3">Reviewed on:</dt>
-                        <dd class="col-sm-9">{{ application.reviewed_at|date:"F j, Y" }}</dd>
-                        {% endif %}
+            <div class="py-3">
+                <h5>Application Details</h5>
+                <div class="pt-2">Submitted on: {{ application.created_at|date:"F d, Y" }}</div>
 
-                        {% if application.amount_granted %}
-                        <dt class="col-sm-3">Amount Granted:</dt>
-                        <dd class="col-sm-9">R{{ application.amount_granted }}</dd>
-                        {% endif %}
-                    </dl>
+                {% if application.reviewed_at %}
+                <div class="pt-2">Reviewed on: {{ application.reviewed_at|date:"F d, Y" }}</div>
+                {% endif %}
 
-                    <h5 class="mt-4">Your Motivation</h5>
-                    <p class="text-muted">{{ application.motivation|linebreaks }}</p>
+                {% if application.amount_granted %}
+                <div class="pt-2">Amount Granted: ${{ application.amount_granted }}</div>
+                {% endif %}
+            </div>
 
-                    <h5 class="mt-4">Your Contributions</h5>
-                    <p class="text-muted">{{ application.contribution|linebreaks }}</p>
+            <div class="py-3">
+                <h3>Your Motivation</h3>
+                <div class="pt-2">{{ application.motivation|linebreaks }}</div>
+            </div>
 
-                    <h5 class="mt-4">Financial Need</h5>
-                    <p class="text-muted">{{ application.financial_need|linebreaks }}</p>
+            <div class="py-3">
+                <h3>Your Contributions</h3>
+                <div class="pt-2">{{ application.contribution|linebreaks }}</div>
+            </div>
 
-                    <h5 class="mt-4">Requested Support</h5>
-                    <ul class="list-unstyled">
-                        {% if application.request_travel %}
-                        <li>
-                            <strong>Travel:</strong> ${{ application.travel_amount }} 
-                            <small class="text-muted">(from {{ application.travel_from }})</small>
-                        </li>
-                        {% endif %}
+            <div class="py-3">
+                <h3>Financial Need</h3>
+                <div class="pt-2">{{ application.financial_need|linebreaks }}</div>
+            </div>
 
-                        {% if application.request_accommodation %}
-                        <li>
-                            <strong>Accommodation:</strong> {{ application.accommodation_nights }} nights
-                        </li>
-                        {% endif %}
+            <div class="py-3">
+                <h3>Requested Support</h3>
+                <ul class="list-unstyled pt-2">
+                    {% if application.request_travel %}
+                    <li class="pb-2">
+                        <strong>Travel:</strong> ${{ application.travel_amount }}
+                        <span class="text-muted">(from {{ application.travel_from }})</span>
+                    </li>
+                    {% endif %}
 
-                        {% if application.request_ticket %}
-                        <li>
-                            <strong>Conference Ticket:</strong> Yes
-                        </li>
-                        {% endif %}
-                    </ul>
-                </div>
+                    {% if application.request_accommodation %}
+                    <li class="pb-2">
+                        <strong>Accommodation:</strong> {{ application.accommodation_nights }} nights
+                    </li>
+                    {% endif %}
+
+                    {% if application.request_ticket %}
+                    <li class="pb-2">
+                        <strong>Conference Ticket:</strong> Yes
+                    </li>
+                    {% endif %}
+                </ul>
             </div>
 
             {% if application.status == 'approved' %}
-            <div class="alert alert-success">
-                <h5>Congratulations!</h5>
+            <div class="alert alert-success p-3">
+                <h5 class="pb-2">Congratulations!</h5>
                 <p>Your grant application has been approved. Please check your email for further instructions.</p>
             </div>
             {% elif application.status == 'rejected' %}
-            <div class="alert alert-danger">
-                <h5>Application Status</h5>
+            <div class="alert alert-danger p-3">
+                <h5 class="pb-2">Application Status</h5>
                 <p>We regret to inform you that your grant application has not been approved at this time.</p>
             </div>
             {% endif %}

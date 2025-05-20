@@ -4,22 +4,22 @@
 {% block title %}{% if form.instance.pk %}Edit Grant Application{% else %}Apply for Grant{% endif %}{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="container py-4">
     <div class="row">
         <div class="col-md-8 offset-md-2">
-            <h2 class="mb-4">{% if form.instance.pk %}Edit Your Grant Application{% else %}Apply for an Opportunity Grant{% endif %}</h2>
+            <h2 class="pb-4">{% if form.instance.pk %}Edit Your Grant Application{% else %}Apply for an Opportunity Grant{% endif %}</h2>
             
             <div class="card">
-                <div class="card-body">
+                <div class="card-body p-4">
                     <form method="post" class="form">
                         {% csrf_token %}
                         {{ form|crispy }}
                         
-                        <div class="mt-4">
+                        <div class="pt-4">
                             <button type="submit" class="btn btn-primary">
                                 {% if form.instance.pk %}Update Application{% else %}Submit Application{% endif %}
                             </button>
-                            <a href="{% url 'grants:application_detail' %}" class="btn btn-secondary">Cancel</a>
+                            <a href="{% url 'grants:application_detail' %}" class="btn btn-secondary ms-2">Cancel</a>
                         </div>
                     </form>
                 </div>

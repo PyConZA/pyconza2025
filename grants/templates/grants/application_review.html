@@ -4,17 +4,17 @@
 {% block title %}Review Grant Application{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="container py-4">
     <div class="row">
         <div class="col-md-8">
-            <h2 class="mb-4">Review Grant Application</h2>
+            <h2 class="pb-4">Review Grant Application</h2>
             
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5 class="mb-0">Applicant Information</h5>
+            <div class="card">
+                <div class="card-header py-3">
+                    <h5>Applicant Information</h5>
                 </div>
-                <div class="card-body">
-                    <dl class="row">
+                <div class="card-body p-4">
+                    <dl class="row pb-4">
                         <dt class="col-sm-3">Name:</dt>
                         <dd class="col-sm-9">{{ object.user.get_full_name|default:object.user.username }}</dd>
                         
@@ -25,19 +25,19 @@
                         <dd class="col-sm-9">{{ object.created_at|date:"F j, Y" }}</dd>
                     </dl>
 
-                    <h5 class="mt-4">Motivation</h5>
-                    <p class="text-muted">{{ object.motivation|linebreaks }}</p>
+                    <h5 class="pb-2">Motivation</h5>
+                    <div class="pb-4">{{ object.motivation|linebreaks }}</div>
 
-                    <h5 class="mt-4">Contributions</h5>
-                    <p class="text-muted">{{ object.contribution|linebreaks }}</p>
+                    <h5 class="pb-2">Contributions</h5>
+                    <div class="pb-4">{{ object.contribution|linebreaks }}</div>
 
-                    <h5 class="mt-4">Financial Need</h5>
-                    <p class="text-muted">{{ object.financial_need|linebreaks }}</p>
+                    <h5 class="pb-2">Financial Need</h5>
+                    <div class="pb-4">{{ object.financial_need|linebreaks }}</div>
 
-                    <h5 class="mt-4">Requested Support</h5>
-                    <ul class="list-unstyled">
+                    <h5 class="pb-2">Requested Support</h5>
+                    <ul class="list-unstyled pb-4">
                         {% if object.request_travel %}
-                        <li class="mb-2">
+                        <li class="pb-2">
                             <strong>Travel:</strong> ${{ object.travel_amount }}
                             <br>
                             <small class="text-muted">From: {{ object.travel_from }}</small>
@@ -45,13 +45,13 @@
                         {% endif %}
 
                         {% if object.request_accommodation %}
-                        <li class="mb-2">
+                        <li class="pb-2">
                             <strong>Accommodation:</strong> {{ object.accommodation_nights }} nights
                         </li>
                         {% endif %}
 
                         {% if object.request_ticket %}
-                        <li class="mb-2">
+                        <li class="pb-2">
                             <strong>Conference Ticket:</strong> Yes
                         </li>
                         {% endif %}
@@ -62,17 +62,17 @@
 
         <div class="col-md-4">
             <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Review Decision</h5>
+                <div class="card-header py-3">
+                    <h5>Review Decision</h5>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-4">
                     <form method="post">
                         {% csrf_token %}
                         {{ form|crispy }}
                         
-                        <div class="mt-4">
+                        <div class="pt-4">
                             <button type="submit" class="btn btn-primary">Save Review</button>
-                            <a href="{% url 'grants:application_list' %}" class="btn btn-secondary">Back to List</a>
+                            <a href="{% url 'grants:application_list' %}" class="btn btn-secondary ms-2">Back to List</a>
                         </div>
                     </form>
                 </div>
