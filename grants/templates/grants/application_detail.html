@@ -15,6 +15,41 @@
 
             <div class="py-3">
                 <h5>Status: {{ application.get_status_display }}</h5>
+
+                {% if application.status == 'approved' %}
+                <div class="alert alert-info p-3">
+                    <h5 class="pb-2">Grant Approved!</h5>
+                    <p>Your grant application has been approved. Please review the details and accept or decline the grant using the buttons below.</p>
+                    <div class="pt-3 d-flex gap-3">
+                        <form method="post" action="{% url 'grants:application_update' %}" class="d-inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="status" value="accepted">
+                            <button type="submit" class="btn btn-success">Accept Grant</button>
+                        </form>
+                        <form method="post" action="{% url 'grants:application_update' %}" class="d-inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="status" value="declined">
+                            <button type="submit" class="btn btn-danger">Decline Grant</button>
+                        </form>
+                    </div>
+                </div>
+                {% elif application.status == 'accepted' %}
+                <div class="alert alert-success p-3">
+                    <h5 class="pb-2">Grant Accepted!</h5>
+                    <p>You have accepted this grant. Our team will be in touch with further instructions about travel arrangements and next steps.</p>
+                    <p class="pt-2">If you have any questions, please contact the organizing team.</p>
+                </div>
+                {% elif application.status == 'declined' %}
+                <div class="alert alert-danger p-3">
+                    <h5 class="pb-2">Grant Declined</h5>
+                    <p>You have declined this grant. If you changed your mind or declined by mistake, please contact the organizing team.</p>
+                </div>
+                {% elif application.status == 'rejected' %}
+                <div class="alert alert-danger p-3">
+                    <h5 class="pb-2">Application Status</h5>
+                    <p>We regret to inform you that your grant application has not been approved at this time.</p>
+                </div>
+                {% endif %}
             </div>
 
             <div class="py-3">
@@ -26,7 +61,7 @@
                 {% endif %}
 
                 {% if application.amount_granted %}
-                <div class="pt-2">Amount Granted: ${{ application.amount_granted }}</div>
+                <div class="pt-2">Amount Granted: <strong>${{ application.amount_granted }}</strong></div>
                 {% endif %}
             </div>
 
@@ -68,18 +103,6 @@
                     {% endif %}
                 </ul>
             </div>
-
-            {% if application.status == 'approved' %}
-            <div class="alert alert-success p-3">
-                <h5 class="pb-2">Congratulations!</h5>
-                <p>Your grant application has been approved. Please check your email for further instructions.</p>
-            </div>
-            {% elif application.status == 'rejected' %}
-            <div class="alert alert-danger p-3">
-                <h5 class="pb-2">Application Status</h5>
-                <p>We regret to inform you that your grant application has not been approved at this time.</p>
-            </div>
-            {% endif %}
         </div>
     </div>
 </div>

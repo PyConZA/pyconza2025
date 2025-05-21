@@ -37,10 +37,32 @@ class GrantApplicationUpdateView(LoginRequiredMixin, UserPassesTestMixin, Update
 
     def test_func(self):
         obj = self.get_object()
-        return obj.user == self.request.user and obj.can_edit
+        # Allow editing if application is in submitted state
+        if obj.status == 'submitted':
+            return obj.user == self.request.user
+        # Allow accepting/declining if application is approved
+        elif obj.status == 'approved':
+            return obj.user == self.request.user
+        return False
 
     def get_object(self, queryset=None):
         return self.request.user.grant_application
+
+    def post(self, request, *args, **kwargs):
+        # Handle accept/decline actions
+        if 'status' in request.POST and self.get_object().status == 'approved':
+            new_status = request.POST.get('status')
+            if new_status in ['accepted', 'declined']:
+                application = self.get_object()
+                application.status = new_status
+                application.save()
+                messages.success(
+                    request,
+                    'Grant successfully accepted. We will be in touch soon!' if new_status == 'accepted'
+                    else 'Grant has been declined. Thank you for letting us know.'
+                )
+                return redirect(self.success_url)
+        return super().post(request, *args, **kwargs)
 
     def form_valid(self, form):
         messages.success(self.request, 'Your grant application has been updated successfully!')

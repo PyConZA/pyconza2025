@@ -25,16 +25,16 @@
                         <dd class="col-sm-9">{{ object.created_at|date:"F j, Y" }}</dd>
                     </dl>
 
-                    <h5 class="pb-2">Motivation</h5>
+                    <h3 class="pb-2">Motivation</h3>
                     <div class="pb-4">{{ object.motivation|linebreaks }}</div>
 
-                    <h5 class="pb-2">Contributions</h5>
+                    <h3 class="pb-2">Contributions</h3>
                     <div class="pb-4">{{ object.contribution|linebreaks }}</div>
 
-                    <h5 class="pb-2">Financial Need</h5>
+                    <h3 class="pb-2">Financial Need</h3>
                     <div class="pb-4">{{ object.financial_need|linebreaks }}</div>
 
-                    <h5 class="pb-2">Requested Support</h5>
+                    <h3 class="pb-2">Requested Support</h3>
                     <ul class="list-unstyled pb-4">
                         {% if object.request_travel %}
                         <li class="pb-2">
