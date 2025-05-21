@@ -28,6 +28,18 @@
   {% if WAFER_TALKS_OPEN %}
   <a href="{% url 'wafer_talk_submit' %}" class="btn btn-secondary w-full">{% trans 'Submit Talk Proposal' %}</a>
   {% endif %}
+  
+  {# Grant Application Section #}
+  {% if not object.grant_application %}
+  <a href="{% url 'grants:application_create' %}" class="btn btn-secondary w-full">{% trans 'Apply for Grant' %}</a>
+  {% else %}
+  <a href="{% url 'grants:application_detail' %}" class="btn btn-secondary w-full">{% trans 'View My Application' %}</a>
+  {% endif %}
+  
+  {# Grant Review Section - Only visible to users with review permissions #}
+  {% if perms.grants.can_review_grants %}
+  <a href="{% url 'grants:application_list' %}" class="btn btn-primary w-full">{% trans 'Review Grant Applications' %}</a>
+  {% endif %}
 </nav>
 {% endif %}
 {% endblock side_menu %}
