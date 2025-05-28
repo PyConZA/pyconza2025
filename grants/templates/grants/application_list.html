@@ -7,8 +7,8 @@
     <h2 class="pb-4">Grant Applications</h2>
 
     <div class="row pb-4">
-        <div class="col-md-6">
-            <form method="get" class="form-inline">
+        <div class="col-md-8">
+            <form method="get" class="form-inline d-flex gap-2">
                 <div class="input-group">
                     <select name="status" class="form-select">
                         <option value="">All Statuses</option>
@@ -17,11 +17,29 @@
                         <option value="approved" {% if status_filter == 'approved' %}selected{% endif %}>Approved</option>
                         <option value="rejected" {% if status_filter == 'rejected' %}selected{% endif %}>Rejected</option>
                     </select>
-                    <button type="submit" class="btn btn-primary ps-3">Filter</button>
                 </div>
+                <div class="input-group">
+                    <select name="gender" class="form-select">
+                        <option value="">All Genders</option>
+                        <option value="male" {% if gender_filter == 'male' %}selected{% endif %}>Male</option>
+                        <option value="female" {% if gender_filter == 'female' %}selected{% endif %}>Female</option>
+                        <option value="non_binary" {% if gender_filter == 'non_binary' %}selected{% endif %}>Non-binary</option>
+                        <option value="prefer_not_to_say" {% if gender_filter == 'prefer_not_to_say' %}selected{% endif %}>Prefer not to say</option>
+                        <option value="other" {% if gender_filter == 'other' %}selected{% endif %}>Other</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <select name="talk_proposal" class="form-select">
+                        <option value="">All Talk Proposals</option>
+                        <option value="yes" {% if talk_proposal_filter == 'yes' %}selected{% endif %}>Yes</option>
+                        <option value="no" {% if talk_proposal_filter == 'no' %}selected{% endif %}>No</option>
+                        <option value="other" {% if talk_proposal_filter == 'other' %}selected{% endif %}>Other</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary ps-3">Filter</button>
             </form>
         </div>
-        <div class="col-md-6 text-end">
+        <div class="col-md-4 text-end">
             <span class="badge bg-info px-3 py-2">{{ applications.count }} applications</span>
         </div>
     </div>
@@ -32,6 +50,8 @@
                 <thead class="bg-gray-50">
                     <tr class="border-b border-gray-200">
                         <th class="p-4 text-left border-r">Applicant</th>
+                        <th class="p-4 text-left border-r">Demographics</th>
+                        <th class="p-4 text-left border-r">Talk Proposal</th>
                         <th class="p-4 text-left border-r">Status</th>
                         <th class="p-4 text-left border-r">Requests</th>
                         <th class="p-4 text-left border-r">Submitted</th>
@@ -44,6 +64,20 @@
                         <td class="p-4 border-r">
                             <div class="font-medium">{{ application.user.get_full_name|default:application.user.username }}</div>
                             <div class="text-sm text-gray-500">{{ application.user.email }}</div>
+                            {% if application.phone_number %}
+                            <div class="text-sm text-gray-500">{{ application.phone_number }}</div>
+                            {% endif %}
+                        </td>
+                        <td class="p-4 border-r">
+                            <div class="text-sm">
+                                <div><strong>Gender:</strong> {{ application.get_gender_display }}</div>
+                                <div><strong>Role:</strong> {{ application.get_current_role_display }}</div>
+                            </div>
+                        </td>
+                        <td class="p-4 border-r">
+                            <span class="px-2 py-1 text-sm rounded-full {% if application.talk_proposal == 'yes' %}bg-green-100 text-green-800{% elif application.talk_proposal == 'no' %}bg-gray-100 text-gray-800{% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                                {{ application.get_talk_proposal_display }}
+                            </span>
                         </td>
                         <td class="p-4 border-r">
                             <span class="px-2 py-1 text-sm rounded-full {% if application.status == 'approved' %}bg-green-100 text-green-800{% elif application.status == 'rejected' %}bg-red-100 text-red-800{% else %}bg-blue-100 text-blue-800{% endif %}">
@@ -70,7 +104,7 @@
                     </tr>
                     {% empty %}
                     <tr class="border-b border-gray-200">
-                        <td colspan="5" class="p-4 text-center text-gray-500">No applications found.</td>
+                        <td colspan="7" class="p-4 text-center text-gray-500">No applications found.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -83,19 +117,19 @@
         <ul class="pagination justify-content-center">
             {% if page_obj.has_previous %}
             <li class="page-item">
-                <a class="page-link px-3 py-2" href="?page={{ page_obj.previous_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}">Previous</a>
+                <a class="page-link px-3 py-2" href="?page={{ page_obj.previous_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if gender_filter %}&gender={{ gender_filter }}{% endif %}{% if talk_proposal_filter %}&talk_proposal={{ talk_proposal_filter }}{% endif %}">Previous</a>
             </li>
             {% endif %}
 
             {% for num in page_obj.paginator.page_range %}
             <li class="page-item {% if page_obj.number == num %}active{% endif %}">
-                <a class="page-link px-3 py-2" href="?page={{ num }}{% if status_filter %}&status={{ status_filter }}{% endif %}">{{ num }}</a>
+                <a class="page-link px-3 py-2" href="?page={{ num }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if gender_filter %}&gender={{ gender_filter }}{% endif %}{% if talk_proposal_filter %}&talk_proposal={{ talk_proposal_filter }}{% endif %}">{{ num }}</a>
             </li>
             {% endfor %}
 
             {% if page_obj.has_next %}
             <li class="page-item">
-                <a class="page-link px-3 py-2" href="?page={{ page_obj.next_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}">Next</a>
+                <a class="page-link px-3 py-2" href="?page={{ page_obj.next_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if gender_filter %}&gender={{ gender_filter }}{% endif %}{% if talk_proposal_filter %}&talk_proposal={{ talk_proposal_filter }}{% endif %}">Next</a>
             </li>
             {% endif %}
         </ul>

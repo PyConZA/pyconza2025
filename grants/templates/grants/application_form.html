@@ -1,30 +1,267 @@
 {% extends "wafer/base.html" %}
 {% load crispy_forms_tags %}
-
-{% block title %}{% if form.instance.pk %}Edit Grant Application{% else %}Apply for Grant{% endif %}{% endblock %}
+{% block title %}Grant Application{% endblock %}
 
 {% block content %}
 <div class="container py-4">
     <div class="row">
         <div class="col-md-8 offset-md-2">
-            <h2 class="pb-4">{% if form.instance.pk %}Edit Your Grant Application{% else %}Apply for an Opportunity Grant{% endif %}</h2>
+            <h1 class="h2 pb-4">Grant Application</h1>
+           
+            <!-- Adding this line here to use the default form styling {{ form | crispy }} -->
+        
             
-            <div class="card">
-                <div class="card-body p-4">
-                    <form method="post" class="form">
-                        {% csrf_token %}
-                        {{ form|crispy }}
-                        
-                        <div class="pt-4">
-                            <button type="submit" class="btn btn-primary">
-                                {% if form.instance.pk %}Update Application{% else %}Submit Application{% endif %}
-                            </button>
-                            <a href="{% url 'grants:application_detail' %}" class="btn btn-secondary ms-2">Cancel</a>
-                        </div>
-                    </form>
+            <form method="post" class="needs-validation" novalidate>
+                {% csrf_token %}
+                
+                <!-- Personal Information Section -->
+                <div class="card p-4 mb-4">
+                    <h3 class="h4 pb-3">Personal Information</h3>
+                    
+                    <div class="mb-3 pb-3">
+                        <label for="{{ form.phone_number.id_for_label }}" class="form-label">Phone Number *</label>
+                        <div class="form-text text-sm italic">{{ form.phone_number.help_text }}</div>
+                        {{ form.phone_number }}
+                        {% if form.phone_number.errors %}
+                            <div class="text-danger">{{ form.phone_number.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3 pb-3">
+                        {{ form.gender |as_crispy_field }}
+                        {% if form.gender.errors %}
+                            <div class="text-danger">{{ form.gender.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3" id="gender-details-field" style="display: none;">
+                        <div class="form-text">{{ form.gender_details.help_text }}</div>
+                        {{ form.gender_details }}
+                        {% if form.gender_details.errors %}
+                            <div class="text-danger">{{ form.gender_details.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3 pb-3">
+                        {{ form.current_role |as_crispy_field }}
+                        {% if form.current_role.errors %}
+                            <div class="text-danger">{{ form.current_role.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3 pb-3" id="role-details-field" style="display: none;">
+                        {{ form.current_role_details |as_crispy_field }}
+                        {% if form.current_role_details.errors %}
+                            <div class="text-danger">{{ form.current_role_details.errors }}</div>
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
+
+                <!-- Talk Proposal Section -->
+                <div class="card p-4 mb-4">
+                    <h3 class="h4 pb-3">Talk Proposal</h3>
+                    
+                    <div class="mb-3 pb-3">
+                        {{ form.talk_proposal |as_crispy_field }}
+                        {% if form.talk_proposal.errors %}
+                            <div class="text-danger">{{ form.talk_proposal.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3" id="talk-details-field" style="display: none;">
+                        {{ form.talk_proposal_details |as_crispy_field }}
+                        {% if form.talk_proposal_details.errors %}
+                            <div class="text-danger">{{ form.talk_proposal_details.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Application Details Section -->
+                <div class="card p-4 mb-4">
+                    <h3 class="h4 pb-3">Application Details</h3>
+                    
+                    <div class="mb-3 pb-3">
+                        {{ form.motivation |as_crispy_field }}
+                        {% if form.motivation.errors %}
+                            <div class="text-danger">{{ form.motivation.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3 pb-3">
+                        {{ form.contribution |as_crispy_field }}
+                        {% if form.contribution.errors %}
+                            <div class="text-danger">{{ form.contribution.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3 pb-3">
+                        {{ form.financial_need |as_crispy_field }}
+                        {% if form.financial_need.errors %}
+                            <div class="text-danger">{{ form.financial_need.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3 pb-3">
+                        {{ form.conference_benefit |as_crispy_field }}
+                        {% if form.conference_benefit.errors %}
+                            <div class="text-danger">{{ form.conference_benefit.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Travel Information Section -->
+                <div class="card p-4 mb-4">
+                    <h3 class="h4 pb-3">Travel Information</h3>
+                    
+                    <div class="form-check mb-3 pb-3">
+                        {{ form.request_travel |as_crispy_field }}
+                            Request Travel Assistance
+                        </label>
+                        {% if form.request_travel.errors %}
+                            <div class="text-danger">{{ form.request_travel.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div id="travel-fields" style="display: none;">
+                        <div class="mb-3 pb-3">
+                            {{ form.travel_from |as_crispy_field }}
+                            {% if form.travel_from.errors %}
+                                <div class="text-danger">{{ form.travel_from.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3 pb-3">
+                            {{ form.travel_amount |as_crispy_field }}
+                            {% if form.travel_amount.errors %}
+                                <div class="text-danger">{{ form.travel_amount.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3 pb-3">
+                            {{ form.transportation_type |as_crispy_field }}
+                            {% if form.transportation_type.errors %}
+                                <div class="text-danger">{{ form.transportation_type.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accommodation Section -->
+                <div class="card p-4 mb-4">
+                    <h3 class="h4 pb-3">Accommodation</h3>
+                    
+                    <div class="form-check mb-3 pb-3">
+                        {{ form.request_accommodation |as_crispy_field }}
+                        {% if form.request_accommodation.errors %}
+                            <div class="text-danger">{{ form.request_accommodation.errors }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div id="accommodation-fields" style="display: none;">
+                        <div class="mb-3 pb-3">
+                            {{ form.accommodation_nights |as_crispy_field }}
+                            {% if form.accommodation_nights.errors %}
+                                <div class="text-danger">{{ form.accommodation_nights.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conference Ticket Section -->
+                <div class="card p-4 mb-4">
+                    <h3 class="h4 pb-3">Conference Ticket</h3>
+                    
+                    <div class="form-check mb-3 pb-3">
+                        {{ form.request_ticket |as_crispy_field }}
+                        {% if form.request_ticket.errors %}
+                            <div class="text-danger">{{ form.request_ticket.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Additional Information Section -->
+                <div class="card p-4 mb-4">
+                    <h3 class="h4 pb-3">Additional Information</h3>
+                    
+                    <div class="mb-3 pb-3">
+                        {{ form.additional_info |as_crispy_field }}
+                        {% if form.additional_info.errors %}
+                            <div class="text-danger">{{ form.additional_info.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Submit Application</button>
+                    <a href="{% url 'wafer_user_profile' user.username %}" class="btn btn-secondary btn-lg ms-3">Cancel</a>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle conditional fields
+    const genderField = document.getElementById('{{ form.gender.id_for_label }}');
+    const genderDetailsField = document.getElementById('gender-details-field');
+    
+    const roleField = document.getElementById('{{ form.current_role.id_for_label }}');
+    const roleDetailsField = document.getElementById('role-details-field');
+    
+    const talkField = document.getElementById('{{ form.talk_proposal.id_for_label }}');
+    const talkDetailsField = document.getElementById('talk-details-field');
+    
+    const travelCheckbox = document.getElementById('{{ form.request_travel.id_for_label }}');
+    const travelFields = document.getElementById('travel-fields');
+    
+    const accommodationCheckbox = document.getElementById('{{ form.request_accommodation.id_for_label }}');
+    const accommodationFields = document.getElementById('accommodation-fields');
+
+    function toggleField(selectField, targetField, showValue) {
+        if (selectField.value === showValue) {
+            targetField.style.display = 'block';
+        } else {
+            targetField.style.display = 'none';
+        }
+    }
+
+    function toggleCheckboxFields(checkbox, targetField) {
+        if (checkbox.checked) {
+            targetField.style.display = 'block';
+        } else {
+            targetField.style.display = 'none';
+        }
+    }
+
+    // Initial state
+    toggleField(genderField, genderDetailsField, 'other');
+    toggleField(roleField, roleDetailsField, 'other');
+    toggleField(talkField, talkDetailsField, 'other');
+    toggleCheckboxFields(travelCheckbox, travelFields);
+    toggleCheckboxFields(accommodationCheckbox, accommodationFields);
+
+    // Event listeners
+    genderField.addEventListener('change', function() {
+        toggleField(this, genderDetailsField, 'other');
+    });
+
+    roleField.addEventListener('change', function() {
+        toggleField(this, roleDetailsField, 'other');
+    });
+
+    talkField.addEventListener('change', function() {
+        toggleField(this, talkDetailsField, 'other');
+    });
+
+    travelCheckbox.addEventListener('change', function() {
+        toggleCheckboxFields(this, travelFields);
+    });
+
+    accommodationCheckbox.addEventListener('change', function() {
+        toggleCheckboxFields(this, accommodationFields);
+    });
+});
+</script>
 {% endblock %} 

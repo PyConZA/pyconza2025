@@ -80,6 +80,65 @@
                 <div class="pt-2">{{ application.financial_need|linebreaks }}</div>
             </div>
 
+            <!-- Personal Information Section -->
+            <div class="py-3">
+                <h3>Personal Information</h3>
+                <div class="row pt-2">
+                    <div class="col-md-6">
+                        <strong>Phone Number:</strong> {{ application.phone_number|default:"Not provided" }}
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Gender:</strong> {{ application.get_gender_display }}
+                        {% if application.gender == 'other' and application.gender_details %}
+                            <div class="text-muted small">{{ application.gender_details }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row pt-2">
+                    <div class="col-md-12">
+                        <strong>Current Role:</strong> {{ application.get_current_role_display }}
+                        {% if application.current_role == 'other' and application.current_role_details %}
+                            <div class="text-muted small">{{ application.current_role_details }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Talk Proposal Section -->
+            <div class="py-3">
+                <h3>Talk Proposal</h3>
+                <div class="pt-2">
+                    <strong>Submitted a talk proposal:</strong> {{ application.get_talk_proposal_display }}
+                    {% if application.talk_proposal == 'other' and application.talk_proposal_details %}
+                        <div class="text-muted pt-1">{{ application.talk_proposal_details }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Transportation Section -->
+            {% if application.request_travel and application.transportation_type %}
+            <div class="py-3">
+                <h3>Transportation</h3>
+                <div class="pt-2">
+                    <strong>Preferred transportation:</strong> {{ application.get_transportation_type_display }}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Conference Benefits Section -->
+            <div class="py-3">
+                <h3>Conference Benefits</h3>
+                <div class="pt-2">{{ application.conference_benefit|linebreaks }}</div>
+            </div>
+
+            <!-- Additional Information Section -->
+            {% if application.additional_info %}
+            <div class="py-3">
+                <h3>Additional Information</h3>
+                <div class="pt-2">{{ application.additional_info|linebreaks }}</div>
+            </div>
+            {% endif %}
+
             <div class="py-3">
                 <h3>Requested Support</h3>
                 <ul class="list-unstyled pt-2">
