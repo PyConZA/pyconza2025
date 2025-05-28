@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Grant Application Update</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h2 style="color: #dc3545;">Grant Application Update</h2>
+        
+        <p>Dear {{ user.get_full_name|default:user.username }},</p>
+        
+        <p>Thank you for your interest in attending PyCon Africa 2025 and for submitting a grant application.</p>
+        
+        <div style="background-color: #f8d7da; padding: 15px; border-left: 4px solid #dc3545; margin: 20px 0;">
+            <p><strong>Application Status:</strong> Not Approved</p>
+            <p><strong>Submitted:</strong> {{ application.created_at|date:"F d, Y" }}</p>
+        </div>
+        
+        <p>We regret to inform you that we are unable to approve your grant application at this time. Due to the high volume of applications and limited funding, we had to make difficult decisions.</p>
+        
+        <p>This decision does not reflect the quality of your application or your contributions to the Python community. We encourage you to:</p>
+        
+        <ul>
+            <li>Consider attending PyCon Africa 2025 if you are able to do so</li>
+            <li>Apply for future grant opportunities</li>
+            <li>Stay connected with the Python community</li>
+        </ul>
+        
+        <p>We appreciate your understanding and hope to see you at future PyCon Africa events.</p>
+        
+        <p>Best regards,<br>
+        The PyCon Africa 2025 Grants Team</p>
+    </div>
+</body>
+</html> 
