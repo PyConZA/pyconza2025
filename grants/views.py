@@ -1,10 +1,8 @@
-from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, ListView, DetailView
-from django.utils import timezone
 
 from .models import GrantApplication
 from .forms import GrantApplicationForm, GrantReviewForm
@@ -88,13 +86,23 @@ class GrantApplicationListView(LoginRequiredMixin, UserPassesTestMixin, ListView
     def get_queryset(self):
         queryset = super().get_queryset()
         status = self.request.GET.get('status')
+        gender = self.request.GET.get('gender')
+        talk_proposal = self.request.GET.get('talk_proposal')
+        
         if status:
             queryset = queryset.filter(status=status)
+        if gender:
+            queryset = queryset.filter(gender=gender)
+        if talk_proposal:
+            queryset = queryset.filter(talk_proposal=talk_proposal)
+            
         return queryset.order_by('-created_at')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['status_filter'] = self.request.GET.get('status', '')
+        context['gender_filter'] = self.request.GET.get('gender', '')
+        context['talk_proposal_filter'] = self.request.GET.get('talk_proposal', '')
         return context
 
 class GrantApplicationReviewView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
