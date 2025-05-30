@@ -1,72 +1,143 @@
 from django.contrib import admin
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
 from django.utils.html import format_html
-from .models import GrantApplication
+from django.urls import reverse
+from django.http import HttpResponse
+from .models import GrantApplication, GrantReview
+from .utils import export_applications_to_excel
+
+class GrantReviewInline(admin.TabularInline):
+    model = GrantReview
+    extra = 0
+    readonly_fields = ('reviewer', 'score', 'notes', 'suggested_amount', 'created_at')
+    can_delete = False
+    
+    def has_add_permission(self, request, obj=None):
+        return False
 
 @admin.register(GrantApplication)
 class GrantApplicationAdmin(admin.ModelAdmin):
-    list_display = ['user', 'status', 'gender', 'current_role', 'talk_proposal', 'created_at', 'reviewed_at', 'amount_granted', 'get_requests']
-    list_filter = [
-        'status', 'gender', 'current_role', 'talk_proposal', 'transportation_type',
-        'request_travel', 'request_accommodation', 'request_ticket', 'created_at'
+    list_display = [
+        'user', 'full_name', 'status', 'travel_from', 'travel_amount', 
+        'average_score', 'amount_granted', 'decision_maker', 'created_at'
     ]
-    search_fields = ['user__username', 'user__email', 'travel_from', 'phone_number']
-    readonly_fields = ['created_at', 'updated_at', 'reviewed_at']
+    list_filter = [
+        'status', 'gender', 'talk_proposal', 'transportation_type', 
+        'decision_maker', 'created_at'
+    ]
+    search_fields = [
+        'user__username', 'user__email', 'user__first_name', 'user__last_name',
+        'travel_from_city', 'travel_from_country'
+    ]
+    readonly_fields = [
+        'user', 'created_at', 'updated_at', 'average_score', 
+        'suggested_amount_average', 'review_count'
+    ]
+    
+    inlines = [GrantReviewInline]
     
     fieldsets = (
-        ('Applicant Information', {
-            'fields': ('user', 'phone_number', 'created_at', 'updated_at')
+        ('Application Info', {
+            'fields': ('user', 'status', 'created_at', 'updated_at')
         }),
-        ('Demographics', {
-            'fields': (
-                'gender', 'gender_details',
-                'current_role', 'current_role_details'
-            )
+        ('Personal Information', {
+            'fields': ('gender', 'talk_proposal', 'additional_info')
         }),
-        ('Talk Proposal', {
-            'fields': ('talk_proposal', 'talk_proposal_details')
+        ('Travel Information', {
+            'fields': ('travel_from_city', 'travel_from_country', 'travel_amount', 'transportation_type')
         }),
-        ('Application Details', {
-            'fields': ('motivation', 'contribution', 'financial_need')
+        ('Review Summary', {
+            'fields': ('review_count', 'average_score', 'suggested_amount_average'),
+            'classes': ('collapse',)
         }),
-        ('Travel & Transportation', {
-            'fields': (
-                'request_travel', 'travel_amount', 'travel_from', 'transportation_type'
-            )
-        }),
-        ('Accommodation & Tickets', {
-            'fields': (
-                'request_accommodation', 'accommodation_nights',
-                'request_ticket'
-            )
-        }),
-        ('Additional Information', {
-            'fields': ('conference_benefit', 'additional_info')
-        }),
-        ('Review', {
-            'fields': ('status', 'reviewer_notes', 'amount_granted', 'reviewed_at')
+        ('Decision', {
+            'fields': ('decision_maker', 'amount_granted', 'decision_notes'),
+            'classes': ('collapse',)
         }),
     )
+    
+    actions = ['export_to_excel', 'mark_as_approved', 'mark_as_rejected']
+    
+    def export_to_excel(self, request, queryset):
+        """Export selected applications to Excel"""
+        return export_applications_to_excel(queryset, 'selected_applications')
+    export_to_excel.short_description = "Export selected applications to Excel"
+    
+    def mark_as_approved(self, request, queryset):
+        """Mark selected applications as approved"""
+        if not request.user.has_perm('grants.can_make_grant_decisions'):
+            self.message_user(request, "You don't have permission to make grant decisions.", level='ERROR')
+            return
+        
+        updated = queryset.update(status='approved', decision_maker=request.user)
+        self.message_user(request, f'{updated} applications marked as approved.')
+    mark_as_approved.short_description = "Mark selected applications as approved"
+    
+    def mark_as_rejected(self, request, queryset):
+        """Mark selected applications as rejected"""
+        if not request.user.has_perm('grants.can_make_grant_decisions'):
+            self.message_user(request, "You don't have permission to make grant decisions.", level='ERROR')
+            return
+        
+        updated = queryset.update(status='rejected', decision_maker=request.user)
+        self.message_user(request, f'{updated} applications marked as rejected.')
+    mark_as_rejected.short_description = "Mark selected applications as rejected"
+    
+    def full_name(self, obj):
+        return f"{obj.user.first_name} {obj.user.last_name}".strip() or obj.user.username
+    full_name.short_description = 'Full Name'
+    
+    def review_count(self, obj):
+        return obj.reviews.count()
+    review_count.short_description = 'Reviews'
+    
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.prefetch_related('reviews', 'user')
+    
+    def has_change_permission(self, request, obj=None):
+        # Allow reviewers to view but restrict editing based on permissions
+        if obj and not request.user.has_perm('grants.can_make_grant_decisions'):
+            # Reviewers can only view, not edit the main application
+            return False
+        return super().has_change_permission(request, obj)
 
-    def get_requests(self, obj):
-        requests = []
-        if obj.request_travel:
-            requests.append(f'Travel (${obj.travel_amount})')
-        if obj.request_accommodation:
-            requests.append(f'Accommodation ({obj.accommodation_nights} nights)')
-        if obj.request_ticket:
-            requests.append('Ticket')
-        return format_html('<br>'.join(requests))
-    get_requests.short_description = 'Requests'
+@admin.register(GrantReview)
+class GrantReviewAdmin(admin.ModelAdmin):
+    list_display = ['application', 'reviewer', 'score', 'suggested_amount', 'created_at']
+    list_filter = ['score', 'created_at', 'reviewer']
+    search_fields = [
+        'application__user__username', 'application__user__email',
+        'reviewer__username', 'reviewer__email', 'notes'
+    ]
+    readonly_fields = ['created_at', 'updated_at']
+    
+    fieldsets = (
+        ('Review Info', {
+            'fields': ('application', 'reviewer', 'created_at', 'updated_at')
+        }),
+        ('Review Details', {
+            'fields': ('score', 'suggested_amount', 'notes')
+        }),
+    )
+    
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        # Reviewers can only see their own reviews unless they're decision makers
+        if not request.user.has_perm('grants.can_make_grant_decisions'):
+            queryset = queryset.filter(reviewer=request.user)
+        return queryset.select_related('application__user', 'reviewer')
+    
+    def has_change_permission(self, request, obj=None):
+        # Reviewers can only edit their own reviews
+        if obj and not request.user.has_perm('grants.can_make_grant_decisions'):
+            return obj.reviewer == request.user
+        return super().has_change_permission(request, obj)
+    
+    def has_delete_permission(self, request, obj=None):
+        # Only decision makers can delete reviews
+        return request.user.has_perm('grants.can_make_grant_decisions')
 
-    def get_readonly_fields(self, request, obj=None):
-        readonly_fields = list(super().get_readonly_fields(request, obj))
-        if obj and obj.status not in ['submitted', 'under_review']:
-            readonly_fields.extend([
-                'phone_number', 'gender', 'gender_details', 'current_role', 'current_role_details',
-                'talk_proposal', 'talk_proposal_details', 'transportation_type',
-                'motivation', 'contribution', 'financial_need', 'conference_benefit', 'additional_info',
-                'request_travel', 'travel_amount', 'travel_from',
-                'request_accommodation', 'accommodation_nights',
-                'request_ticket'
-            ])
-        return readonly_fields
+# Register permissions for easy assignment
+admin.site.register(Permission)

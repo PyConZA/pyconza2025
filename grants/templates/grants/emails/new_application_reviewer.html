@@ -22,7 +22,7 @@
         <h3>Requested Support:</h3>
         <ul>
             {% if application.request_travel %}
-            <li>Travel assistance: ${{ application.travel_amount }} (from {{ application.travel_from }})</li>
+            <li>Travel assistance: ${{ application.travel_amount }}{% if application.travel_from %} (from {{ application.travel_from.name }}, {{ application.travel_from.country.name }}){% endif %}</li>
             {% endif %}
             {% if application.request_accommodation %}
             <li>Accommodation: {{ application.accommodation_nights }} nights</li>

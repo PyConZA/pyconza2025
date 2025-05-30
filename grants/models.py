@@ -5,6 +5,8 @@ from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from django_countries.fields import CountryField
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 GRANT_STATUS_CHOICES = (
     ('submitted', 'Application Submitted'),
@@ -130,10 +132,16 @@ class GrantApplication(models.Model):
         blank=True,
         help_text=_("Estimated travel costs in USD")
     )
-    travel_from = models.CharField(
-        max_length=255,
+    travel_from_city = models.CharField(
+        max_length=100,
         blank=True,
-        help_text=_("Where will you be traveling from?")
+        default='',
+        help_text=_("City you will be traveling from")
+    )
+    travel_from_country = CountryField(
+        blank=True,
+        null=True,
+        help_text=_("Country you will be traveling from")
     )
 
     request_accommodation = models.BooleanField(
@@ -180,6 +188,20 @@ class GrantApplication(models.Model):
         help_text=_("Total amount granted in USD")
     )
 
+    # Decision maker fields
+    decision_maker = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='grant_decisions',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        help_text=_("User who made the final decision")
+    )
+    decision_notes = models.TextField(
+        blank=True,
+        help_text=_("Final decision notes from decision maker")
+    )
+
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -188,6 +210,7 @@ class GrantApplication(models.Model):
     class Meta:
         permissions = (
             ("can_review_grants", "Can review grant applications"),
+            ("can_make_grant_decisions", "Can make final grant decisions"),
         )
 
     def __str__(self):
@@ -197,12 +220,44 @@ class GrantApplication(models.Model):
         return reverse('grants:application_detail', kwargs={'pk': self.pk})
 
     @property
+    def travel_from(self):
+        """Combined display of city and country"""
+        if self.travel_from_city and self.travel_from_country:
+            return f"{self.travel_from_city}, {self.travel_from_country.name}"
+        elif self.travel_from_country:
+            return self.travel_from_country.name
+        elif self.travel_from_city:
+            return self.travel_from_city
+        return ""
+
+    @property
     def is_pending(self):
         return self.status in ['submitted', 'under_review']
 
     @property
     def can_edit(self):
         return self.status == 'submitted'
+
+    @property
+    def average_score(self):
+        """Calculate average score from all reviews"""
+        reviews = self.reviews.all()
+        if reviews:
+            return sum(review.score for review in reviews) / len(reviews)
+        return None
+
+    @property
+    def review_count(self):
+        """Get number of reviews"""
+        return self.reviews.count()
+
+    @property
+    def suggested_amount_average(self):
+        """Calculate average suggested amount from reviews"""
+        reviews = self.reviews.filter(suggested_amount__isnull=False)
+        if reviews:
+            return sum(review.suggested_amount for review in reviews) / len(reviews)
+        return None
 
     def save(self, *args, **kwargs):
         # Check if status has changed
@@ -276,3 +331,41 @@ class GrantApplication(models.Model):
                 recipient_list=[reviewer.email],
                 fail_silently=True,
             )
+
+
+class GrantReview(models.Model):
+    """Individual reviewer scores and feedback"""
+    application = models.ForeignKey(
+        GrantApplication,
+        related_name='reviews',
+        on_delete=models.CASCADE
+    )
+    reviewer = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='grant_reviews',
+        on_delete=models.CASCADE
+    )
+    score = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(10)],
+        help_text=_("Score from 1 to 10")
+    )
+    notes = models.TextField(
+        blank=True,
+        help_text=_("Reviewer notes and feedback")
+    )
+    suggested_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text=_("Suggested grant amount in USD")
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('application', 'reviewer')
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Review by {self.reviewer.username} for {self.application.user.username} - Score: {self.score}"

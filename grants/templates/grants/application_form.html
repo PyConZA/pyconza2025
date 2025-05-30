@@ -124,9 +124,16 @@
 
                     <div id="travel-fields" style="display: none;">
                         <div class="mb-3 pb-3">
-                            {{ form.travel_from |as_crispy_field }}
-                            {% if form.travel_from.errors %}
-                                <div class="text-danger">{{ form.travel_from.errors }}</div>
+                            {{ form.travel_from_city |as_crispy_field }}
+                            {% if form.travel_from_city.errors %}
+                                <div class="text-danger">{{ form.travel_from_city.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3 pb-3">
+                            {{ form.travel_from_country |as_crispy_field }}
+                            {% if form.travel_from_country.errors %}
+                                <div class="text-danger">{{ form.travel_from_country.errors }}</div>
                             {% endif %}
                         </div>
 
