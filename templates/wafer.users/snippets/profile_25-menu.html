@@ -33,12 +33,7 @@
   {% if not object.grant_application %}
   <a href="{% url 'grants:application_create' %}" class="btn btn-secondary w-full">{% trans 'Apply for Grant' %}</a>
   {% else %}
-  <a href="{% url 'grants:application_detail' %}" class="btn btn-secondary w-full">{% trans 'View My Application' %}</a>
-  {% endif %}
-  
-  {# Grant Review Section - Only visible to users with review permissions #}
-  {% if perms.grants.can_review_grants %}
-  <a href="{% url 'grants:application_list' %}" class="btn btn-primary w-full">{% trans 'Review Grant Applications' %}</a>
+  <a href="{% url 'grants:application_detail' %}" class="btn btn-secondary w-full">{% trans 'View My Grant Application' %}</a>
   {% endif %}
 </nav>
 {% endif %}

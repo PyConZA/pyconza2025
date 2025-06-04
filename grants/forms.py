@@ -5,7 +5,8 @@ from django_countries import countries
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
 from django_select2.forms import Select2Widget
-from .models import GrantApplication, GrantReview
+from .models import GrantApplication
+import re
 
 
 class GrantApplicationForm(forms.ModelForm):
@@ -30,13 +31,14 @@ class GrantApplicationForm(forms.ModelForm):
             'request_accommodation',
             'accommodation_nights',
             'request_ticket',
-            'conference_benefit',
             'additional_info',
         ]
         widgets = {
             'phone_number': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': '+1234567890'
+                'placeholder': '+27123456789 (include country code)',
+                'pattern': r'^\+?[1-9]\d{1,14}$',
+                'title': 'Enter phone number with country code (e.g., +27123456789)'
             }),
             'motivation': forms.Textarea(attrs={
                 'class': 'form-control',
@@ -91,11 +93,6 @@ class GrantApplicationForm(forms.ModelForm):
                 'placeholder': 'Number of nights'
             }),
             'request_ticket': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-            'conference_benefit': forms.Textarea(attrs={
-                'class': 'form-control',
-                'rows': 4,
-                'placeholder': 'How will attending benefit you?'
-            }),
             'additional_info': forms.Textarea(attrs={
                 'class': 'form-control',
                 'rows': 3,
@@ -115,6 +112,49 @@ class GrantApplicationForm(forms.ModelForm):
         self.fields['motivation'].required = True
         self.fields['contribution'].required = True
         self.fields['financial_need'].required = True
+
+    def clean_phone_number(self):
+        """Clean and validate phone number"""
+        phone = self.cleaned_data.get('phone_number', '').strip()
+        
+        if not phone:
+            raise forms.ValidationError(_("Phone number is required."))
+        
+        # Remove common formatting characters
+        phone_cleaned = re.sub(r'[\s\-\(\)\.]+', '', phone)
+        
+        # Ensure it starts with + if it doesn't already
+        if not phone_cleaned.startswith('+'):
+            # If it starts with 00, replace with +
+            if phone_cleaned.startswith('00'):
+                phone_cleaned = '+' + phone_cleaned[2:]
+            # If it looks like a local number, suggest adding country code
+            elif phone_cleaned.isdigit() and len(phone_cleaned) >= 9:
+                raise forms.ValidationError(_(
+                    "Please include your country code. For example: +27 for South Africa, +1 for USA/Canada, +44 for UK."
+                ))
+            else:
+                phone_cleaned = '+' + phone_cleaned
+        
+        # Validate format: + followed by 1-3 digit country code, then 6-12 digits
+        if not re.match(r'^\+[1-9]\d{8,14}$', phone_cleaned):
+            raise forms.ValidationError(_(
+                "Please enter a valid phone number with country code. "
+                "Format: +[country code][phone number] (e.g., +27123456789)"
+            ))
+        
+        # Check length (E.164 standard allows max 15 digits including country code)
+        if len(phone_cleaned) > 15:
+            raise forms.ValidationError(_(
+                "Phone number is too long. Maximum 15 digits including country code."
+            ))
+        
+        if len(phone_cleaned) < 10:
+            raise forms.ValidationError(_(
+                "Phone number is too short. Please include country code and full number."
+            ))
+        
+        return phone_cleaned
 
     def clean(self):
         cleaned_data = super().clean()
@@ -163,75 +203,3 @@ class GrantApplicationForm(forms.ModelForm):
             raise forms.ValidationError(_("Please provide talk proposal details when selecting 'Other'."))
         
         return cleaned_data
-
-
-class GrantReviewForm(forms.ModelForm):
-    """Form for reviewers to score and provide feedback"""
-    class Meta:
-        model = GrantReview
-        fields = ['score', 'notes', 'suggested_amount']
-        widgets = {
-            'score': forms.NumberInput(attrs={
-                'class': 'form-control',
-                'min': '1',
-                'max': '10',
-                'placeholder': 'Score 1-10'
-            }),
-            'notes': forms.Textarea(attrs={
-                'class': 'form-control',
-                'rows': 4,
-                'placeholder': 'Add your review notes and feedback here...'
-            }),
-            'suggested_amount': forms.NumberInput(attrs={
-                'class': 'form-control',
-                'step': '0.01',
-                'min': '0',
-                'placeholder': 'Suggested amount in USD'
-            }),
-        }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['score'].help_text = _("Rate this application from 1 (lowest) to 10 (highest)")
-        self.fields['notes'].help_text = _("Provide detailed feedback about this application")
-        self.fields['suggested_amount'].help_text = _("Suggest the amount to grant (optional)")
-
-
-class GrantDecisionForm(forms.ModelForm):
-    """Form for decision makers to make final approve/reject decisions"""
-    class Meta:
-        model = GrantApplication
-        fields = ['status', 'amount_granted', 'decision_notes']
-        widgets = {
-            'status': forms.Select(attrs={'class': 'form-select'}),
-            'amount_granted': forms.NumberInput(attrs={
-                'class': 'form-control',
-                'step': '0.01',
-                'min': '0',
-                'placeholder': 'Final amount to grant'
-            }),
-            'decision_notes': forms.Textarea(attrs={
-                'class': 'form-control',
-                'rows': 4,
-                'placeholder': 'Final decision notes...'
-            }),
-        }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Limit status choices for decision makers
-        self.fields['status'].choices = [
-            choice for choice in self.fields['status'].choices
-            if choice[0] in ['under_review', 'approved', 'rejected']
-        ]
-        
-        self.fields['amount_granted'].help_text = _("Final amount to grant in USD")
-        self.fields['decision_notes'].help_text = _("Notes about the final decision")
-
-    def save(self, commit=True):
-        instance = super().save(commit=False)
-        if instance.status in ['approved', 'rejected']:
-            instance.reviewed_at = timezone.now()
-        if commit:
-            instance.save()
-        return instance 

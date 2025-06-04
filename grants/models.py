@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django_countries.fields import CountryField
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 
 GRANT_STATUS_CHOICES = (
     ('submitted', 'Application Submitted'),
@@ -48,6 +48,12 @@ TRANSPORTATION_CHOICES = (
     ('ground_travel', 'Ground travel (bus, car, train)'),
 )
 
+# Phone number validator
+phone_regex = RegexValidator(
+    regex=r'^\+[1-9]\d{8,14}$',
+    message=_("Phone number must be in international format: +[country code][number]")
+)
+
 class GrantApplication(models.Model):
     # Link to the user
     user = models.OneToOneField(
@@ -60,7 +66,8 @@ class GrantApplication(models.Model):
     phone_number = models.CharField(
         max_length=20,
         default='',
-        help_text=_("Your phone number for contact purposes")
+        help_text=_("Your phone number for contact purposes"),
+        validators=[phone_regex]
     )
 
     # Application Details
@@ -158,12 +165,6 @@ class GrantApplication(models.Model):
         default=False,
         help_text=_("Do you need a conference ticket?")
     )
-
-    # Additional Information
-    conference_benefit = models.TextField(
-        default='Not specified',
-        help_text=_("How do you hope attending the PyCon Africa 2024 Conference will benefit you?")
-    )
     additional_info = models.TextField(
         blank=True,
         default='',
@@ -176,42 +177,10 @@ class GrantApplication(models.Model):
         choices=GRANT_STATUS_CHOICES,
         default='submitted'
     )
-    reviewer_notes = models.TextField(
-        blank=True,
-        help_text=_("Internal notes for reviewers")
-    )
-    amount_granted = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        null=True,
-        blank=True,
-        help_text=_("Total amount granted in USD")
-    )
-
-    # Decision maker fields
-    decision_maker = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        related_name='grant_decisions',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        help_text=_("User who made the final decision")
-    )
-    decision_notes = models.TextField(
-        blank=True,
-        help_text=_("Final decision notes from decision maker")
-    )
 
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    reviewed_at = models.DateTimeField(null=True, blank=True)
-
-    class Meta:
-        permissions = (
-            ("can_review_grants", "Can review grant applications"),
-            ("can_make_grant_decisions", "Can make final grant decisions"),
-        )
 
     def __str__(self):
         return f"Grant Application - {self.user.username}"
@@ -300,72 +269,8 @@ class GrantApplication(models.Model):
             subject=subject,
             message=plain_message,
             html_message=html_message,
-            from_email=settings.DEFAULT_FROM_EMAIL,
+            from_email="fin-aid@pycon.africa",
             recipient_list=[self.user.email],
             fail_silently=False,
         )
 
-    def notify_reviewers(self):
-        """Notify reviewers about new application."""
-        subject = 'New Grant Application Submitted'
-        context = {
-            'application': self,
-        }
-        
-        html_message = render_to_string('grants/emails/new_application_reviewer.html', context)
-        plain_message = render_to_string('grants/emails/new_application_reviewer.txt', context)
-
-        # Get all users with review permission
-        from django.contrib.auth import get_user_model
-        User = get_user_model()
-        reviewers = User.objects.filter(
-            groups__permissions__codename='can_review_grants'
-        ).distinct()
-
-        for reviewer in reviewers:
-            send_mail(
-                subject=subject,
-                message=plain_message,    
-                html_message=html_message,
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[reviewer.email],
-                fail_silently=True,
-            )
-
-
-class GrantReview(models.Model):
-    """Individual reviewer scores and feedback"""
-    application = models.ForeignKey(
-        GrantApplication,
-        related_name='reviews',
-        on_delete=models.CASCADE
-    )
-    reviewer = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        related_name='grant_reviews',
-        on_delete=models.CASCADE
-    )
-    score = models.IntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(10)],
-        help_text=_("Score from 1 to 10")
-    )
-    notes = models.TextField(
-        blank=True,
-        help_text=_("Reviewer notes and feedback")
-    )
-    suggested_amount = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        null=True,
-        blank=True,
-        help_text=_("Suggested grant amount in USD")
-    )
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        unique_together = ('application', 'reviewer')
-        ordering = ['-created_at']
-
-    def __str__(self):
-        return f"Review by {self.reviewer.username} for {self.application.user.username} - Score: {self.score}"

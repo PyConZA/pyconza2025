@@ -3,167 +3,116 @@
 {% block title %}Grant Application Details{% endblock %}
 
 {% block content %}
-<div class="container py-4">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <div class="d-flex justify-content-between align-items-start pb-3">
-                <h1 class="h2 pb-3">Grant Application Details</h1>
-                {% if application.can_edit %}
-                <a href="{% url 'grants:application_update' %}" class="btn btn-warning flex">Edit Application</a>
-                {% endif %}
-            </div>
-
-            <div class="py-3">
-                <h5>Status: {{ application.get_status_display }}</h5>
-
-                {% if application.status == 'approved' %}
-                <div class="alert alert-info p-3">
-                    <h5 class="pb-2">Grant Approved!</h5>
-                    <p>Your grant application has been approved. Please review the details and accept or decline the grant using the buttons below.</p>
-                    <div class="pt-3 d-flex gap-3">
-                        <form method="post" action="{% url 'grants:application_respond' %}" class="d-inline">
-                            {% csrf_token %}
-                            <input type="hidden" name="status" value="accepted">
-                            <button type="submit" class="btn btn-success">Accept Grant</button>
-                        </form>
-                        <form method="post" action="{% url 'grants:application_respond' %}" class="d-inline">
-                            {% csrf_token %}
-                            <input type="hidden" name="status" value="declined">
-                            <button type="submit" class="btn btn-danger">Decline Grant</button>
-                        </form>
-                    </div>
-                </div>
-                {% elif application.status == 'accepted' %}
-                <div class="alert alert-success p-3">
-                    <h5 class="pb-2">Grant Accepted!</h5>
-                    <p>You have accepted this grant. Our team will be in touch with further instructions about travel arrangements and next steps.</p>
-                    <p class="pt-2">If you have any questions, please contact the organizing team.</p>
-                </div>
-                {% elif application.status == 'declined' %}
-                <div class="alert alert-danger p-3">
-                    <h5 class="pb-2">Grant Declined</h5>
-                    <p>You have declined this grant. If you changed your mind or declined by mistake, please contact the organizing team.</p>
-                </div>
-                {% elif application.status == 'rejected' %}
-                <div class="alert alert-danger p-3">
-                    <h5 class="pb-2">Application Status</h5>
-                    <p>We regret to inform you that your grant application has not been approved at this time.</p>
-                </div>
-                {% endif %}
-            </div>
-
-            <div class="py-3">
-                <h5>Application Details</h5>
-                <div class="pt-2">Submitted on: {{ application.created_at|date:"F d, Y" }}</div>
-
-                {% if application.reviewed_at %}
-                <div class="pt-2">Reviewed on: {{ application.reviewed_at|date:"F d, Y" }}</div>
-                {% endif %}
-
-                {% if application.amount_granted %}
-                <div class="pt-2">Amount Granted: <strong>${{ application.amount_granted }}</strong></div>
-                {% endif %}
-            </div>
-
-            <div class="py-3">
-                <h3>Your Motivation</h3>
-                <div class="pt-2">{{ application.motivation|linebreaks }}</div>
-            </div>
-
-            <div class="py-3">
-                <h3>Your Contributions</h3>
-                <div class="pt-2">{{ application.contribution|linebreaks }}</div>
-            </div>
-
-            <div class="py-3">
-                <h3>Financial Need</h3>
-                <div class="pt-2">{{ application.financial_need|linebreaks }}</div>
-            </div>
-
-            <!-- Personal Information Section -->
-            <div class="py-3">
-                <h3>Personal Information</h3>
-                <div class="row pt-2">
-                    <div class="col-md-6">
-                        <strong>Phone Number:</strong> {{ application.phone_number|default:"Not provided" }}
-                    </div>
-                    <div class="col-md-6">
-                        <strong>Gender:</strong> {{ application.get_gender_display }}
-                        {% if application.gender == 'other' and application.gender_details %}
-                            <div class="text-muted small">{{ application.gender_details }}</div>
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="row pt-2">
-                    <div class="col-md-12">
-                        <strong>Current Role:</strong> {{ application.get_current_role_display }}
-                        {% if application.current_role == 'other' and application.current_role_details %}
-                            <div class="text-muted small">{{ application.current_role_details }}</div>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-
-            <!-- Talk Proposal Section -->
-            <div class="py-3">
-                <h3>Talk Proposal</h3>
-                <div class="pt-2">
-                    <strong>Submitted a talk proposal:</strong> {{ application.get_talk_proposal_display }}
-                    {% if application.talk_proposal == 'other' and application.talk_proposal_details %}
-                        <div class="text-muted pt-1">{{ application.talk_proposal_details }}</div>
-                    {% endif %}
-                </div>
-            </div>
-
-            <!-- Transportation Section -->
-            {% if application.request_travel and application.transportation_type %}
-            <div class="py-3">
-                <h3>Transportation</h3>
-                <div class="pt-2">
-                    <strong>Preferred transportation:</strong> {{ application.get_transportation_type_display }}
-                </div>
-            </div>
+<div class="container mx-auto px-4 py-4">
+    <div class="max-w-4xl mx-auto">
+        <div class="flex justify-between items-start pb-3">
+            <h2 class="text-2xl font-bold pb-3">Grant Application Details</h2>
+            {% if application.can_edit %}
+            <a href="{% url 'grants:application_update' %}" class="btn btn-warning">Edit Application</a>
             {% endif %}
+        </div>
 
-            <!-- Conference Benefits Section -->
-            <div class="py-3">
-                <h3>Conference Benefits</h3>
-                <div class="pt-2">{{ application.conference_benefit|linebreaks }}</div>
-            </div>
+        <div class="py-3">
+            <h3 class="text-xl font-semibold">Status: {{ application.get_status_display }}</h3>
+        </div>
 
-            <!-- Additional Information Section -->
-            {% if application.additional_info %}
-            <div class="py-3">
-                <h3>Additional Information</h3>
-                <div class="pt-2">{{ application.additional_info|linebreaks }}</div>
-            </div>
-            {% endif %}
+        <div class="py-3">
+            <h3 class="text-xl font-semibold">Application Details</h3>
+            <div class="pt-2">Submitted on: {{ application.created_at|date:"F d, Y" }}</div>
+        </div>
 
-            <div class="py-3">
-                <h3>Requested Support</h3>
-                <ul class="list-unstyled pt-2">
-                    {% if application.request_travel %}
-                    <li class="pb-2">
-                        <strong>Travel:</strong> ${{ application.travel_amount }}
-                        {% if application.travel_from %}
-                            <span class="text-muted">(from {{ application.travel_from_city }}, {{ application.travel_from_country.name }})</span>
-                        {% endif %}
-                    </li>
+        <div class="py-3">
+            <h3 class="text-xl font-semibold">Your Motivation</h3>
+            <div class="pt-2">{{ application.motivation|linebreaks }}</div>
+        </div>
+
+        <div class="py-3">
+            <h3 class="text-xl font-semibold">Your Contributions</h3>
+            <div class="pt-2">{{ application.contribution|linebreaks }}</div>
+        </div>
+
+        <div class="py-3">
+            <h3 class="text-xl font-semibold">Financial Need</h3>
+            <div class="pt-2">{{ application.financial_need|linebreaks }}</div>
+        </div>
+
+        <!-- Personal Information Section -->
+        <div class="py-3">
+            <h3 class="text-xl font-semibold">Personal Information</h3>
+            <div class="grid md:grid-cols-2 gap-4 pt-2">
+                <div>
+                    <strong>Phone Number:</strong> {{ application.phone_number|default:"Not provided" }}
+                </div>
+                <div>
+                    <strong>Gender:</strong> {{ application.get_gender_display }}
+                    {% if application.gender == 'other' and application.gender_details %}
+                        <div class="text-gray-500 text-sm">{{ application.gender_details }}</div>
                     {% endif %}
-
-                    {% if application.request_accommodation %}
-                    <li class="pb-2">
-                        <strong>Accommodation:</strong> {{ application.accommodation_nights }} nights
-                    </li>
-                    {% endif %}
-
-                    {% if application.request_ticket %}
-                    <li class="pb-2">
-                        <strong>Conference Ticket:</strong> Yes
-                    </li>
-                    {% endif %}
-                </ul>
+                </div>
             </div>
+            <div class="pt-2">
+                <div>
+                    <strong>Current Role:</strong> {{ application.get_current_role_display }}
+                    {% if application.current_role == 'other' and application.current_role_details %}
+                        <div class="text-gray-500 text-sm">{{ application.current_role_details }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Talk Proposal Section -->
+        <div class="py-3">
+            <h3 class="text-xl font-semibold">Talk Proposal</h3>
+            <div class="pt-2">
+                <strong>Submitted a talk proposal:</strong> {{ application.get_talk_proposal_display }}
+                {% if application.talk_proposal == 'other' and application.talk_proposal_details %}
+                    <div class="text-gray-500 pt-1">{{ application.talk_proposal_details }}</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Transportation Section -->
+        {% if application.request_travel and application.transportation_type %}
+        <div class="py-3">
+            <h3 class="text-xl font-semibold">Transportation</h3>
+            <div class="pt-2">
+                <strong>Preferred transportation:</strong> {{ application.get_transportation_type_display }}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Additional Information Section -->
+        {% if application.additional_info %}
+        <div class="py-3">
+            <h3 class="text-xl font-semibold">Additional Information</h3>
+            <div class="pt-2">{{ application.additional_info|linebreaks }}</div>
+        </div>
+        {% endif %}
+
+        <div class="py-3">
+            <h3 class="text-xl font-semibold">Requested Support</h3>
+            <ul class="list-none pt-2">
+                {% if application.request_travel %}
+                <li class="pb-2">
+                    <strong>Travel:</strong> ${{ application.travel_amount }}
+                    {% if application.travel_from %}
+                        <span class="text-gray-500">(from {{ application.travel_from_city }}, {{ application.travel_from_country.name }})</span>
+                    {% endif %}
+                </li>
+                {% endif %}
+
+                {% if application.request_accommodation %}
+                <li class="pb-2">
+                    <strong>Accommodation:</strong> {{ application.accommodation_nights }} nights
+                </li>
+                {% endif %}
+
+                {% if application.request_ticket %}
+                <li class="pb-2">
+                    <strong>Conference Ticket:</strong> Yes
+                </li>
+                {% endif %}
+            </ul>
         </div>
     </div>
 </div>
