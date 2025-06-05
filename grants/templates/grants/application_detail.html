@@ -8,7 +8,7 @@
         <div class="flex justify-between items-start pb-3">
             <h2 class="text-2xl font-bold pb-3">Grant Application Details</h2>
             {% if application.can_edit %}
-            <a href="{% url 'grants:application_update' %}" class="btn btn-warning">Edit Application</a>
+            <a href="{% url 'grants:application_update' %}" class="btn">Edit Grant Application</a>
             {% endif %}
         </div>
 
@@ -57,17 +57,6 @@
                         <div class="text-gray-500 text-sm">{{ application.current_role_details }}</div>
                     {% endif %}
                 </div>
-            </div>
-        </div>
-
-        <!-- Talk Proposal Section -->
-        <div class="py-3">
-            <h3 class="text-xl font-semibold">Talk Proposal</h3>
-            <div class="pt-2">
-                <strong>Submitted a talk proposal:</strong> {{ application.get_talk_proposal_display }}
-                {% if application.talk_proposal == 'other' and application.talk_proposal_details %}
-                    <div class="text-gray-500 pt-1">{{ application.talk_proposal_details }}</div>
-                {% endif %}
             </div>
         </div>
 

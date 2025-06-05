@@ -109,11 +109,6 @@ class GrantApplication(models.Model):
         help_text=_("What type of transportation were you planning to take?")
     )
 
-    # Grant Requests
-    request_travel = models.BooleanField(
-        default=False,
-        help_text=_("Do you need assistance with travel costs?")
-    )
     travel_amount = models.DecimalField(
         max_digits=10,
         decimal_places=2,
@@ -153,6 +148,12 @@ class GrantApplication(models.Model):
         help_text=_("Is there anything else not covered above you would like to tell us?")
     )
 
+    # Grant Requests
+    request_travel = models.BooleanField(
+        default=False,
+        help_text=_("Do you need assistance with travel costs?")
+    )
+
     # Status and Review
     status = models.CharField(
         max_length=20,
@@ -189,70 +190,6 @@ class GrantApplication(models.Model):
     def can_edit(self):
         return self.status == 'submitted'
 
-    @property
-    def average_score(self):
-        """Calculate average score from all reviews"""
-        reviews = self.reviews.all()
-        if reviews:
-            return sum(review.score for review in reviews) / len(reviews)
-        return None
-
-    @property
-    def review_count(self):
-        """Get number of reviews"""
-        return self.reviews.count()
-
-    @property
-    def suggested_amount_average(self):
-        """Calculate average suggested amount from reviews"""
-        reviews = self.reviews.filter(suggested_amount__isnull=False)
-        if reviews:
-            return sum(review.suggested_amount for review in reviews) / len(reviews)
-        return None
-
     def save(self, *args, **kwargs):
-        # Check if status has changed
-        if self.pk:
-            old_status = GrantApplication.objects.get(pk=self.pk).status
-            status_changed = old_status != self.status
-        else:
-            status_changed = True
-            old_status = None
-
         super().save(*args, **kwargs)
-
-        # Send email notification if status changed
-        if status_changed:
-            self.send_status_notification(old_status)
-
-    def send_status_notification(self, old_status):
-        """Send email notification about status change."""
-        subject = f'Grant Application Status Update - {self.get_status_display()}'
-        
-        context = {
-            'application': self,
-            'old_status': old_status,
-            'user': self.user,
-        }
-        
-        if self.status == 'under_review':
-            template = 'grants/emails/under_review.html'
-        elif self.status == 'approved':
-            template = 'grants/emails/approved.html'
-        elif self.status == 'rejected':
-            template = 'grants/emails/rejected.html'
-        else:
-            template = 'grants/emails/status_update.html'
-
-        html_message = render_to_string(template, context)
-        plain_message = render_to_string(template.replace('.html', '.txt'), context)
-
-        send_mail(
-            subject=subject,
-            message=plain_message,
-            html_message=html_message,
-            from_email="fin-aid@pycon.africa",
-            recipient_list=[self.user.email],
-            fail_silently=False,
-        )
 

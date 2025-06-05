@@ -67,12 +67,6 @@
                 </div>
             </div>
 
-            <!-- Talk Proposal Section -->
-            <div class="bg-white shadow-md rounded-lg p-6 mb-6">
-                <h3 class="text-lg font-semibold pb-3">Talk Proposal</h3>
-                
-            </div>
-
             <!-- Application Details Section -->
             <div class="bg-white shadow-md rounded-lg p-6 mb-6">
                 <h3 class="text-lg font-semibold pb-3">Application Details <span class="text-red-600">*</span></h3>
@@ -200,13 +194,13 @@
 
                 <!-- Submit Button -->
                 <div class="pt-4">
-                    <button type="submit" class="btn btn-primary btn-lg" id="submit-btn">
+                    <button type="submit" class="btn" id="submit-btn">
                         {% if object %}Update Application{% else %}Submit Application{% endif %}
                     </button>
                     {% if object %}
-                        <a href="{% url 'grants:application_detail' %}" class="btn btn-secondary btn-lg ms-3">Cancel</a>
+                        <a href="{% url 'grants:application_detail' %}" class="btn btn-secondary ms-3">Cancel</a>
                     {% else %}
-                        <a href="{% url 'wafer_user_profile' user.username %}" class="btn btn-secondary btn-lg ms-3">Cancel</a>
+                        <a href="{% url 'wafer_user_profile' user.username %}" class="btn btn-secondary ms-3">Cancel</a>
                     {% endif %}
                 </div>
             </form>
@@ -256,9 +250,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (roleField && roleDetailsField) {
         toggleField(roleField, roleDetailsField, 'other');
     }
-    if (talkField && talkDetailsField) {
-        toggleField(talkField, talkDetailsField, 'other');
-    }
     if (travelCheckbox && travelFields) {
         toggleCheckboxFields(travelCheckbox, travelFields);
     }
@@ -276,12 +267,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (roleField && roleDetailsField) {
         roleField.addEventListener('change', function() {
             toggleField(this, roleDetailsField, 'other');
-        });
-    }
-
-    if (talkField && talkDetailsField) {
-        talkField.addEventListener('change', function() {
-            toggleField(this, talkDetailsField, 'other');
         });
     }
 
