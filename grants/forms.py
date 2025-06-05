@@ -17,8 +17,6 @@ class GrantApplicationForm(forms.ModelForm):
             'motivation',
             'contribution',
             'financial_need',
-            'talk_proposal',
-            'talk_proposal_details',
             'gender',
             'gender_details',
             'current_role',
@@ -54,12 +52,6 @@ class GrantApplicationForm(forms.ModelForm):
                 'class': 'form-control',
                 'rows': 4,
                 'placeholder': 'Explain your financial circumstances...'
-            }),
-            'talk_proposal': forms.Select(attrs={'class': 'form-select'}),
-            'talk_proposal_details': forms.Textarea(attrs={
-                'class': 'form-control',
-                'rows': 3,
-                'placeholder': 'Please provide more details...'
             }),
             'gender': forms.Select(attrs={'class': 'form-select'}),
             'gender_details': forms.Textarea(attrs={
@@ -195,11 +187,5 @@ class GrantApplicationForm(forms.ModelForm):
         
         if current_role == 'other' and not current_role_details:
             raise forms.ValidationError(_("Please provide role details when selecting 'Other'."))
-        
-        talk_proposal = cleaned_data.get('talk_proposal')
-        talk_proposal_details = cleaned_data.get('talk_proposal_details')
-        
-        if talk_proposal == 'other' and not talk_proposal_details:
-            raise forms.ValidationError(_("Please provide talk proposal details when selecting 'Other'."))
         
         return cleaned_data

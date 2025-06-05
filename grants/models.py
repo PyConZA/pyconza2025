@@ -17,12 +17,6 @@ GRANT_STATUS_CHOICES = (
     ('declined', 'Grant Declined by Applicant'),
 )
 
-TALK_PROPOSAL_CHOICES = (
-    ('yes', 'Yes'),
-    ('no', 'No'),
-    ('other', 'Other'),
-)
-
 GENDER_CHOICES = (
     ('male', 'Male'),
     ('female', 'Female'),
@@ -82,18 +76,6 @@ class GrantApplication(models.Model):
     )
 
     # Demographic Information
-    talk_proposal = models.CharField(
-        max_length=20,
-        choices=TALK_PROPOSAL_CHOICES,
-        default='no',
-        help_text=_("Have you submitted a talk proposal?")
-    )
-    talk_proposal_details = models.TextField(
-        blank=True,
-        default='',
-        help_text=_("Please provide more details if you selected 'Other'")
-    )
-
     gender = models.CharField(
         max_length=20,
         choices=GENDER_CHOICES,

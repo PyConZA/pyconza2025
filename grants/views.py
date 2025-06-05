@@ -90,14 +90,11 @@ class GrantApplicationListView(LoginRequiredMixin, UserPassesTestMixin, ListView
         queryset = super().get_queryset()
         status = self.request.GET.get('status')
         gender = self.request.GET.get('gender')
-        talk_proposal = self.request.GET.get('talk_proposal')
         
         if status:
             queryset = queryset.filter(status=status)
         if gender:
             queryset = queryset.filter(gender=gender)
-        if talk_proposal:
-            queryset = queryset.filter(talk_proposal=talk_proposal)
             
         return queryset.order_by('-created_at')
 
@@ -105,6 +102,5 @@ class GrantApplicationListView(LoginRequiredMixin, UserPassesTestMixin, ListView
         context = super().get_context_data(**kwargs)
         context['status_filter'] = self.request.GET.get('status', '')
         context['gender_filter'] = self.request.GET.get('gender', '')
-        context['talk_proposal_filter'] = self.request.GET.get('talk_proposal', '')
         
         return context

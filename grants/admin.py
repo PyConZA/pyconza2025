@@ -14,7 +14,7 @@ class GrantApplicationAdmin(admin.ModelAdmin):
         'request_travel', 'request_accommodation', 'request_ticket', 'created_at'
     ]
     list_filter = [
-        'status', 'gender', 'talk_proposal', 'transportation_type', 
+        'status', 'gender', 'transportation_type', 
         'request_travel', 'request_accommodation', 'request_ticket',
         'created_at'
     ]
@@ -35,9 +35,6 @@ class GrantApplicationAdmin(admin.ModelAdmin):
         }),
         ('Application Details', {
             'fields': ('motivation', 'contribution', 'financial_need')
-        }),
-        ('Talk Proposal', {
-            'fields': ('talk_proposal', 'talk_proposal_details')
         }),
         ('Travel Information', {
             'fields': ('request_travel', 'travel_from_city', 'travel_from_country', 'travel_amount', 'transportation_type')

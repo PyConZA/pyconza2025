@@ -47,16 +47,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='grantapplication',
-            name='talk_proposal',
-            field=models.CharField(choices=[('yes', 'Yes'), ('no', 'No'), ('other', 'Other')], default='no', help_text='Have you submitted a talk proposal?', max_length=20),
-        ),
-        migrations.AddField(
-            model_name='grantapplication',
-            name='talk_proposal_details',
-            field=models.TextField(blank=True, default='', help_text="Please provide more details if you selected 'Other'"),
-        ),
-        migrations.AddField(
-            model_name='grantapplication',
             name='transportation_type',
             field=models.CharField(blank=True, choices=[('air_travel', 'Air travel'), ('ground_travel', 'Ground travel (bus, car, train)')], default='', help_text='What type of transportation were you planning to take?', max_length=20),
         ),
