@@ -1,8 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import redirect
-from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, UpdateView, ListView, DetailView
+from django.urls import reverse
+from django.views.generic import CreateView, UpdateView, DetailView
 
 from .models import GrantApplication
 from .forms import GrantApplicationForm
@@ -71,31 +71,3 @@ class GrantApplicationDetailView(LoginRequiredMixin, DetailView):
         except:
             messages.error(request, 'You have not submitted a grant application yet.')
             return redirect('grants:application_create')
-
-class GrantApplicationListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
-    model = GrantApplication
-    template_name = 'grants/application_list.html'
-    context_object_name = 'applications'
-    paginate_by = 20
-
-    def test_func(self):
-        return self.request.user.has_perm('grants.can_review_grants')
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        status = self.request.GET.get('status')
-        gender = self.request.GET.get('gender')
-        
-        if status:
-            queryset = queryset.filter(status=status)
-        if gender:
-            queryset = queryset.filter(gender=gender)
-            
-        return queryset.order_by('-created_at')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['status_filter'] = self.request.GET.get('status', '')
-        context['gender_filter'] = self.request.GET.get('gender', '')
-        
-        return context
