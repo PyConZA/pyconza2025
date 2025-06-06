@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     "django.contrib.admin",
     "django_browser_reload",  # https://github.com/adamchainz/django-browser-reload
     "debug_toolbar",  # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
+    "widget_tweaks", # https://github.com/jazzband/django-widget-tweaks
 )
 
 
@@ -71,7 +72,8 @@ TEMPLATES = [
                 "context.context",
             ),
             "builtins": [
-                "django_browser_reload.templatetags.django_browser_reload"
+                "django_browser_reload.templatetags.django_browser_reload",
+                "widget_tweaks.templatetags.widget_tweaks",
             ],
         },
     },
