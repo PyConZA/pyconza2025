@@ -7,18 +7,17 @@
 
 {% block main %}
 <section class="flex flex-col">
-    <div class="lg:h-screen bg-no-repeat bg-cover bg-center"
-        style="background-image: url('/static/img/pycon-africa-2025-header-w-logo.png')">
+    <div class="lg:h-screen bg-no-repeat bg-cover bg-center w-full"
+        style="background-image: url('/static/img/pycon-africa-2025-header_2.png')">
         <div class=" h-full flex flex-col">
             <div>
                 <header class="bg-black">
                     {% include "partial_header.html" %}
                 </header>
 
-                <div class="hidden lg:flex lg:ml-12 w-2/5 md:w-3/5 text-white flex-grow items-center py-10 ">
-
+                <div class="hidden lg:flex lg:px-12 w-full justify-between text-white flex-grow py-10 space-x-16 xl:space-x-22">
                     <div
-                        class="flex flex-col w-3/4 gap-y-5 text-left  backdrop-blur-sm bg-black/30 p-4 rounded-lg pl-5 pb-5">
+                        class="flex flex-col w-3/5 gap-y-5 text-left  backdrop-blur-sm bg-black/30 p-4 rounded-lg pl-5 pb-5">
 
                         <h1 class="font-bold pb-4">
                             <span
@@ -48,7 +47,11 @@
                         </p> -->
 
                     </div>
+                    <figure class="mb-12 text-right w-2xl xl:w-3xl sm:h-auto ">
+                        <img src="{% static 'img/hero-logo-2025.png' %}" alt="PyConAfrica25 Logo" class="w-full" loading="lazy" />
+                    </figure>
                 </div>
+                
             </div>
         </div>
 
