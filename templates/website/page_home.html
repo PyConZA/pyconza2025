@@ -54,14 +54,15 @@
 
         <!-- For mobile/small screen -->
         <div class="lg:hidden bg-black bg-no-repeat bg-cover bg-center py-0 px-0 h-screen flex flex-col"
-            style="background-image: url('/static/img/pycon-africa-2025-header-w-logo-mobile.png')">
-            <div class="flex-grow-[2]"></div>
-            <div class="flex-grow-[3]"></div>
-            <div class="flex-grow-[4]"></div>
+            style="background-image: url('/static/img/pycon-africa-2025-header_2-mobile.png')">
+            <div class="flex-grow-[1]"></div>
 
-            <div class="flex-grow-[1] w-full bg-gradient-to-t from-black via-black/70 to-transparent pt-20">
+            <div class="flex-grow-[1] w-full bg-gradient-to-t from-black via-black/70 to-transparent pt-8">
+                
                 <div class="max-w-md mx-auto flex flex-col gap-y-3 text-left p-4">
-
+                    <figure class="mb-12 text-center w-full sm:w-lg sm:h-auto -ml-2 sm:-ml-10">
+                        <img src="{% static 'img/hero-logo-2025.png' %}" alt="PyConAfrica25 Logo" class="w-full" loading="lazy" />
+                    </figure>
                     <div class="text-xl font-bold text-white">
                         <span class="text-pycon-green">PyCon Africa</span> and
                         <span class="text-pycon-blue">PyConZA</span> are
@@ -119,7 +120,7 @@
     <iframe width="560" height="315" src="https://www.youtube.com/embed/NWr_KEvMdUY?si=80rKLzhcDzOA-W4-"
         title="YouTube video player" frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="mx-auto"></iframe>
+        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="mx-auto w-full sm:w-[560px]"></iframe>
 
     <h2>Our Programme</h2>
 
