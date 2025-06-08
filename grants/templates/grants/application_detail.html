@@ -1,19 +1,13 @@
 {% extends "wafer/base.html" %}
 
 {% block title %}Grant Application Details{% endblock %}
+{% block page_title %}Grant Application Details{% endblock %}
 
 {% block content %}
 <div class="container mx-auto px-4 py-4">
     <div class="max-w-4xl mx-auto">
         <div class="flex justify-between items-start pb-3">
-            <h2 class="text-2xl font-bold pb-3">Grant Application Details</h2>
-            {% if application.can_edit %}
             <a href="{% url 'grants:application_update' %}" class="btn">Edit Grant Application</a>
-            {% endif %}
-        </div>
-
-        <div class="py-3">
-            <h3 class="text-xl font-semibold">Status: {{ application.get_status_display }}</h3>
         </div>
 
         <div class="py-3">
@@ -40,9 +34,6 @@
         <div class="py-3">
             <h3 class="text-xl font-semibold">Personal Information</h3>
             <div class="grid md:grid-cols-2 gap-4 pt-2">
-                <div>
-                    <strong>Phone Number:</strong> {{ application.phone_number|default:"Not provided" }}
-                </div>
                 <div>
                     <strong>Gender:</strong> {{ application.get_gender_display }}
                     {% if application.gender == 'other' and application.gender_details %}

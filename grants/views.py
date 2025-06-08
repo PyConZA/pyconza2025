@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import CreateView, UpdateView, DetailView
+from django.conf import settings
 
 from .models import GrantApplication
 from .forms import GrantApplicationForm
@@ -21,6 +22,11 @@ class GrantApplicationCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get(self, request, *args, **kwargs):
+        # Check if applications are open
+        if not getattr(settings, 'GRANT_APPLICATIONS_OPEN', True):
+            messages.error(request, 'Grant applications are currently closed.')
+            return redirect('wafer_user_profile', username=request.user.username)
+            
         # Check if user already has an application
         if hasattr(request.user, 'grant_application'):
             messages.warning(request, 'You have already submitted a grant application.')
@@ -38,9 +44,7 @@ class GrantApplicationUpdateView(LoginRequiredMixin, UserPassesTestMixin, Update
     def test_func(self):
         try:
             obj = self.request.user.grant_application
-            # Only allow editing if application is in submitted state
-            # Once it moves to any other state, no editing allowed
-            return obj.status == 'submitted' and obj.user == self.request.user
+            return obj.user == self.request.user
         except GrantApplication.DoesNotExist:
             return False
 
