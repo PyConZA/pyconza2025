@@ -7,18 +7,17 @@
 
 {% block main %}
 <section class="flex flex-col">
-    <div class="lg:h-screen bg-no-repeat bg-cover bg-center"
-        style="background-image: url('/static/img/pycon-africa-2025-header-w-logo.png')">
+    <div class="lg:h-screen bg-no-repeat bg-cover bg-center w-full"
+        style="background-image: url('/static/img/pycon-africa-2025-header_2.png')">
         <div class=" h-full flex flex-col">
             <div>
                 <header class="bg-black">
                     {% include "partial_header.html" %}
                 </header>
 
-                <div class="hidden lg:flex lg:ml-12 w-2/5 md:w-3/5 text-white flex-grow items-center py-10 ">
-
+                <div class="hidden lg:flex lg:px-12 w-full justify-between text-white flex-grow py-10 space-x-16 xl:space-x-22">
                     <div
-                        class="flex flex-col w-3/4 gap-y-5 text-left  backdrop-blur-sm bg-black/30 p-4 rounded-lg pl-5 pb-5">
+                        class="flex flex-col w-3/5 gap-y-5 text-left  backdrop-blur-sm bg-black/30 p-4 rounded-lg pl-5 pb-5">
 
                         <h1 class="font-bold pb-4">
                             <span
@@ -48,20 +47,25 @@
                         </p> -->
 
                     </div>
+                    <figure class="mb-12 text-right w-2xl xl:w-3xl sm:h-auto ">
+                        <img src="{% static 'img/hero-logo-2025.png' %}" alt="PyConAfrica25 Logo" class="w-full" loading="lazy" />
+                    </figure>
                 </div>
+                
             </div>
         </div>
 
         <!-- For mobile/small screen -->
         <div class="lg:hidden bg-black bg-no-repeat bg-cover bg-center py-0 px-0 h-screen flex flex-col"
-            style="background-image: url('/static/img/pycon-africa-2025-header-w-logo-mobile.png')">
-            <div class="flex-grow-[2]"></div>
-            <div class="flex-grow-[3]"></div>
-            <div class="flex-grow-[4]"></div>
+            style="background-image: url('/static/img/pycon-africa-2025-header_2-mobile.png')">
+            <div class="flex-grow-[1]"></div>
 
-            <div class="flex-grow-[1] w-full bg-gradient-to-t from-black via-black/70 to-transparent pt-20">
+            <div class="flex-grow-[1] w-full bg-gradient-to-t from-black via-black/70 to-transparent pt-8">
+                
                 <div class="max-w-md mx-auto flex flex-col gap-y-3 text-left p-4">
-
+                    <figure class="mb-12 text-center w-full sm:w-lg sm:h-auto -ml-2 sm:-ml-10">
+                        <img src="{% static 'img/hero-logo-2025.png' %}" alt="PyConAfrica25 Logo" class="w-full" loading="lazy" />
+                    </figure>
                     <div class="text-xl font-bold text-white">
                         <span class="text-pycon-green">PyCon Africa</span> and
                         <span class="text-pycon-blue">PyConZA</span> are
@@ -119,7 +123,7 @@
     <iframe width="560" height="315" src="https://www.youtube.com/embed/NWr_KEvMdUY?si=80rKLzhcDzOA-W4-"
         title="YouTube video player" frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="mx-auto"></iframe>
+        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="mx-auto w-full sm:w-[560px]"></iframe>
 
     <h2>Our Programme</h2>
 
