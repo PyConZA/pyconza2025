@@ -149,8 +149,8 @@ class GrantApplicationForm(forms.ModelForm):
         )
         
         # Set help text for travel fields
-        self.fields['travel_from_city'].help_text = _("Enter the city you'll be traveling from")
-        self.fields['travel_from_country'].help_text = _("Select the country you'll be traveling from")
+        self.fields['travel_from_city'].help_text = _("Enter the city you'll be travelling from")
+        self.fields['travel_from_country'].help_text = _("Select the country you'll be travelling from")
         
         # Make certain fields required
         self.fields['motivation'].required = True

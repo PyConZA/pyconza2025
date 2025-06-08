@@ -88,12 +88,12 @@ class GrantApplication(models.Model):
         max_length=100,
         blank=True,
         default='',
-        help_text=_("City you will be traveling from")
+        help_text=_("City you will be travelling from")
     )
     travel_from_country = CountryField(
         blank=True,
         null=True,
-        help_text=_("Country you will be traveling from")
+        help_text=_("Country you will be travelling from")
     )
 
     request_accommodation = models.BooleanField(
