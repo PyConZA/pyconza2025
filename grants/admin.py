@@ -42,6 +42,9 @@ class GrantApplicationAdmin(admin.ModelAdmin):
         }),
     )
     
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related('user')
+    
     def full_name(self, obj):
         return f"{obj.user.first_name} {obj.user.last_name}".strip() or obj.user.username
     full_name.short_description = 'Full Name'
@@ -50,6 +53,3 @@ class GrantApplicationAdmin(admin.ModelAdmin):
         return obj.travel_from or "Not specified"
     travel_from_display.short_description = 'Travel From'
     
-    def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-        return queryset.select_related('user')

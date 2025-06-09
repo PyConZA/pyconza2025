@@ -148,21 +148,13 @@ class GrantApplicationForm(forms.ModelForm):
             HTML('<button onclick="history.back()" class="btn btn-secondary ms-3">Cancel</button>'),
         )
         
-        # Set help text for travel fields
         self.fields['travel_from_city'].help_text = _("Enter the city you'll be travelling from")
         self.fields['travel_from_country'].help_text = _("Select the country you'll be travelling from")
         
-        # Make certain fields required
-        self.fields['motivation'].required = True
-        self.fields['contribution'].required = True
-        self.fields['financial_need'].required = True
-        self.fields['travel_from_city'].required = True
-        self.fields['travel_from_country'].required = True
 
     def clean(self):
         cleaned_data = super().clean()
         
-        # Validate travel fields
         request_travel = cleaned_data.get('request_travel')
         travel_amount = cleaned_data.get('travel_amount')
         travel_from_city = cleaned_data.get('travel_from_city')
@@ -179,14 +171,12 @@ class GrantApplicationForm(forms.ModelForm):
             if not transportation_type:
                 self.add_error('transportation_type', _("Transportation type is required when requesting travel assistance."))
         
-        # Validate accommodation fields
         request_accommodation = cleaned_data.get('request_accommodation')
         accommodation_nights = cleaned_data.get('accommodation_nights')
         
         if request_accommodation and not accommodation_nights:
             self.add_error('accommodation_nights', _("Number of accommodation nights is required when requesting accommodation assistance."))
         
-        # Validate conditional detail fields
         gender = cleaned_data.get('gender')
         gender_details = cleaned_data.get('gender_details')
         

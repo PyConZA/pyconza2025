@@ -28,7 +28,14 @@ TRANSPORTATION_CHOICES = (
     ('ground_travel', 'Ground travel (bus, car, train)'),
 )
 
+
+def _optional_field():
+    """Return common attributes for optional CharField"""
+    return {'blank': True, 'default': ''}
+
+
 class GrantApplication(models.Model):
+    
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         related_name='grant_application',
@@ -52,8 +59,7 @@ class GrantApplication(models.Model):
         help_text=_("Gender identity")
     )
     gender_details = models.TextField(
-        blank=True,
-        default='',
+        **_optional_field(),
         help_text=_("Please provide more details if you selected 'Other'")
     )
 
@@ -64,19 +70,16 @@ class GrantApplication(models.Model):
         help_text=_("Which of the following best describes your current role?")
     )
     current_role_details = models.TextField(
-        blank=True,
-        default='',
+        **_optional_field(),
         help_text=_("Please provide more details if you selected 'Other'")
     )
 
     transportation_type = models.CharField(
         max_length=20,
         choices=TRANSPORTATION_CHOICES,
-        blank=True,
-        default='',
+        **_optional_field(),
         help_text=_("What type of transportation were you planning to take?")
     )
-
     travel_amount = models.DecimalField(
         max_digits=10,
         decimal_places=2,
@@ -86,14 +89,17 @@ class GrantApplication(models.Model):
     )
     travel_from_city = models.CharField(
         max_length=100,
-        blank=True,
-        default='',
+        **_optional_field(),
         help_text=_("City you will be travelling from")
     )
     travel_from_country = CountryField(
         blank=True,
         null=True,
         help_text=_("Country you will be travelling from")
+    )
+    request_travel = models.BooleanField(
+        default=False,
+        help_text=_("Do you need assistance with travel costs?")
     )
 
     request_accommodation = models.BooleanField(
@@ -110,18 +116,12 @@ class GrantApplication(models.Model):
         default=False,
         help_text=_("Do you need a conference ticket?")
     )
+    
     additional_info = models.TextField(
-        blank=True,
-        default='',
+        **_optional_field(),
         help_text=_("Is there anything else not covered above you would like to tell us?")
     )
 
-    request_travel = models.BooleanField(
-        default=False,
-        help_text=_("Do you need assistance with travel costs?")
-    )
-
-    # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
