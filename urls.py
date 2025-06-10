@@ -31,6 +31,7 @@ urlpatterns = [
     re_path(r"^kv/", include("wafer.kv.urls")),
     path("__reload__/", include("django_browser_reload.urls")),
     path("", include("website.urls")),
+    path("grants/", include("grants.urls")),
 ]
 
 # Serve media

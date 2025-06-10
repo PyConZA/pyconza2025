@@ -17,6 +17,8 @@ INSTALLED_APPS = (
     "template_partials",
     "django_cotton",
     "website",  # for website static content that should be version controlled
+    "grants",
+    "django_countries",  # django-countries for country selection
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -168,3 +170,5 @@ BUILD_DIR = BASE_DIR / "mirror"
 
 # Hide non-speaker profiles
 WAFER_PUBLIC_ATTENDEE_LIST = False
+
+GRANT_APPLICATIONS_OPEN = True
