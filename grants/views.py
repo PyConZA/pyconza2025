@@ -8,38 +8,42 @@ from django.conf import settings
 from .models import GrantApplication
 from .forms import GrantApplicationForm
 
+
 class GrantApplicationCreateView(LoginRequiredMixin, CreateView):
     model = GrantApplication
     form_class = GrantApplicationForm
-    template_name = 'grants/application_form.html'
+    template_name = "grants/application_form.html"
 
     def get_success_url(self):
-        return reverse('grants:application_detail')
+        return reverse("grants:application_detail")
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        messages.success(self.request, 'Your grant application has been submitted successfully!')
+        messages.success(
+            self.request, "Your grant application has been submitted successfully!"
+        )
         return super().form_valid(form)
 
     def get(self, request, *args, **kwargs):
         # Check if applications are open
-        if not getattr(settings, 'GRANT_APPLICATIONS_OPEN', True):
-            messages.error(request, 'Grant applications are currently closed.')
-            return redirect('wafer_user_profile', username=request.user.username)
-            
+        if not settings.GRANT_APPLICATIONS_OPEN:
+            messages.error(request, "Grant applications are currently closed.")
+            return redirect("wafer_user_profile", username=request.user.username)
+
         # Check if user already has an application
-        if hasattr(request.user, 'grant_application'):
-            messages.warning(request, 'You have already submitted a grant application.')
-            return redirect('grants:application_detail')
+        if hasattr(request.user, "grant_application"):
+            messages.warning(request, "You have already submitted a grant application.")
+            return redirect("grants:application_detail")
         return super().get(request, *args, **kwargs)
+
 
 class GrantApplicationUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = GrantApplication
     form_class = GrantApplicationForm
-    template_name = 'grants/application_form.html'
+    template_name = "grants/application_form.html"
 
     def get_success_url(self):
-        return reverse('grants:application_detail')
+        return reverse("grants:application_detail")
 
     def test_func(self):
         try:
@@ -52,20 +56,25 @@ class GrantApplicationUpdateView(LoginRequiredMixin, UserPassesTestMixin, Update
         return self.request.user.grant_application
 
     def form_valid(self, form):
-        messages.success(self.request, 'Your grant application has been updated successfully!')
+        messages.success(
+            self.request, "Your grant application has been updated successfully!"
+        )
         return super().form_valid(form)
+
 
 class GrantApplicationDetailView(LoginRequiredMixin, DetailView):
     model = GrantApplication
-    template_name = 'grants/application_detail.html'
-    context_object_name = 'application'
+    template_name = "grants/application_detail.html"
+    context_object_name = "application"
 
     def get_object(self, queryset=None):
         try:
             return self.request.user.grant_application
         except GrantApplication.DoesNotExist:
-            messages.error(self.request, 'You have not submitted a grant application yet.')
-            return redirect('grants:application_create')
+            messages.error(
+                self.request, "You have not submitted a grant application yet."
+            )
+            return redirect("grants:application_create")
 
     def get(self, request, *args, **kwargs):
         try:
@@ -73,5 +82,5 @@ class GrantApplicationDetailView(LoginRequiredMixin, DetailView):
             context = self.get_context_data(object=self.object)
             return self.render_to_response(context)
         except:
-            messages.error(request, 'You have not submitted a grant application yet.')
-            return redirect('grants:application_create')
+            messages.error(request, "You have not submitted a grant application yet.")
+            return redirect("grants:application_create")
