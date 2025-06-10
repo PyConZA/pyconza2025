@@ -171,4 +171,4 @@ BUILD_DIR = BASE_DIR / "mirror"
 # Hide non-speaker profiles
 WAFER_PUBLIC_ATTENDEE_LIST = False
 
-GRANT_APPLICATIONS_OPEN = True
+GRANT_APPLICATIONS_OPEN = False
