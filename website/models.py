@@ -1,6 +1,7 @@
-from django.db import models
 from django.conf import settings
+from django.db import models
 from django.utils import timezone
+
 
 class VisaInvitationLetter(models.Model):
     STATUS_CHOICES = (
@@ -43,12 +44,12 @@ class VisaInvitationLetter(models.Model):
 
     organizer_name = models.CharField(max_length=255, default='PyCon Africa 2025 Organizing Committee')
     organizer_role = models.CharField(max_length=100, default='Conference Chair')
-    contact_email = models.EmailField(default='info@pycon.africa')
+    contact_email = models.EmailField(default='team@pycon.africa')
     contact_phone = models.CharField(max_length=20, default='+27 XX XXX XXXX')
 
-    conference_location = models.CharField(max_length=100, default='Cape Town, South Africa')
-    conference_dates = models.CharField(max_length=100, default='September 15-18, 2025')
-    website_url = models.URLField(default='www.africa.pycon.org')
+    conference_location = models.CharField(max_length=100, default='Johannesburg, South Africa')
+    conference_dates = models.CharField(max_length=100, default='October 8-12, 2025')
+    website_url = models.URLField(default='africa.pycon.org')
 
     def __str__(self):
         return f"Visa Letter for {self.participant_name} ({self.get_status_display()})"
@@ -57,3 +58,7 @@ class VisaInvitationLetter(models.Model):
         ordering = ['-created_at']
         verbose_name = "Visa Invitation Letter"
         verbose_name_plural = "Visa Invitation Letters"
+        unique_together = [
+            ('user', 'participant_name', 'passport_number', 'arrival_date', 'departure_date'),
+            ('user', 'email', 'country_of_origin', 'arrival_date', 'departure_date')
+        ]

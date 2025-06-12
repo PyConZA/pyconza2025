@@ -1,3 +1,4 @@
+import os
 import tempfile
 
 from django import forms
@@ -49,6 +50,70 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
         }),
     )
 
+    def save_model(self, request, obj, form, change):
+        original_status = None
+        if change:
+            try:
+                original_obj = VisaInvitationLetter.objects.get(pk=obj.pk)
+                original_status = original_obj.status
+            except VisaInvitationLetter.DoesNotExist:
+                pass
+
+        super().save_model(request, obj, form, change)
+
+        if original_status and original_status != 'approved' and obj.status == 'approved':
+            try:
+                obj.approved_at = timezone.now()
+                obj.approved_by = request.user
+
+                pdf_file = self.generate_pdf(request, obj)
+                email_sent = self.send_visa_letter_email(request, obj, pdf_file)
+
+                if email_sent:
+                    obj.email_sent = True
+                    obj.email_sent_at = timezone.now()
+                    obj.save(update_fields=['approved_at', 'approved_by', 'email_sent', 'email_sent_at'])
+
+                    self.message_user(
+                        request,
+                        f"Visa letter for {obj.participant_name} approved and email sent.",
+                        level=messages.SUCCESS
+                    )
+            except Exception as e:
+                self.message_user(
+                    request,
+                    f"Error sending approval email for {obj.participant_name}: {str(e)}",
+                    level=messages.ERROR
+                )
+
+        elif original_status and original_status != 'rejected' and obj.status == 'rejected':
+            try:
+                if obj.rejection_reason:
+                    email_sent = self.send_rejection_email(request, obj, obj.rejection_reason)
+
+                    if email_sent:
+                        obj.email_sent = True
+                        obj.email_sent_at = timezone.now()
+                        obj.save(update_fields=['email_sent', 'email_sent_at'])
+
+                        self.message_user(
+                            request,
+                            f"Rejection email sent to {obj.participant_name}.",
+                            level=messages.SUCCESS
+                        )
+                else:
+                    self.message_user(
+                        request,
+                        f"No rejection reason provided. Rejection email was not sent.",
+                        level=messages.WARNING
+                    )
+            except Exception as e:
+                self.message_user(
+                    request,
+                    f"Error sending rejection email for {obj.participant_name}: {str(e)}",
+                    level=messages.ERROR
+                )
+
     def approve_and_send_email(self, request, queryset):
         if not queryset.exists():
             self.message_user(request, "No visa letters selected for approval.", level=messages.ERROR)
@@ -62,8 +127,10 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
                 letter.status = 'approved'
                 letter.approved_at = timezone.now()
                 letter.approved_by = request.user
+                letter.save()
 
                 pdf_file = self.generate_pdf(request, letter)
+
                 email_sent = self.send_visa_letter_email(request, letter, pdf_file)
 
                 if email_sent:
@@ -184,7 +251,7 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
             'logo_url': request.build_absolute_uri('/static/img/pycon_logo.png'),
         }
 
-        html_string = render_to_string('website/visa_letter_request.html', context)
+        html_string = render_to_string('website/visa_letter_template.html', context)
 
         with tempfile.NamedTemporaryFile(suffix='.pdf', delete=False) as output_file:
             html = HTML(string=html_string, base_url=request.build_absolute_uri('/'))
@@ -206,8 +273,8 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
             If you have any questions or need further assistance, please contact us at {visa_letter.contact_email}.
             
             Best regards,
-            PyCon Africa 2025 Organizing Team
-            """
+            PyCon Africa 2025 Organizing Team"""
+
             email = EmailMessage(
                 subject=subject,
                 body=message,
@@ -225,13 +292,12 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
 
             email.send(fail_silently=False)
 
-            import os
-            os.unlink(pdf_file_path)
+            if os.path.exists(pdf_file_path):
+                os.unlink(pdf_file_path)
 
             return True
 
         except Exception as e:
-            import os
             if os.path.exists(pdf_file_path):
                 os.unlink(pdf_file_path)
             raise e
@@ -251,8 +317,8 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
             If you believe this decision was made in error or if you have additional documentation to support your request, please contact us at {visa_letter.contact_email}.
             
             Best regards,
-            PyCon Africa 2025 Organizing Team
-            """
+            PyCon Africa 2025 Organizing Team"""
+
             email = EmailMessage(
                 subject=subject,
                 body=message,
