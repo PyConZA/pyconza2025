@@ -248,7 +248,7 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
             'contact_email': visa_letter.contact_email,
             'contact_phone': visa_letter.contact_phone,
             'website_url': visa_letter.website_url,
-            'logo_url': request.build_absolute_uri('/static/img/pycon_logo.png'),
+            'logo_url': request.build_absolute_uri('/static/img/header-logo-w-2025.png'),
         }
 
         html_string = render_to_string('website/visa_letter_template.html', context)

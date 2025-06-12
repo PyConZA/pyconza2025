@@ -10,7 +10,11 @@ class VisaInvitationLetter(models.Model):
         ('rejected', 'Rejected'),
     )
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='visa_letters')
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='visa_letters',
+    )
 
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
@@ -42,10 +46,10 @@ class VisaInvitationLetter(models.Model):
 
     embassy_address = models.TextField(default='Embassy of South Africa')
 
-    organizer_name = models.CharField(max_length=255, default='PyCon Africa 2025 Organizing Committee')
-    organizer_role = models.CharField(max_length=100, default='Conference Chair')
-    contact_email = models.EmailField(default='team@pycon.africa')
-    contact_phone = models.CharField(max_length=20, default='+27 XX XXX XXXX')
+    organizer_name = models.CharField(max_length=255, default='Adam Piskorski')
+    organizer_role = models.CharField(max_length=100, default='Director of the Python Software Society of South Africa')
+    contact_email = models.EmailField(default='pyconza@piskorski.me')
+    contact_phone = models.CharField(max_length=20, default='+27 79 899 2319')
 
     conference_location = models.CharField(max_length=100, default='Johannesburg, South Africa')
     conference_dates = models.CharField(max_length=100, default='October 8-12, 2025')
