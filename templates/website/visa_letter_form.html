@@ -1,0 +1,35 @@
+{% extends "_base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Request Visa Invitation Letter - PyCon Africa 2025{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto py-8 px-4">
+        <h1 class="mb-6">Request Visa Invitation Letter</h1>
+
+        <div class="bg-white p-6 rounded-lg">
+            <p class="mb-6">Please fill out the form below to request an official invitation letter for your visa application to attend PyCon Africa 2025. Once approved, the letter will be sent to your email address.</p>
+
+            {% crispy form %}
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const isSpeakerCheckbox = document.getElementById('id_is_speaker');
+            const presentationField = document.getElementById('presentation-field');
+
+            function togglePresentationField() {
+                if (isSpeakerCheckbox.checked) {
+                    presentationField.classList.remove('hidden');
+                } else {
+                    presentationField.classList.add('hidden');
+                }
+            }
+
+            togglePresentationField();
+
+            isSpeakerCheckbox.addEventListener('change', togglePresentationField);
+        });
+    </script>
+{% endblock %}
