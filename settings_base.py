@@ -172,3 +172,11 @@ BUILD_DIR = BASE_DIR / "mirror"
 WAFER_PUBLIC_ATTENDEE_LIST = False
 
 GRANT_APPLICATIONS_OPEN = False
+
+VISA_ORGANISER_NAME = 'Adam Piskorski' 
+VISA_ORGANISER_ROLE = 'Director of the Python Software Society of South Africa'
+VISA_ORGANISER_CONTACT_EMAIL = 'pyconza@piskorski.me'
+VISA_ORGANISER_CONTACT_PHONE = '+27 79 899 2319'
+VISA_CONFERENCE_LOCATION = 'Johannesburg, South Africa'
+VISA_DEFAULT_EMBASSY_ADDRESS = 'Embassy of South Africa'
+WEBSITE_URL = 'https://africa.pycon.org'

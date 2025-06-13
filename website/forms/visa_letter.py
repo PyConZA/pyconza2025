@@ -12,15 +12,10 @@ class VisaLetterForm(forms.ModelForm):
             'participant_name',
             'passport_number',
             'country_of_origin',
-            'email',
-            'registration_type',
-            'is_speaker',
-            'presentation_title',
             'embassy_address',
         ]
         widgets = {
-            'embassy_address': forms.Textarea(attrs={'rows': 3,
-                                                     'class': 'w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500'}),
+            'embassy_address': forms.Textarea(attrs={'rows': 3, 'class': 'w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -28,11 +23,6 @@ class VisaLetterForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.form_class = 'space-y-6'
-
-        for field_name, field in self.fields.items():
-            if field_name != 'is_speaker':
-                field.widget.attrs[
-                    'class'] = 'w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500'
 
         self.helper.layout = Layout(
             HTML('<h3 class="font-bold text-xl mb-4">Personal Information</h3>'),
@@ -50,28 +40,6 @@ class VisaLetterForm(forms.ModelForm):
                 css_class='grid md:grid-cols-2 gap-6'
             ),
 
-            HTML('<h3 class="font-bold text-xl mb-4 mt-8">Travel Information</h3>'),
-            Div(
-                Div(
-                    Field('registration_type', wrapper_class='mb-4'),
-                    css_class='md:col-span-1'
-                ),
-                Div(
-                    Div(
-                        Field('is_speaker', wrapper_class='inline'),
-                        HTML(
-                            '<label for="id_is_speaker" class="ml-2">I am a speaker/presenter at PyCon Africa 2025</label>'),
-                        css_class='flex items-center mb-4'
-                    ),
-                    Div(
-                        Field('presentation_title', wrapper_class='mb-4'),
-                        css_class='presenter-field hidden',
-                        css_id='presentation-field'
-                    ),
-                    css_class='md:col-span-1'
-                ),
-                css_class='grid md:grid-cols-2 gap-6'
-            ),
             HTML('<h3 class="font-bold text-xl mb-4 mt-8">Embassy Information</h3>'),
             Field('embassy_address', wrapper_class='mb-4'),
             HTML(
@@ -85,34 +53,4 @@ class VisaLetterForm(forms.ModelForm):
             HTML('<div class="mt-6 bg-yellow-50 border border-yellow-200 p-4 rounded-lg">' +
                  '<p class="text-sm text-yellow-800">Note: Your visa letter request will be reviewed by our team. ' +
                  'Once approved, the visa letter will be sent to your email address.</p></div>'),
-
-            HTML('''
-            <script type="text/javascript">
-                document.addEventListener("DOMContentLoaded", function() {
-                    
-                    arrivalDateInput.addEventListener("change", validateDates);
-                    departureDateInput.addEventListener("change", validateDates);
-                    
-                    const isSpeakerCheckbox = document.getElementById("id_is_speaker");
-                    const presentationField = document.getElementById("presentation-field");
-                    
-                    function togglePresentationField() {
-                        if (isSpeakerCheckbox.checked) {
-                            presentationField.classList.remove("hidden");
-                        } else {
-                            presentationField.classList.add("hidden");
-                        }
-                    }
-                    
-                    isSpeakerCheckbox.addEventListener("change", togglePresentationField);
-                    togglePresentationField();
-                });
-            </script>
-            ''')
         )
-
-    def clean(self):
-        cleaned_data = super().clean()
-        if cleaned_data.get('is_speaker') and not cleaned_data.get('presentation_title'):
-            self.add_error('presentation_title', 'Please provide the presentation title for speakers.')
-        return cleaned_data

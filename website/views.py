@@ -36,8 +36,6 @@ class VisaLetterCreateView(LoginRequiredMixin, CreateView):
         form.instance.status = 'pending'
         response = super().form_valid(form)
 
-        self.request.session['form_submitted'] = True
-
         messages.success(
             self.request,
             'Your visa invitation letter request has been submitted successfully.'
@@ -51,11 +49,9 @@ class VisaLetterCreateView(LoginRequiredMixin, CreateView):
         context['current_datetime'] = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
         context['current_user'] = self.request.user.username
 
-        context['form_submitted'] = self.request.session.pop('form_submitted', False)
-
         existing_letters = VisaInvitationLetter.objects.filter(user=self.request.user).order_by('-created_at')
 
-        if existing_letters.exists() and not context['form_submitted']:
+        if existing_letters.exists():
             context['existing_letter'] = existing_letters.first()
             context['has_existing_letter'] = True
             context['latest_letter'] = existing_letters.first()
@@ -69,24 +65,22 @@ class VisaLetterCreateView(LoginRequiredMixin, CreateView):
             letter_id = request.POST.get('letter_id')
             try:
                 letter = VisaInvitationLetter.objects.get(id=letter_id, user=request.user)
-
-                if letter.status == 'approved':
-                    admin_email = EmailMessage(
-                        subject=f"Visa Letter Resend Request: {letter.participant_name}",
-                        body=f"The user {request.user.username} ({request.user.email}) has requested a resend of their approved visa letter.\n\nLetter ID: {letter.id}\nParticipant: {letter.participant_name}\nEmail: {letter.email}",
-                        from_email=settings.DEFAULT_FROM_EMAIL,
-                        to=['team@pycon.africa'],
-                    )
-                    admin_email.send(fail_silently=False)
-
-                    messages.success(request,
-                                     "Your request has been received. The team will resend your visa letter shortly.")
-                else:
-                    messages.info(request,
-                                  f"Your visa letter is still {letter.get_status_display()}. Please wait for it to be approved first.")
-
             except VisaInvitationLetter.DoesNotExist:
                 messages.error(request, "We couldn't find your visa letter request.")
+                return redirect(self.request.path)
+
+            if letter.status == 'approved':
+                admin_email = EmailMessage(
+                    subject=f"Visa Letter Resend Request: {letter.participant_name}",
+                    body=f"The user {request.user.username} ({request.user.email}) has requested a resend of their approved visa letter.\n\nLetter ID: {letter.id}\nParticipant: {letter.participant_name}\nEmail: {letter.email}",
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    to=['team@pycon.africa'],
+                )
+                admin_email.send(fail_silently=False)
+
+                messages.success(request, "Your request has been received. The team will resend your visa letter shortly.")
+            else:
+                messages.info(request, f"Your visa letter is still {letter.get_status_display()}. Please wait for it to be approved first.")
 
             return redirect(self.request.path)
 

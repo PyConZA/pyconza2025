@@ -2,6 +2,7 @@ import os
 import tempfile
 
 from django import forms
+from django.conf import settings
 from django.contrib import admin
 from django.contrib import messages
 from django.core.mail import EmailMessage
@@ -9,6 +10,7 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils import timezone
 from weasyprint import HTML
+from wafer.talks.models import Talk
 
 from .models import VisaInvitationLetter
 
@@ -19,26 +21,19 @@ class RejectionForm(forms.Form):
 
 @admin.register(VisaInvitationLetter)
 class VisaInvitationLetterAdmin(admin.ModelAdmin):
-    list_display = ('participant_name', 'country_of_origin', 'email',
-                    'status', 'created_at', 'email_sent')
-    list_filter = ('status', 'email_sent', 'is_speaker', 'country_of_origin')
-    search_fields = ('participant_name', 'email', 'passport_number', 'country_of_origin')
+    list_display = ('participant_name', 'country_of_origin', 'status', 'created_at',)
+    list_filter = ('status', 'country_of_origin')
+    search_fields = ('participant_name', 'passport_number', 'country_of_origin')
     date_hierarchy = 'created_at'
     actions = ['approve_and_send_email', 'reject_visa_letters']
-    readonly_fields = ('created_at', 'updated_at', 'email_sent', 'email_sent_at',
-                       'approved_at', 'approved_by')
+    readonly_fields = ('created_at', 'updated_at', 'email_sent_at', 'approved_at', 'approved_by')
 
     fieldsets = (
         ('Status', {
-            'fields': ('status', 'created_at', 'updated_at', 'email_sent',
-                       'email_sent_at', 'approved_at', 'approved_by', 'rejection_reason')
+            'fields': ('status', 'created_at', 'updated_at', 'email_sent_at', 'approved_at', 'approved_by', 'rejection_reason')
         }),
         ('Participant Information', {
             'fields': ('participant_name', 'passport_number', 'country_of_origin', 'email')
-        }),
-        ('Travel Information', {
-            'fields': ('registration_type',
-                       'is_speaker', 'presentation_title')
         }),
         ('Embassy Information', {
             'fields': ('embassy_address',)
@@ -70,16 +65,16 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
                 email_sent = self.send_visa_letter_email(request, obj, pdf_file)
 
                 if email_sent:
-                    obj.email_sent = True
                     obj.email_sent_at = timezone.now()
-                    obj.save(update_fields=['approved_at', 'approved_by', 'email_sent', 'email_sent_at'])
+                    obj.save(update_fields=['approved_at', 'approved_by', 'email_sent_at'])
 
                     self.message_user(
                         request,
                         f"Visa letter for {obj.participant_name} approved and email sent.",
                         level=messages.SUCCESS
                     )
-            except Exception as e:
+            except (EmailMessage.DoesNotExist, IOError, OSError) as e:
+                print(f"Error sending approval email: {str(e)}", exc_info=True)
                 self.message_user(
                     request,
                     f"Error sending approval email for {obj.participant_name}: {str(e)}",
@@ -92,9 +87,8 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
                     email_sent = self.send_rejection_email(request, obj, obj.rejection_reason)
 
                     if email_sent:
-                        obj.email_sent = True
                         obj.email_sent_at = timezone.now()
-                        obj.save(update_fields=['email_sent', 'email_sent_at'])
+                        obj.save(update_fields=['email_sent_at'])
 
                         self.message_user(
                             request,
@@ -134,7 +128,6 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
                 email_sent = self.send_visa_letter_email(request, letter, pdf_file)
 
                 if email_sent:
-                    letter.email_sent = True
                     letter.email_sent_at = timezone.now()
                     letter.save()
                     success_count += 1
@@ -187,7 +180,6 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
                         email_sent = self.send_rejection_email(request, letter, rejection_reason)
 
                         if email_sent:
-                            letter.email_sent = True
                             letter.email_sent_at = timezone.now()
                             letter.save()
                             success_count += 1
@@ -221,7 +213,7 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
 
         return render(
             request,
-            'website/rejection_email.html',
+            'website/rejection_email_admin_form.html',
             context
         )
 
@@ -229,23 +221,26 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
 
     def generate_pdf(self, request, visa_letter):
         current_date = timezone.now().strftime("%B %d, %Y")
+        is_speaker = Talk.objects.filter(authors=visa_letter.user, status='accepted').first().exists()
+        presentation_title = Talk.objects.filter(authors=visa_letter.user, status='accepted').first().title
+        registration_type = "Speaker" if is_speaker else "Attendee"
 
         context = {
             'current_date': current_date,
             'participant_name': visa_letter.participant_name,
             'passport_number': visa_letter.passport_number,
             'country_of_origin': visa_letter.country_of_origin,
-            'registration_type': visa_letter.registration_type,
-            'is_speaker': visa_letter.is_speaker,
-            'presentation_title': visa_letter.presentation_title,
+            'registration_type': registration_type,
+            'is_speaker': is_speaker,
+            'presentation_title': presentation_title if is_speaker else None,
             'embassy_address': visa_letter.embassy_address,
             'conference_location': visa_letter.conference_location,
             'conference_dates': visa_letter.conference_dates,
-            'organizer_name': visa_letter.organizer_name,
-            'organizer_role': visa_letter.organizer_role,
-            'contact_email': visa_letter.contact_email,
-            'contact_phone': visa_letter.contact_phone,
-            'website_url': visa_letter.website_url,
+            'organizer_name': settings.VISA_ORGANISER_NAME,
+            'organizer_role': settings.VISA_ORGANISER_ROLE,
+            'contact_email': settings.VISA_ORGANISER_CONTACT_EMAIL,
+            'contact_phone': settings.VISA_ORGANISER_CONTACT_PHONE,
+            'website_url': settings.WEBSITE_URL,
             'logo_url': request.build_absolute_uri('/static/img/letter_header.png'),
         }
 
@@ -277,7 +272,7 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
                 subject=subject,
                 body=message,
                 from_email=visa_letter.contact_email,
-                to=[visa_letter.email],
+                to=[visa_letter.user.email],
                 reply_to=[visa_letter.contact_email],
             )
 
@@ -321,7 +316,7 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
                 subject=subject,
                 body=message,
                 from_email=visa_letter.contact_email,
-                to=[visa_letter.email],
+                to=[visa_letter.user.email],
                 reply_to=[visa_letter.contact_email],
             )
 

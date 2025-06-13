@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.db import models
-from django.utils import timezone
+from django_countries.fields import CountryField
 
 
 class VisaInvitationLetter(models.Model):
@@ -16,7 +16,7 @@ class VisaInvitationLetter(models.Model):
         related_name='visa_letters',
     )
 
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
@@ -28,30 +28,17 @@ class VisaInvitationLetter(models.Model):
         related_name='approved_visa_letters'
     )
 
-    email_sent = models.BooleanField(default=False)
     email_sent_at = models.DateTimeField(null=True, blank=True)
     rejection_reason = models.TextField(blank=True, null=True)
 
     participant_name = models.CharField(max_length=255)
     passport_number = models.CharField(max_length=50)
-    country_of_origin = models.CharField(max_length=100)
-    email = models.EmailField()
+    country_of_origin = CountryField(
+        blank_label='Select Country',
+        help_text="Country of origin for the visa application",
+    )
 
-    registration_type = models.CharField(max_length=50, default='Attendee')
-
-    is_speaker = models.BooleanField(default=False)
-    presentation_title = models.CharField(max_length=255, blank=True, null=True)
-
-    embassy_address = models.TextField(default='Embassy of South Africa')
-
-    organizer_name = models.CharField(max_length=255, default='Adam Piskorski')
-    organizer_role = models.CharField(max_length=100, default='Director of the Python Software Society of South Africa')
-    contact_email = models.EmailField(default='pyconza@piskorski.me')
-    contact_phone = models.CharField(max_length=20, default='+27 79 899 2319')
-
-    conference_location = models.CharField(max_length=100, default='Johannesburg, South Africa')
-    conference_dates = models.CharField(max_length=100, default='October 8-12, 2025')
-    website_url = models.URLField(default='africa.pycon.org')
+    embassy_address = models.TextField(default=settings.VISA_DEFAULT_EMBASSY_ADDRESS)
 
     def __str__(self):
         return f"Visa Letter for {self.participant_name} ({self.get_status_display()})"
@@ -62,5 +49,5 @@ class VisaInvitationLetter(models.Model):
         verbose_name_plural = "Visa Invitation Letters"
         unique_together = [
             ('user', 'participant_name', 'passport_number',),
-            ('user', 'email', 'country_of_origin',)
+            ('user', 'country_of_origin',)
         ]
