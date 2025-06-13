@@ -37,7 +37,7 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
             'fields': ('participant_name', 'passport_number', 'country_of_origin', 'email')
         }),
         ('Travel Information', {
-            'fields': ('registration_type', 'arrival_date', 'departure_date',
+            'fields': ('registration_type',
                        'is_speaker', 'presentation_title')
         }),
         ('Embassy Information', {
@@ -236,8 +236,6 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
             'passport_number': visa_letter.passport_number,
             'country_of_origin': visa_letter.country_of_origin,
             'registration_type': visa_letter.registration_type,
-            'arrival_date': visa_letter.arrival_date.strftime("%B %d, %Y"),
-            'departure_date': visa_letter.departure_date.strftime("%B %d, %Y"),
             'is_speaker': visa_letter.is_speaker,
             'presentation_title': visa_letter.presentation_title,
             'embassy_address': visa_letter.embassy_address,
@@ -248,7 +246,7 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
             'contact_email': visa_letter.contact_email,
             'contact_phone': visa_letter.contact_phone,
             'website_url': visa_letter.website_url,
-            'logo_url': request.build_absolute_uri('/static/img/hero-logo-2025.png'),
+            'logo_url': request.build_absolute_uri('/static/img/letter_header.png'),
         }
 
         html_string = render_to_string('website/visa_letter_template.html', context)

@@ -38,8 +38,6 @@ class VisaInvitationLetter(models.Model):
     email = models.EmailField()
 
     registration_type = models.CharField(max_length=50, default='Attendee')
-    arrival_date = models.DateField()
-    departure_date = models.DateField()
 
     is_speaker = models.BooleanField(default=False)
     presentation_title = models.CharField(max_length=255, blank=True, null=True)
@@ -63,6 +61,6 @@ class VisaInvitationLetter(models.Model):
         verbose_name = "Visa Invitation Letter"
         verbose_name_plural = "Visa Invitation Letters"
         unique_together = [
-            ('user', 'participant_name', 'passport_number', 'arrival_date', 'departure_date'),
-            ('user', 'email', 'country_of_origin', 'arrival_date', 'departure_date')
+            ('user', 'participant_name', 'passport_number',),
+            ('user', 'email', 'country_of_origin',)
         ]

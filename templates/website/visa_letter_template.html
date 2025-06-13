@@ -191,8 +191,8 @@
 
         <p>{{ participant_name }} has {% if is_speaker %}been selected to present a talk/workshop titled "
             {{ presentation_title|default:'Python Presentation' }}" and {% endif %}registered to attend the conference
-            as a {{ registration_type|default:'participant' }}. The participant is expected to arrive
-            on {{ arrival_date }} and depart on {{ departure_date }}.</p>
+            as {% if is_speaker %} a {% else %} an {% endif %} {{ registration_type|default:'participant' }}.
+            The participant is expected to arr ive for PyCon Africa which is to run through {{ conference_dates }}.</p>
 
         <p>We kindly request that you issue a visa to {{ participant_name }} to enable their attendance at this
             important event. The participant will be responsible for all expenses related to their travel,

@@ -14,17 +14,11 @@ class VisaLetterForm(forms.ModelForm):
             'country_of_origin',
             'email',
             'registration_type',
-            'arrival_date',
-            'departure_date',
             'is_speaker',
             'presentation_title',
             'embassy_address',
         ]
         widgets = {
-            'arrival_date': forms.DateInput(attrs={'type': 'date',
-                                                   'class': 'w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500'}),
-            'departure_date': forms.DateInput(attrs={'type': 'date',
-                                                     'class': 'w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500'}),
             'embassy_address': forms.Textarea(attrs={'rows': 3,
                                                      'class': 'w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500'}),
         }
@@ -60,11 +54,9 @@ class VisaLetterForm(forms.ModelForm):
             Div(
                 Div(
                     Field('registration_type', wrapper_class='mb-4'),
-                    Field('arrival_date', wrapper_class='mb-4'),
                     css_class='md:col-span-1'
                 ),
                 Div(
-                    Field('departure_date', wrapper_class='mb-4'),
                     Div(
                         Field('is_speaker', wrapper_class='inline'),
                         HTML(
@@ -80,7 +72,6 @@ class VisaLetterForm(forms.ModelForm):
                 ),
                 css_class='grid md:grid-cols-2 gap-6'
             ),
-
             HTML('<h3 class="font-bold text-xl mb-4 mt-8">Embassy Information</h3>'),
             Field('embassy_address', wrapper_class='mb-4'),
             HTML(
@@ -98,24 +89,6 @@ class VisaLetterForm(forms.ModelForm):
             HTML('''
             <script type="text/javascript">
                 document.addEventListener("DOMContentLoaded", function() {
-                    const arrivalDateInput = document.getElementById("id_arrival_date");
-                    const departureDateInput = document.getElementById("id_departure_date");
-                    
-                    function validateDates() {
-                        if (arrivalDateInput.value && departureDateInput.value) {
-                            const arrivalDate = new Date(arrivalDateInput.value);
-                            const departureDate = new Date(departureDateInput.value);
-                            
-                            if (arrivalDate > departureDate) {
-                                departureDateInput.setCustomValidity("Departure date must be after arrival date");
-                                return false;
-                            } else {
-                                departureDateInput.setCustomValidity("");
-                                return true;
-                            }
-                        }
-                        return true;
-                    }
                     
                     arrivalDateInput.addEventListener("change", validateDates);
                     departureDateInput.addEventListener("change", validateDates);
@@ -142,23 +115,4 @@ class VisaLetterForm(forms.ModelForm):
         cleaned_data = super().clean()
         if cleaned_data.get('is_speaker') and not cleaned_data.get('presentation_title'):
             self.add_error('presentation_title', 'Please provide the presentation title for speakers.')
-
-        arrival_date = cleaned_data.get('arrival_date')
-        departure_date = cleaned_data.get('departure_date')
-
-        import datetime
-        valid_start = datetime.date(2025, 10, 3)
-        valid_end = datetime.date(2025, 10, 20)
-
-        if arrival_date:
-            if arrival_date < valid_start or arrival_date > valid_end:
-                self.add_error('arrival_date', 'Arrival date must be between October 3-20, 2025.')
-
-        if departure_date:
-            if departure_date < valid_start or departure_date > valid_end:
-                self.add_error('departure_date', 'Departure date must be between October 3-20, 2025.')
-
-        if arrival_date and departure_date and arrival_date > departure_date:
-            self.add_error('departure_date', 'Departure date must be after arrival date.')
-
         return cleaned_data
