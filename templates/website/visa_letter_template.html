@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>PyCon Africa 2025 - Visa Invitation Letter</title>
+    <title>{{ conference_name }} - Visa Invitation Letter</title>
     <style>
         @page {
             size: A4;
@@ -157,7 +157,7 @@
     <img class="header-image" src="{{ logo_url|default:'/static/img/pycon_logo.png' }}" alt="PyCon Africa 2025 Banner">
     <div class="header-overlay">
         <div class="header-text">
-            <h1>PyCon Africa 2025</h1>
+            <h1>{{ conference_name }}</h1>
             <h2>{{ conference_dates|default:'8 - 12 October, 2025' }}, {{ conference_location|default:'The Wanderers Club, Johannesburg, South Africa' }}</h2>
         </div>
     </div>
@@ -181,7 +181,7 @@
 
         <p>This letter is to confirm that <strong>{{ participant_name }}</strong>, holder of passport number
             <strong>{{ passport_number }}</strong> from <strong>{{ country_of_origin }}</strong>, has been invited to
-            attend the PyCon Africa 2025 conference, which will be held
+            attend the {{ conference_name }} conference, which will be held
             in {{ conference_location|default:'The Wanderers Club, Johannesburg, South Africa' }}
             from {{ conference_dates|default:'8 - 12 October, 2025' }}.</p>
 
@@ -192,7 +192,7 @@
         <p>{{ participant_name }} has {% if is_speaker %}been selected to present a talk/workshop titled "
             {{ presentation_title|default:'Python Presentation' }}" and {% endif %}registered to attend the conference
             as {% if is_speaker %} a {% else %} an {% endif %} {{ registration_type|default:'participant' }}.
-            The participant is expected to arr ive for PyCon Africa which is to run through {{ conference_dates }}.</p>
+            The participant is expected to arrive for {{ conference_name }} which is to run through {{ conference_dates }}.</p>
 
         <p>We kindly request that you issue a visa to {{ participant_name }} to enable their attendance at this
             important event. The participant will be responsible for all expenses related to their travel,
@@ -232,7 +232,7 @@
         </div>
 
         <div class="footer">
-            <p>PyCon Africa 2025 | {{ website_url|default:'africa.pycon.org' }}
+            <p>{{ conference_name }} | {{ website_url|default:'africa.pycon.org' }}
                 | team@pycon.africa </p>
         </div>
     </div>

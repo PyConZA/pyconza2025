@@ -226,12 +226,13 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
             'current_date': current_date,
             'participant_name': visa_letter.participant_name,
             'passport_number': visa_letter.passport_number,
-            'country_of_origin': visa_letter.country_of_origin,
+            'country_of_origin': visa_letter.country_of_origin.name,
             'registration_type': registration_type,
             'is_speaker': is_speaker,
             'presentation_title': presentation_title if is_speaker else None,
             'embassy_address': visa_letter.embassy_address,
             'conference_location': settings.CONFERENCE_LOCATION,
+            'conference_name': settings.CONFERENCE_NAME,
             'conference_dates': settings.CONFERENCE_DATES,
             'organizer_name': settings.VISA_ORGANISER_NAME,
             'organizer_role': settings.VISA_ORGANISER_ROLE,
@@ -280,12 +281,7 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
                     pdf_content,
                     'application/pdf'
                 )
-            
-            # Debug: Save PDF locally at project root
-            debug_filename = f'visa_letter_{visa_letter.participant_name}_{visa_letter.id}.pdf'
-            debug_path = os.path.join(settings.BASE_DIR, debug_filename)
-            shutil.copy2(pdf_file_path, debug_path)
-            
+        
             email.send(fail_silently=False)
 
             if os.path.exists(pdf_file_path):
