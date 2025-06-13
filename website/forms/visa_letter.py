@@ -34,7 +34,6 @@ class VisaLetterForm(forms.ModelForm):
                 ),
                 Div(
                     Field('country_of_origin', wrapper_class='mb-4'),
-                    Field('email', wrapper_class='mb-4'),
                     css_class='md:col-span-1'
                 ),
                 css_class='grid md:grid-cols-2 gap-6'

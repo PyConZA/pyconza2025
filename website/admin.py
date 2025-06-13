@@ -13,6 +13,7 @@ from weasyprint import HTML
 from wafer.talks.models import Talk
 
 from .models import VisaInvitationLetter
+import shutil
 
 
 class RejectionForm(forms.Form):
@@ -33,15 +34,10 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
             'fields': ('status', 'created_at', 'updated_at', 'email_sent_at', 'approved_at', 'approved_by', 'rejection_reason')
         }),
         ('Participant Information', {
-            'fields': ('participant_name', 'passport_number', 'country_of_origin', 'email')
+            'fields': ('participant_name', 'passport_number', 'country_of_origin')
         }),
         ('Embassy Information', {
             'fields': ('embassy_address',)
-        }),
-        ('Conference Details', {
-            'fields': ('conference_location', 'conference_dates', 'website_url',
-                       'organizer_name', 'organizer_role', 'contact_email', 'contact_phone'),
-            'classes': ('collapse',)
         }),
     )
 
@@ -221,8 +217,9 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
 
     def generate_pdf(self, request, visa_letter):
         current_date = timezone.now().strftime("%B %d, %Y")
-        is_speaker = Talk.objects.filter(authors=visa_letter.user, status='accepted').first().exists()
-        presentation_title = Talk.objects.filter(authors=visa_letter.user, status='accepted').first().title
+        talk = Talk.objects.filter(authors=visa_letter.user, status='accepted').first()
+        is_speaker = talk is not None
+        presentation_title = talk.title if talk else None
         registration_type = "Speaker" if is_speaker else "Attendee"
 
         context = {
@@ -234,8 +231,8 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
             'is_speaker': is_speaker,
             'presentation_title': presentation_title if is_speaker else None,
             'embassy_address': visa_letter.embassy_address,
-            'conference_location': visa_letter.conference_location,
-            'conference_dates': visa_letter.conference_dates,
+            'conference_location': settings.CONFERENCE_LOCATION,
+            'conference_dates': settings.CONFERENCE_DATES,
             'organizer_name': settings.VISA_ORGANISER_NAME,
             'organizer_role': settings.VISA_ORGANISER_ROLE,
             'contact_email': settings.VISA_ORGANISER_CONTACT_EMAIL,
@@ -263,7 +260,7 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
             
             Please print this letter and include it with your visa application to the South African embassy/consulate.
             
-            If you have any questions or need further assistance, please contact us at {visa_letter.contact_email}.
+            If you have any questions or need further assistance, please contact us at {settings.VISA_ORGANISER_CONTACT_EMAIL} or call {settings.VISA_ORGANISER_CONTACT_PHONE}.
             
             Best regards,
             PyCon Africa 2025 Organizing Team"""
@@ -271,9 +268,9 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
             email = EmailMessage(
                 subject=subject,
                 body=message,
-                from_email=visa_letter.contact_email,
+                from_email=settings.VISA_ORGANISER_CONTACT_EMAIL,
                 to=[visa_letter.user.email],
-                reply_to=[visa_letter.contact_email],
+                reply_to=[settings.VISA_ORGANISER_CONTACT_EMAIL],
             )
 
             with open(pdf_file_path, 'rb') as pdf:
@@ -283,6 +280,12 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
                     pdf_content,
                     'application/pdf'
                 )
+            
+            # Debug: Save PDF locally at project root
+            debug_filename = f'visa_letter_{visa_letter.participant_name}_{visa_letter.id}.pdf'
+            debug_path = os.path.join(settings.BASE_DIR, debug_filename)
+            shutil.copy2(pdf_file_path, debug_path)
+            
             email.send(fail_silently=False)
 
             if os.path.exists(pdf_file_path):
@@ -315,9 +318,9 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
             email = EmailMessage(
                 subject=subject,
                 body=message,
-                from_email=visa_letter.contact_email,
+                from_email=settings.VISA_ORGANISER_CONTACT_EMAIL,
                 to=[visa_letter.user.email],
-                reply_to=[visa_letter.contact_email],
+                reply_to=[settings.VISA_ORGANISER_CONTACT_EMAIL],
             )
 
             email.send(fail_silently=False)
