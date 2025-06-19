@@ -2,10 +2,11 @@ import os
 import tempfile
 from smtplib import SMTPException
 
+from django.db import transaction
+from django.utils import timezone
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from django.utils import timezone
 from weasyprint import HTML
 from wafer.talks.models import Talk
 
@@ -43,12 +44,6 @@ def generate_visa_letter_pdf(request, visa_letter):
         html = HTML(string=html_string, base_url=request.build_absolute_uri("/"))
         html.write_pdf(output_file)
         temp_file_path = output_file.name
-
-    # DEBUG: Save a copy to project root for debugging
-    import shutil
-    debug_path = f"debug_visa_letter_{visa_letter.participant_name.replace(' ', '_')}.pdf"
-    shutil.copy2(temp_file_path, debug_path)
-
     return temp_file_path
 
 
@@ -103,18 +98,36 @@ def send_visa_rejection_email(request, visa_letter, rejection_reason):
         context = {
             "participant_name": visa_letter.participant_name,
             "rejection_reason": rejection_reason,
-            "conference_name": settings.CONFERENCE_NAME,
-            "conference_dates": settings.CONFERENCE_DATES,
-            "conference_location": settings.CONFERENCE_LOCATION,
+            "conference_name": getattr(
+                settings, "CONFERENCE_NAME", "PyCon Africa 2025"
+            ),
+            "conference_dates": getattr(settings, "CONFERENCE_DATES", "March 2025"),
+            "conference_location": getattr(
+                settings, "CONFERENCE_LOCATION", "Cape Town, South Africa"
+            ),
             "organizer_email": settings.VISA_ORGANISER_CONTACT_EMAIL,
-            "organizer_phone": settings.VISA_ORGANISER_CONTACT_PHONE,
-            "website_url": settings.WEBSITE_URL,
+            "organizer_phone": getattr(settings, "VISA_ORGANISER_CONTACT_PHONE", ""),
+            "website_url": getattr(settings, "WEBSITE_URL", "https://za.pycon.org"),
         }
 
-        html_message = render_to_string(
-            "website/visa_letter_rejection_email.html",
-            context,
-        )
+        try:
+            html_message = render_to_string(
+                "website/visa_letter_rejection_email.html",
+                context,
+            )
+        except (FileNotFoundError, ImportError):
+            html_message = f"""
+            <html>
+            <body>
+                <h2>PyCon Africa 2025 - Visa Invitation Letter Request</h2>
+                <p>Dear {visa_letter.participant_name},</p>
+                <p>Unfortunately, we cannot provide a visa invitation letter for your request.</p>
+                <p>Reason: {rejection_reason}</p>
+                <p>If you have any questions, please contact us at {settings.VISA_ORGANISER_CONTACT_EMAIL}</p>
+                <p>Best regards,<br>PyCon Africa 2025 Team</p>
+            </body>
+            </html>
+            """
 
         email = EmailMultiAlternatives(
             subject=subject,
@@ -127,7 +140,7 @@ def send_visa_rejection_email(request, visa_letter, rejection_reason):
         email.send(fail_silently=False)
         return True
 
-    except (SMTPException, ConnectionError, OSError) as e:
+    except (SMTPException, ConnectionError, OSError, IOError) as e:
         raise e
 
 
@@ -157,23 +170,44 @@ def approve_visa_letter(request, visa_letter):
         return False, str(e)
 
 
+@transaction.atomic
 def reject_visa_letter(request, visa_letter, rejection_reason):
     """
     Reject a visa letter and send notification email.
     Returns (success: bool, error_message: str or None)
     """
     try:
+        if not hasattr(settings, "VISA_ORGANISER_CONTACT_EMAIL"):
+            return False, "VISA_ORGANISER_CONTACT_EMAIL not configured in settings"
+
+        if not settings.VISA_ORGANISER_CONTACT_EMAIL:
+            return False, "VISA_ORGANISER_CONTACT_EMAIL is empty in settings"
+
         visa_letter.status = "rejected"
         visa_letter.rejection_reason = rejection_reason
+        visa_letter.save(update_fields=["status", "rejection_reason"])
 
-        email_sent = send_visa_rejection_email(request, visa_letter, rejection_reason)
+        email_sent = False
+        email_error = None
+        try:
+            email_sent = send_visa_rejection_email(
+                request, visa_letter, rejection_reason
+            )
+        except Exception as e:
+            email_error = str(e)
+            print(f"DEBUG: Email sending failed: {email_error}")
 
         if email_sent:
             visa_letter.email_sent_at = timezone.now()
+            visa_letter.save(update_fields=["email_sent_at"])
 
-        visa_letter.save(update_fields=["status", "rejection_reason", "email_sent_at"])
+        if email_sent:
+            return True, None
+        else:
+            return (
+                True,
+                f"Status updated but email failed: {email_error or 'Unknown email error'}",
+            )
 
-        return True, None
-
-    except (SMTPException, ConnectionError, OSError, IOError) as e:
-        return False, str(e)
+    except Exception as e:
+        return False, f"Error in reject_visa_letter: {str(e)}"

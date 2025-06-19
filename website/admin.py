@@ -2,6 +2,8 @@ from django import forms
 from django.contrib import admin
 from django.contrib import messages
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 from .models import VisaInvitationLetter
 from .utils.visa_letter_utils import (
@@ -11,7 +13,12 @@ from .utils.visa_letter_utils import (
 
 
 class RejectionForm(forms.Form):
-    rejection_reason = forms.CharField(widget=forms.Textarea)
+    rejection_reason = forms.CharField(
+        widget=forms.Textarea(attrs={"rows": 4, "cols": 60}),
+        label="Rejection Reason",
+        help_text="Please provide a clear reason for rejecting the visa letter request.",
+        required=True,
+    )
 
 
 @admin.register(VisaInvitationLetter)
@@ -108,51 +115,90 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
 
     def reject_visa_letters(self, request, queryset):
         """Reject selected visa letters with reason and send rejection emails."""
-        context = {
-            "queryset": queryset,
-            "opts": self.model._meta,
-        }
-
         if request.POST.get("post") == "yes":
             form = RejectionForm(request.POST)
+
             if form.is_valid():
                 rejection_reason = form.cleaned_data["rejection_reason"]
                 success_count = 0
                 error_count = 0
 
-                for letter in queryset:
-                    success, error_message = reject_visa_letter(
-                        request, letter, rejection_reason
+                pending_letters = queryset.filter(status="pending")
+
+                if not pending_letters.exists():
+                    self.message_user(
+                        request,
+                        "No pending visa letters found in selection.",
+                        level=messages.WARNING,
+                    )
+                    return HttpResponseRedirect(
+                        reverse("admin:website_visainvitationletter_changelist")
                     )
 
-                    if success:
-                        success_count += 1
-                    else:
+                for letter in pending_letters:
+                    try:
+                        success, error_message = reject_visa_letter(
+                            request, letter, rejection_reason
+                        )
+
+                        if success:
+                            success_count += 1
+                            if error_message:
+                                self.message_user(
+                                    request,
+                                    f"Rejected visa letter for {letter.participant_name} (status updated, but email failed: {error_message})",
+                                    level=messages.WARNING,
+                                )
+                            else:
+                                self.message_user(
+                                    request,
+                                    f"Successfully rejected visa letter for {letter.participant_name} and sent notification email.",
+                                    level=messages.SUCCESS,
+                                )
+                        else:
+                            error_count += 1
+                            self.message_user(
+                                request,
+                                f"Failed to reject visa letter for {letter.participant_name}: {error_message}",
+                                level=messages.ERROR,
+                            )
+
+                    except Exception as e:
                         error_count += 1
                         self.message_user(
                             request,
-                            f"Error rejecting visa letter for {letter.participant_name}: {error_message}",
+                            f"Unexpected error processing {letter.participant_name}: {str(e)}",
                             level=messages.ERROR,
                         )
-
                 if success_count > 0:
                     self.message_user(
                         request,
-                        f"Successfully rejected and notified {success_count} visa letter applicant(s).",
+                        f"Processed {success_count} visa letter rejection(s).",
                         level=messages.SUCCESS,
                     )
 
                 if error_count > 0:
                     self.message_user(
                         request,
-                        f"Failed to process {error_count} rejection(s). Check for errors.",
-                        level=messages.WARNING,
+                        f"Failed to process {error_count} rejection(s).",
+                        level=messages.ERROR,
                     )
-                return None
-            context["form"] = form
-        else:
-            context["form"] = RejectionForm()
 
+                return HttpResponseRedirect(
+                    reverse("admin:website_visainvitationletter_changelist")
+                )
+
+            else:
+                self.message_user(
+                    request,
+                    f"Please provide a rejection reason. Form errors: {form.errors}",
+                    level=messages.ERROR,
+                )
+        context = {
+            "queryset": queryset,
+            "opts": self.model._meta,
+            "form": RejectionForm(request.POST if request.POST else None),
+        }
         return render(request, "website/rejection_email_admin_form.html", context)
 
     reject_visa_letters.short_description = "Reject selected visa letters"
