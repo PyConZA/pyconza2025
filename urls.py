@@ -29,6 +29,7 @@ urlpatterns = [
     re_path(r"^schedule/", include("wafer.schedule.urls")),
     re_path(r"^tickets/", include("wafer.tickets.urls")),
     re_path(r"^kv/", include("wafer.kv.urls")),
+    re_path(r"^opportunity_grants/", include("grants.urls")),
     path("__reload__/", include("django_browser_reload.urls")),
     path("", include("website.urls")),
     path("", include("visa.urls")),
