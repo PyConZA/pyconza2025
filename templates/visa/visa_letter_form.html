@@ -1,0 +1,259 @@
+{% extends "_base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Request Visa Invitation Letter - PyCon Africa 2025{% endblock %}
+{% block page_title %} Request Visa Invitation Letter{% endblock %}
+
+{% block content %}    <div class="container mx-auto py-8 px-4">
+        <h1 class="text-3xl font-bold mb-6">Request Visa Invitation Letter</h1>
+        {% if error_message %}
+            <div class="mb-4 p-4 bg-red-100 border-red-500 text-red-700 border-l-4 rounded">
+                {{ error_message }}
+            </div>
+        {% endif %}
+
+        {% if success_message %}
+            <div class="mb-4 p-4 bg-green-100 border-green-500 text-green-700 border-l-4 rounded">
+                {{ success_message }}
+            </div>
+        {% endif %}
+
+        {% if info_message %}
+            <div class="mb-4 p-4 bg-blue-100 border-blue-500 text-blue-700 border-l-4 rounded">
+                {{ info_message }}
+            </div>
+        {% endif %}
+
+        {% if form_submitted or has_existing_letter %}
+            {% if latest_letter.status == 'pending' %}
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-3xl mx-auto">
+                    <div class="text-center mb-8">
+                        <svg class="h-12 w-12 text-yellow-500 mx-auto" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <h2 class="text-2xl font-bold mt-4">Visa Letter Request Pending</h2>
+                    </div>
+
+                    <div class="space-y-6 text-center">
+                        <p class="text-lg">You have a pending visa letter request that was submitted
+                            on {{ latest_letter.created_at|date:"F d, Y H:i" }}.</p>
+
+                        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 text-left">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-5 w-5 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                              clip-rule="evenodd"/>
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm text-yellow-800">
+                                        <strong>Status: Pending Review</strong>
+                                    </p>
+                                    <ul class="list-disc ml-5 mt-2 text-sm text-yellow-700">
+                                        <li>Our team will review your request within <strong>3 working days</strong>.
+                                        </li>
+                                        <li>Once approved, the visa letter will be emailed
+                                            to {{ latest_letter.email }}.
+                                        </li>
+                                        <li>If you haven't received your letter after <strong>one week</strong>, please
+                                            contact us at <a href="mailto:team@pycon.africa"
+                                                             class="font-semibold underline">team@pycon.africa</a>.
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {% elif latest_letter.status == 'approved' %}
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-3xl mx-auto">
+                    <div class="text-center mb-8">
+                        <svg class="h-12 w-12 text-green-500 mx-auto" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <h2 class="text-2xl font-bold mt-4">Visa Letter Approved</h2>
+                    </div>
+
+                    <div class="space-y-6 text-center">
+                        <p class="text-lg">Your visa letter request has been approved and sent to your email
+                            address.</p>
+
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 text-left">
+                            <div class="flex">
+                                <div class="ml-3">
+                                    <p class="text-sm text-green-800">
+                                        <strong>Status: Approved</strong>
+                                    </p>
+                                    <ul class="list-disc ml-5 mt-2 text-sm text-green-700">
+                                        <li>Your visa letter was approved
+                                            on {{ latest_letter.approved_at|date:"F d, Y H:i" }}.
+                                        </li>
+                                        <li>The letter has been sent to {{ latest_letter.email }}.</li>
+                                        <li>Please check your email inbox (and spam folder).</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p>Haven't received your letter? Click the button below to request a resend</p>
+
+                        <form method="post" class="mt-4">
+                            {% csrf_token %}
+                            <input type="hidden" name="letter_id" value="{{ latest_letter.id }}">
+                            <button type="submit" name="resend_email"
+                                    class="btn btn-primary font-bold py-2 px-6 rounded-lg transition duration-300">
+                                Request To Resend Visa Letter
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            {% elif latest_letter.status == 'rejected' %}
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-3xl mx-auto">
+                    <div class="text-center mb-8">
+                        <svg class="h-16 w-16 text-red-500 mx-auto" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <h2 class="text-2xl font-bold mt-4">Visa Letter Request Declined</h2>
+                    </div>
+
+                    <div class="space-y-6">
+                        <p class="text-lg text-center">Unfortunately, your visa letter request was declined.</p>
+
+                        <div class="bg-red-50 border-l-4 border-red-500 p-4 text-left">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                              clip-rule="evenodd"/>
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm text-red-800">
+                                        <strong>Reason:</strong>
+                                    </p>
+                                    <p class="text-sm text-red-700 mt-1">{{ latest_letter.rejection_reason|default:"No reason provided." }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="text-center">If you believe this was in error or have additional documentation that
+                            might help your application, please contact us at <a href="mailto:team@pycon.africa"
+                                                                                 class="font-semibold underline">team@pycon.africa</a>.
+                        </p>
+
+                        <div class="text-center">
+                            <a href="{% url 'website:home' %}"
+                               class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300">
+                                Return to Homepage
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 border-t border-gray-200 pt-6 text-center">
+                        <p class="text-gray-600">Request #{{ latest_letter.id }} • {{ latest_letter.participant_name }}
+                            • {{ latest_letter.country_of_origin }}</p>
+                    </div>
+                </div>
+            {% endif %}
+        {% elif form_submitted %}
+            <div class="mb-6 p-4 bg-green-100 border-green-500 text-green-700 border-l-4 rounded">
+                <div class="flex items-center">
+                    <svg class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <strong>Your visa invitation letter request has been submitted successfully.</strong>
+                </div>
+                <p class="mt-2">Our team will review it and get back to you shortly (usually within 3-5 business days).</p>
+            </div>
+
+            <div class="bg-white p-8 rounded-lg shadow-md max-w-3xl mx-auto">
+                <div class="text-center mb-8">
+                    <svg class="h-16 w-16 text-green-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <h1 class="text-2xl font-bold mt-4">Visa Letter Request Submitted</h1>
+                </div>
+
+                <div class="space-y-6 text-center">
+                    <p class="text-lg">Thank you for your visa letter request. Your request has been received and is now
+                        being processed by our team.</p>
+
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 text-left">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                          clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-blue-800">
+                                    <strong>What happens next?</strong>
+                                </p>
+                                <ul class="list-disc ml-5 mt-2 text-sm text-blue-700">
+                                    <li>Our team will review your request within <strong>3 working days</strong>.</li>
+                                    <li>Once approved, the visa letter will be emailed to the address you provided.</li>
+                                    <li>If you haven't received your letter after <strong>one week</strong>, please
+                                        contact us at <a href="mailto:team@pycon.africa"
+                                                         class="font-semibold underline">team@pycon.africa</a>.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>Need assistance with your visa application or have questions about attending PyCon Africa
+                        2025?</p>
+
+                    <div class="mt-8">
+                        <a href="{% url 'website:home' %}"
+                           class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300">
+                            Return to Homepage
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <p class="mb-6">Please fill out the form below to request an official invitation letter for your visa
+                    application to attend PyCon Africa 2025. Once approved, the letter will be sent to your email
+                    address.</p>
+
+                {% crispy form %}
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const isSpeakerCheckbox = document.getElementById('id_is_speaker');
+            if (isSpeakerCheckbox) {
+                const presentationField = document.getElementById('presentation-field');
+
+                function togglePresentationField() {
+                    if (isSpeakerCheckbox.checked) {
+                        presentationField.classList.remove('hidden');
+                    } else {
+                        presentationField.classList.add('hidden');
+                    }
+                }
+
+                togglePresentationField();
+                isSpeakerCheckbox.addEventListener('change', togglePresentationField);
+            }
+        });
+    </script>
+{% endblock %}

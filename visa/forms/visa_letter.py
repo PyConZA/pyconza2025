@@ -3,7 +3,7 @@ from crispy_forms.layout import Layout, Field, Div, HTML, Submit
 from django import forms
 from django_countries.widgets import CountrySelectWidget
 
-from website.models import VisaInvitationLetter
+from visa.models import VisaInvitationLetter
 
 
 class VisaLetterForm(forms.ModelForm):

@@ -39,7 +39,7 @@ def generate_visa_letter_pdf(request, visa_letter):
         "logo_url": request.build_absolute_uri("/static/img/letter_header.png"),
     }
 
-    html_string = render_to_string("website/visa_letter_template.html", context)
+    html_string = render_to_string("visa/visa_letter_template.html", context)
     with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as output_file:
         html = HTML(string=html_string, base_url=request.build_absolute_uri("/"))
         html.write_pdf(output_file)
@@ -62,7 +62,7 @@ def send_visa_approval_email(request, visa_letter, pdf_file_path):
             "website_url": settings.WEBSITE_URL,
         }
 
-        html_message = render_to_string("website/visa_letter_email.html", context)
+        html_message = render_to_string("visa/visa_letter_email.html", context)
 
         email = EmailMultiAlternatives(
             subject=subject,
@@ -112,7 +112,7 @@ def send_visa_rejection_email(request, visa_letter, rejection_reason):
 
         try:
             html_message = render_to_string(
-                "website/visa_letter_rejection_email.html",
+                "visa/visa_letter_rejection_email.html",
                 context,
             )
         except (FileNotFoundError, ImportError):

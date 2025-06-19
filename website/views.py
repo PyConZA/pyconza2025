@@ -1,12 +1,6 @@
 from django.conf import settings
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.mail.message import EmailMessage
-from django.shortcuts import render, redirect
-from django.utils import timezone
-from django.views.generic import CreateView
+from django.shortcuts import render
 
-from .forms.visa_letter import VisaLetterForm
-from .models import VisaInvitationLetter
 
 MD_DIR_PATH = settings.BASE_DIR / "md_content"
 
@@ -20,73 +14,3 @@ def page_code_of_conduct(request):
         content = f.read()
     context = {"content": content}
     return render(request, "website/page_code_of_conduct.html", context=context)
-
-
-class VisaLetterCreateView(LoginRequiredMixin, CreateView):
-    model = VisaInvitationLetter
-    form_class = VisaLetterForm
-    template_name = "website/visa_letter_form.html"
-
-    def get_success_url(self):
-        return self.request.path
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        form.instance.status = "pending"
-        response = super().form_valid(form)
-
-        self.request.session["visa_form_success"] = True
-
-        return response
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["current_datetime"] = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
-        context["current_user"] = self.request.user.username
-
-        context["form_submitted"] = self.request.session.pop("visa_form_success", False)
-
-        context["error_message"] = self.request.session.pop("visa_error", None)
-        context["success_message"] = self.request.session.pop("visa_success", None)
-        context["info_message"] = self.request.session.pop("visa_info", None)
-
-        try:
-            existing_letter = self.request.user.visa_letter
-            context["existing_letter"] = existing_letter
-            context["has_existing_letter"] = True
-            context["latest_letter"] = existing_letter
-        except VisaInvitationLetter.DoesNotExist:
-            context["has_existing_letter"] = False
-
-        return context
-
-    def post(self, request, *args, **kwargs):
-        if "resend_email" in request.POST:
-            try:
-                letter = request.user.visa_letter
-            except VisaInvitationLetter.DoesNotExist:
-                request.session["visa_error"] = (
-                    "We couldn't find your visa letter request."
-                )
-                return redirect(self.request.path)
-
-            if letter.status == "approved":
-                admin_email = EmailMessage(
-                    subject=f"Visa Letter Resend Request: {letter.participant_name}",
-                    body=f"The user {request.user.username} ({request.user.email}) has requested a resend of their approved visa letter.\n\nLetter ID: {letter.id}\nParticipant: {letter.participant_name}\nEmail: {letter.email}",
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    to=["team@pycon.africa"],
-                )
-                admin_email.send(fail_silently=False)
-
-                request.session["visa_success"] = (
-                    "Your request has been received. The team will resend your visa letter shortly."
-                )
-            else:
-                request.session["visa_info"] = (
-                    f"Your visa letter is still {letter.get_status_display()}. Please wait for it to be approved first."
-                )
-
-            return redirect(self.request.path)
-
-        return super().post(request, *args, **kwargs)

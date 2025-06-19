@@ -18,6 +18,7 @@ INSTALLED_APPS = (
     "django_cotton",
     "website",  # for website static content that should be version controlled
     "grants",
+    "visa",  # for visa invitation letter requests
     "django_countries",  # django-countries for country selection
     "django.contrib.auth",
     "django.contrib.contenttypes",
