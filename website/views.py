@@ -1,5 +1,6 @@
-from django.shortcuts import render
 from django.conf import settings
+from django.shortcuts import render
+
 
 MD_DIR_PATH = settings.BASE_DIR / "md_content"
 
