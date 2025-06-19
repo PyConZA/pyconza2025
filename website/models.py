@@ -5,27 +5,28 @@ from django_countries.fields import CountryField
 
 class VisaInvitationLetter(models.Model):
     STATUS_CHOICES = (
-        ('pending', 'Pending'),
-        ('approved', 'Approved'),
-        ('rejected', 'Rejected'),
+        ("pending", "Pending"),
+        ("approved", "Approved"),
+        ("rejected", "Rejected"),
     )
 
-    user = models.ForeignKey(
+    user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='visa_letters',
+        related_name="visa_letter",
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
     approved_at = models.DateTimeField(null=True, blank=True)
     approved_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
-        null=True, blank=True,
-        related_name='approved_visa_letters'
+        null=True,
+        blank=True,
+        related_name="approved_visa_letters",
     )
 
     email_sent_at = models.DateTimeField(null=True, blank=True)
@@ -34,7 +35,7 @@ class VisaInvitationLetter(models.Model):
     participant_name = models.CharField(max_length=255)
     passport_number = models.CharField(max_length=50)
     country_of_origin = CountryField(
-        blank_label='Select Country',
+        blank_label="Select Country",
         help_text="Country of origin for the visa application",
     )
 
@@ -44,10 +45,6 @@ class VisaInvitationLetter(models.Model):
         return f"Visa Letter for {self.participant_name} ({self.get_status_display()})"
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ["-created_at"]
         verbose_name = "Visa Invitation Letter"
         verbose_name_plural = "Visa Invitation Letters"
-        unique_together = [
-            ('user', 'participant_name', 'passport_number',),
-            ('user', 'country_of_origin',)
-        ]

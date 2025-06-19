@@ -1,19 +1,13 @@
-import os
-import tempfile
-
 from django import forms
-from django.conf import settings
 from django.contrib import admin
 from django.contrib import messages
-from django.core.mail import EmailMessage
 from django.shortcuts import render
-from django.template.loader import render_to_string
-from django.utils import timezone
-from weasyprint import HTML
-from wafer.talks.models import Talk
 
 from .models import VisaInvitationLetter
-import shutil
+from .utils.visa_letter_utils import (
+    approve_visa_letter,
+    reject_visa_letter,
+)
 
 
 class RejectionForm(forms.Form):
@@ -22,306 +16,144 @@ class RejectionForm(forms.Form):
 
 @admin.register(VisaInvitationLetter)
 class VisaInvitationLetterAdmin(admin.ModelAdmin):
-    list_display = ('participant_name', 'country_of_origin', 'status', 'created_at',)
-    list_filter = ('status', 'country_of_origin')
-    search_fields = ('participant_name', 'passport_number', 'country_of_origin')
-    date_hierarchy = 'created_at'
-    actions = ['approve_and_send_email', 'reject_visa_letters']
-    readonly_fields = ('created_at', 'updated_at', 'email_sent_at', 'approved_at', 'approved_by')
+    list_display = (
+        "participant_name",
+        "country_of_origin",
+        "status",
+        "created_at",
+    )
+    list_filter = ("status", "country_of_origin")
+    search_fields = ("participant_name", "passport_number", "country_of_origin")
+    date_hierarchy = "created_at"
+    actions = ["approve_and_send_email", "reject_visa_letters"]
+    readonly_fields = (
+        "created_at",
+        "updated_at",
+        "email_sent_at",
+        "approved_at",
+        "approved_by",
+    )
 
     fieldsets = (
-        ('Status', {
-            'fields': ('status', 'created_at', 'updated_at', 'email_sent_at', 'approved_at', 'approved_by', 'rejection_reason')
-        }),
-        ('Participant Information', {
-            'fields': ('participant_name', 'passport_number', 'country_of_origin')
-        }),
-        ('Embassy Information', {
-            'fields': ('embassy_address',)
-        }),
+        (
+            "Status",
+            {
+                "fields": (
+                    "status",
+                    "created_at",
+                    "updated_at",
+                    "email_sent_at",
+                    "approved_at",
+                    "approved_by",
+                    "rejection_reason",
+                )
+            },
+        ),
+        (
+            "Participant Information",
+            {"fields": ("participant_name", "passport_number", "country_of_origin")},
+        ),
+        ("Embassy Information", {"fields": ("embassy_address",)}),
     )
 
     def save_model(self, request, obj, form, change):
-        original_status = None
-        if change:
-            try:
-                original_obj = VisaInvitationLetter.objects.get(pk=obj.pk)
-                original_status = original_obj.status
-            except VisaInvitationLetter.DoesNotExist:
-                pass
-
+        """
+        Simplified save_model - only handles basic model saving.
+        Email sending logic moved to explicit admin actions.
+        """
         super().save_model(request, obj, form, change)
 
-        if original_status and original_status != 'approved' and obj.status == 'approved':
-            try:
-                obj.approved_at = timezone.now()
-                obj.approved_by = request.user
-
-                pdf_file = self.generate_pdf(request, obj)
-                email_sent = self.send_visa_letter_email(request, obj, pdf_file)
-
-                if email_sent:
-                    obj.email_sent_at = timezone.now()
-                    obj.save(update_fields=['approved_at', 'approved_by', 'email_sent_at'])
-
-                    self.message_user(
-                        request,
-                        f"Visa letter for {obj.participant_name} approved and email sent.",
-                        level=messages.SUCCESS
-                    )
-            except (EmailMessage.DoesNotExist, IOError, OSError) as e:
-                print(f"Error sending approval email: {str(e)}", exc_info=True)
-                self.message_user(
-                    request,
-                    f"Error sending approval email for {obj.participant_name}: {str(e)}",
-                    level=messages.ERROR
-                )
-
-        elif original_status and original_status != 'rejected' and obj.status == 'rejected':
-            try:
-                if obj.rejection_reason:
-                    email_sent = self.send_rejection_email(request, obj, obj.rejection_reason)
-
-                    if email_sent:
-                        obj.email_sent_at = timezone.now()
-                        obj.save(update_fields=['email_sent_at'])
-
-                        self.message_user(
-                            request,
-                            f"Rejection email sent to {obj.participant_name}.",
-                            level=messages.SUCCESS
-                        )
-                else:
-                    self.message_user(
-                        request,
-                        f"No rejection reason provided. Rejection email was not sent.",
-                        level=messages.WARNING
-                    )
-            except Exception as e:
-                self.message_user(
-                    request,
-                    f"Error sending rejection email for {obj.participant_name}: {str(e)}",
-                    level=messages.ERROR
-                )
-
     def approve_and_send_email(self, request, queryset):
+        """Approve selected visa letters and send approval emails."""
         if not queryset.exists():
-            self.message_user(request, "No visa letters selected for approval.", level=messages.ERROR)
+            self.message_user(
+                request, "No visa letters selected for approval.", level=messages.ERROR
+            )
             return
 
         success_count = 0
         error_count = 0
 
-        for letter in queryset.filter(status='pending'):
-            try:
-                letter.status = 'approved'
-                letter.approved_at = timezone.now()
-                letter.approved_by = request.user
-                letter.save()
+        for letter in queryset.filter(status="pending"):
+            success, error_message = approve_visa_letter(request, letter)
 
-                pdf_file = self.generate_pdf(request, letter)
-
-                email_sent = self.send_visa_letter_email(request, letter, pdf_file)
-
-                if email_sent:
-                    letter.email_sent_at = timezone.now()
-                    letter.save()
-                    success_count += 1
-                else:
-                    error_count += 1
-
-            except Exception as e:
+            if success:
+                success_count += 1
+                self.message_user(
+                    request,
+                    f"Visa letter for {letter.participant_name} approved and email sent.",
+                    level=messages.SUCCESS,
+                )
+            else:
                 error_count += 1
                 self.message_user(
                     request,
-                    f"Error processing visa letter for {letter.participant_name}: {str(e)}",
-                    level=messages.ERROR
+                    f"Error processing visa letter for {letter.participant_name}: {error_message}",
+                    level=messages.ERROR,
                 )
 
         if success_count > 0:
             self.message_user(
                 request,
                 f"Successfully approved and sent {success_count} visa letter(s).",
-                level=messages.SUCCESS
+                level=messages.SUCCESS,
             )
 
         if error_count > 0:
             self.message_user(
                 request,
                 f"Failed to process {error_count} visa letter(s). Check for errors.",
-                level=messages.WARNING
+                level=messages.WARNING,
             )
 
-    approve_and_send_email.short_description = "Approve selected visa letters and send email"
-
     def reject_visa_letters(self, request, queryset):
+        """Reject selected visa letters with reason and send rejection emails."""
         context = {
-            'queryset': queryset,
-            'opts': self.model._meta,
+            "queryset": queryset,
+            "opts": self.model._meta,
         }
 
-        if request.POST.get('post') == 'yes':
+        if request.POST.get("post") == "yes":
             form = RejectionForm(request.POST)
             if form.is_valid():
-                rejection_reason = form.cleaned_data['rejection_reason']
+                rejection_reason = form.cleaned_data["rejection_reason"]
                 success_count = 0
                 error_count = 0
 
                 for letter in queryset:
-                    try:
-                        letter.status = 'rejected'
-                        letter.rejection_reason = rejection_reason
-                        letter.save()
+                    success, error_message = reject_visa_letter(
+                        request, letter, rejection_reason
+                    )
 
-                        email_sent = self.send_rejection_email(request, letter, rejection_reason)
-
-                        if email_sent:
-                            letter.email_sent_at = timezone.now()
-                            letter.save()
-                            success_count += 1
-                        else:
-                            error_count += 1
-                    except Exception as e:
+                    if success:
+                        success_count += 1
+                    else:
                         error_count += 1
                         self.message_user(
                             request,
-                            f"Error rejecting visa letter for {letter.participant_name}: {str(e)}",
-                            level=messages.ERROR
+                            f"Error rejecting visa letter for {letter.participant_name}: {error_message}",
+                            level=messages.ERROR,
                         )
 
                 if success_count > 0:
                     self.message_user(
                         request,
                         f"Successfully rejected and notified {success_count} visa letter applicant(s).",
-                        level=messages.SUCCESS
+                        level=messages.SUCCESS,
                     )
 
                 if error_count > 0:
                     self.message_user(
                         request,
                         f"Failed to process {error_count} rejection(s). Check for errors.",
-                        level=messages.WARNING
+                        level=messages.WARNING,
                     )
                 return None
-            context['form'] = form
+            context["form"] = form
         else:
-            context['form'] = RejectionForm()
+            context["form"] = RejectionForm()
 
-        return render(
-            request,
-            'website/rejection_email_admin_form.html',
-            context
-        )
+        return render(request, "website/rejection_email_admin_form.html", context)
 
     reject_visa_letters.short_description = "Reject selected visa letters"
-
-    def generate_pdf(self, request, visa_letter):
-        current_date = timezone.now().strftime("%B %d, %Y")
-        talk = Talk.objects.filter(authors=visa_letter.user, status='accepted').first()
-        is_speaker = talk is not None
-        presentation_title = talk.title if talk else None
-        registration_type = "Speaker" if is_speaker else "Attendee"
-
-        context = {
-            'current_date': current_date,
-            'participant_name': visa_letter.participant_name,
-            'passport_number': visa_letter.passport_number,
-            'country_of_origin': visa_letter.country_of_origin.name,
-            'registration_type': registration_type,
-            'is_speaker': is_speaker,
-            'presentation_title': presentation_title if is_speaker else None,
-            'embassy_address': visa_letter.embassy_address,
-            'conference_location': settings.CONFERENCE_LOCATION,
-            'conference_name': settings.CONFERENCE_NAME,
-            'conference_dates': settings.CONFERENCE_DATES,
-            'organizer_name': settings.VISA_ORGANISER_NAME,
-            'organizer_role': settings.VISA_ORGANISER_ROLE,
-            'contact_email': settings.VISA_ORGANISER_CONTACT_EMAIL,
-            'contact_phone': settings.VISA_ORGANISER_CONTACT_PHONE,
-            'website_url': settings.WEBSITE_URL,
-            'logo_url': request.build_absolute_uri('/static/img/letter_header.png'),
-        }
-
-        html_string = render_to_string('website/visa_letter_template.html', context)
-
-        with tempfile.NamedTemporaryFile(suffix='.pdf', delete=False) as output_file:
-            html = HTML(string=html_string, base_url=request.build_absolute_uri('/'))
-            html.write_pdf(output_file)
-            temp_file_path = output_file.name
-
-        return temp_file_path
-
-    def send_visa_letter_email(self, request, visa_letter, pdf_file_path):
-        try:
-            subject = f"PyCon Africa 2025 - Your Visa Invitation Letter"
-
-            message = f"""Dear {visa_letter.participant_name},
-
-            Your visa invitation letter for PyCon Africa 2025 has been approved and is attached to this email.
-            
-            Please print this letter and include it with your visa application to the South African embassy/consulate.
-            
-            If you have any questions or need further assistance, please contact us at {settings.VISA_ORGANISER_CONTACT_EMAIL} or call {settings.VISA_ORGANISER_CONTACT_PHONE}.
-            
-            Best regards,
-            PyCon Africa 2025 Organizing Team"""
-
-            email = EmailMessage(
-                subject=subject,
-                body=message,
-                from_email=settings.VISA_ORGANISER_CONTACT_EMAIL,
-                to=[visa_letter.user.email],
-                reply_to=[settings.VISA_ORGANISER_CONTACT_EMAIL],
-            )
-
-            with open(pdf_file_path, 'rb') as pdf:
-                pdf_content = pdf.read()
-                email.attach(
-                    f'PyCon_Africa_2025_Visa_Letter_{visa_letter.participant_name}.pdf',
-                    pdf_content,
-                    'application/pdf'
-                )
-        
-            email.send(fail_silently=False)
-
-            if os.path.exists(pdf_file_path):
-                os.unlink(pdf_file_path)
-
-            return True
-
-        except Exception as e:
-            if os.path.exists(pdf_file_path):
-                os.unlink(pdf_file_path)
-            raise e
-
-    def send_rejection_email(self, request, visa_letter, rejection_reason):
-        try:
-            subject = f"PyCon Africa 2025 - Visa Invitation Letter Request"
-
-            message = f"""Dear {visa_letter.participant_name},
-
-            Thank you for your interest in attending PyCon Africa 2025.
-            
-            We regret to inform you that your request for a visa invitation letter has been declined for the following reason:
-            
-            {rejection_reason}
-            
-            If you believe this decision was made in error or if you have additional documentation to support your request, please contact us at {visa_letter.contact_email}.
-            
-            Best regards,
-            PyCon Africa 2025 Organizing Team"""
-
-            email = EmailMessage(
-                subject=subject,
-                body=message,
-                from_email=settings.VISA_ORGANISER_CONTACT_EMAIL,
-                to=[visa_letter.user.email],
-                reply_to=[settings.VISA_ORGANISER_CONTACT_EMAIL],
-            )
-
-            email.send(fail_silently=False)
-
-            return True
-
-        except Exception as e:
-            raise e
+    approve_and_send_email.short_description = "Approve selected visa letters"
