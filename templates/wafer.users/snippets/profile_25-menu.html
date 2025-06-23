@@ -31,12 +31,18 @@
 
   {# Grant Application Section #}
   {% if GRANT_APPLICATIONS_OPEN %}
-  {% if not object.grant_application %}
-  <a href="{% url 'grants:application_create' %}" class="btn btn-secondary w-full">{% trans 'Apply for Grant' %}</a>
+
+  {% if object.grant_application %}
+
+  <a href="{% url 'grants:application_detail' %}" class="btn btn-secondary w-full">
+    {% trans 'View My Grant Application' %}
+  </a>
   {% else %}
-  <a href="{% url 'grants:application_detail' %}" class="btn btn-secondary w-full">{% trans 'View My Grant Application'
-    %}</a>
+
+  <a href="{% url 'grants:application_create' %}" class="btn btn-secondary w-full">{% trans 'Apply for Grant' %}</a>
+
   {% endif %}
+
   {% endif %}
 
 </nav>
