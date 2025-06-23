@@ -95,7 +95,7 @@
                                         <li>Your visa letter was approved
                                             on {{ latest_letter.approved_at|date:"F d, Y H:i" }}.
                                         </li>
-                                        <li>The letter has been sent to {{ latest_letter.email }}.</li>
+                                        <li>The letter has been sent to {{ latest_letter.user.email }}.</li>
                                         <li>Please check your email inbox (and spam folder).</li>
                                     </ul>
                                 </div>
