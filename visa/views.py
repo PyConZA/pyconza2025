@@ -1,12 +1,13 @@
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail.message import EmailMessage
+from django.http.response import Http404
+from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.utils import timezone
 from django.views.generic import CreateView
 
 from visa.forms.visa_letter import VisaLetterForm
-
 from .models import VisaInvitationLetter
 
 
@@ -39,24 +40,18 @@ class VisaLetterCreateView(LoginRequiredMixin, CreateView):
         context["info_message"] = self.request.session.pop("visa_info", None)
 
         try:
-            existing_letter = self.request.user.visa_letter
+            existing_letter = get_object_or_404(VisaInvitationLetter, user=self.request.user)
             context["existing_letter"] = existing_letter
             context["has_existing_letter"] = True
             context["latest_letter"] = existing_letter
-        except VisaInvitationLetter.DoesNotExist:
+        except Http404:
             context["has_existing_letter"] = False
 
         return context
 
     def post(self, request, *args, **kwargs):
         if "resend_email" in request.POST:
-            try:
-                letter = request.user.visa_letter
-            except VisaInvitationLetter.DoesNotExist:
-                request.session["visa_error"] = (
-                    "We couldn't find your visa letter request."
-                )
-                return redirect(self.request.path)
+            letter = get_object_or_404(VisaInvitationLetter, user=request.user)
 
             if letter.status == "approved":
                 admin_email = EmailMessage(

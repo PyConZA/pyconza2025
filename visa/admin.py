@@ -136,40 +136,32 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
                     )
 
                 for letter in pending_letters:
-                    try:
-                        success, error_message = reject_visa_letter(
-                            request, letter, rejection_reason
-                        )
+                    success, error_message = reject_visa_letter(
+                        request, letter, rejection_reason
+                    )
 
-                        if success:
-                            success_count += 1
-                            if error_message:
-                                self.message_user(
-                                    request,
-                                    f"Rejected visa letter for {letter.participant_name} (status updated, but email failed: {error_message})",
-                                    level=messages.WARNING,
-                                )
-                            else:
-                                self.message_user(
-                                    request,
-                                    f"Successfully rejected visa letter for {letter.participant_name} and sent notification email.",
-                                    level=messages.SUCCESS,
-                                )
-                        else:
-                            error_count += 1
+                    if success:
+                        success_count += 1
+                        if error_message:
                             self.message_user(
                                 request,
-                                f"Failed to reject visa letter for {letter.participant_name}: {error_message}",
-                                level=messages.ERROR,
+                                f"Rejected visa letter for {letter.participant_name} (status updated, but email failed: {error_message})",
+                                level=messages.WARNING,
                             )
-
-                    except Exception as e:
+                        else:
+                            self.message_user(
+                                request,
+                                f"Successfully rejected visa letter for {letter.participant_name} and sent notification email.",
+                                level=messages.SUCCESS,
+                            )
+                    else:
                         error_count += 1
                         self.message_user(
                             request,
-                            f"Unexpected error processing {letter.participant_name}: {str(e)}",
+                            f"Failed to reject visa letter for {letter.participant_name}: {error_message}",
                             level=messages.ERROR,
                         )
+
                 if success_count > 0:
                     self.message_user(
                         request,

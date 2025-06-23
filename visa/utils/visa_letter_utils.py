@@ -176,38 +176,30 @@ def reject_visa_letter(request, visa_letter, rejection_reason):
     Reject a visa letter and send notification email.
     Returns (success: bool, error_message: str or None)
     """
+    if not hasattr(settings, "VISA_ORGANISER_CONTACT_EMAIL"):
+        return False, "VISA_ORGANISER_CONTACT_EMAIL not configured in settings"
+
+    if not settings.VISA_ORGANISER_CONTACT_EMAIL:
+        return False, "VISA_ORGANISER_CONTACT_EMAIL is empty in settings"
+
+    visa_letter.status = "rejected"
+    visa_letter.rejection_reason = rejection_reason
+    visa_letter.save(update_fields=["status", "rejection_reason"])
+
     try:
-        if not hasattr(settings, "VISA_ORGANISER_CONTACT_EMAIL"):
-            return False, "VISA_ORGANISER_CONTACT_EMAIL not configured in settings"
-
-        if not settings.VISA_ORGANISER_CONTACT_EMAIL:
-            return False, "VISA_ORGANISER_CONTACT_EMAIL is empty in settings"
-
-        visa_letter.status = "rejected"
-        visa_letter.rejection_reason = rejection_reason
-        visa_letter.save(update_fields=["status", "rejection_reason"])
-
-        email_sent = False
-        email_error = None
-        try:
-            email_sent = send_visa_rejection_email(
-                request, visa_letter, rejection_reason
-            )
-        except Exception as e:
-            email_error = str(e)
-            print(f"DEBUG: Email sending failed: {email_error}")
+        email_sent = send_visa_rejection_email(
+            request, visa_letter, rejection_reason
+        )
 
         if email_sent:
             visa_letter.email_sent_at = timezone.now()
             visa_letter.save(update_fields=["email_sent_at"])
-
-        if email_sent:
             return True, None
-        else:
-            return (
-                True,
-                f"Status updated but email failed: {email_error or 'Unknown email error'}",
-            )
+        return True, "Status updated but email sending failed"
 
-    except Exception as e:
-        return False, f"Error in reject_visa_letter: {str(e)}"
+    except (SMTPException, ConnectionError) as e:
+        return True, f"Status updated but email failed: {str(e)}"
+    except (OSError, IOError) as e:
+        return True, f"Status updated but email failed (file operation error): {str(e)}"
+    except ImportError as e:
+        return True, f"Status updated but email failed (template error): {str(e)}"
