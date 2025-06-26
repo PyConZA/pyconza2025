@@ -1,13 +1,12 @@
 from django.conf import settings
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.mail.message import EmailMessage
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import redirect
-from django.utils import timezone
-from django.views.generic import CreateView
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, UpdateView, DetailView
 
 from visa.forms.visa_letter import VisaLetterForm
-
-from .models import VisaInvitationLetter
+from visa.models import VisaInvitationLetter
 
 
 class VisaLetterCreateView(LoginRequiredMixin, CreateView):
@@ -15,66 +14,77 @@ class VisaLetterCreateView(LoginRequiredMixin, CreateView):
     form_class = VisaLetterForm
     template_name = "visa/visa_letter_form.html"
 
-    def get_success_url(self):
-        return self.request.path
+    def dispatch(self, request, *args, **kwargs):
+        if not getattr(settings, "VISA_LETTER_REQUESTS_OPEN", False):
+            messages.error(request, "Visa letter requests are currently closed.")
+            return redirect("wafer_user_profile", username=request.user.username)
+        
+        if hasattr(request.user, "visa_letter"):
+            messages.info(request, "You already have a visa letter request.")
+            return redirect("visa:visa_letter_detail")
+        
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        form.instance.status = "pending"
         response = super().form_valid(form)
-
-        self.request.session["visa_form_success"] = True
-
+        messages.success(
+            self.request,
+            "Your visa letter request has been submitted successfully. "
+            "You will receive an email once it has been reviewed."
+        )
         return response
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["current_datetime"] = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
-        context["current_user"] = self.request.user.username
+    def get_success_url(self):
+        return reverse_lazy("visa:visa_letter_detail")
 
-        context["form_submitted"] = self.request.session.pop("visa_form_success", False)
 
-        context["error_message"] = self.request.session.pop("visa_error", None)
-        context["success_message"] = self.request.session.pop("visa_success", None)
-        context["info_message"] = self.request.session.pop("visa_info", None)
+class VisaLetterUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = VisaInvitationLetter
+    form_class = VisaLetterForm
+    template_name = "visa/visa_letter_form.html"
 
+    def test_func(self):
+        return hasattr(self.request.user, "visa_letter")
+
+    def get_object(self, queryset=None):
+        return self.request.user.visa_letter
+
+    def dispatch(self, request, *args, **kwargs):
+        if not getattr(settings, "VISA_LETTER_REQUESTS_OPEN", False):
+            messages.error(request, "Visa letter requests are currently closed.")
+            return redirect("wafer_user_profile", username=request.user.username)
+        
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(
+            self.request,
+            "Your visa letter request has been updated successfully."
+        )
+        return response
+
+    def get_success_url(self):
+        return reverse_lazy("visa:visa_letter_detail")
+
+
+class VisaLetterDetailView(LoginRequiredMixin, DetailView):
+    model = VisaInvitationLetter
+    template_name = "visa/visa_letter_detail.html"
+    context_object_name = "visa_letter"
+
+    def get_object(self, queryset=None):
+        return self.request.user.visa_letter
+    
+    def get(self, request, *args, **kwargs):
         try:
-            existing_letter = self.request.user.visa_letter
-            context["existing_letter"] = existing_letter
-            context["has_existing_letter"] = True
-            context["latest_letter"] = existing_letter
+            self.object = self.get_object()
+            context = self.get_context_data(object=self.object)
+            return self.render_to_response(context)
         except VisaInvitationLetter.DoesNotExist:
-            context["has_existing_letter"] = False
-
-        return context
-
-    def post(self, request, *args, **kwargs):
-        if "resend_email" in request.POST:
-            try:
-                letter = request.user.visa_letter
-            except VisaInvitationLetter.DoesNotExist:
-                request.session["visa_error"] = (
-                    "We couldn't find your visa letter request."
-                )
-                return redirect(self.request.path)
-
-            if letter.status == "approved":
-                admin_email = EmailMessage(
-                    subject=f"Visa Letter Resend Request: {letter.full_name}",
-                    body=f"The user {request.user.username} ({request.user.email}) has requested a resend of their approved visa letter.\n\nLetter ID: {letter.id}\nParticipant: {letter.full_name}\nEmail: {request.user.email}",
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    to=["team@pycon.africa"],
-                )
-                admin_email.send(fail_silently=False)
-
-                request.session["visa_success"] = (
-                    "Your request has been received. The team will resend your visa letter shortly."
-                )
-            else:
-                request.session["visa_info"] = (
-                    f"Your visa letter is still {letter.get_status_display()}. Please wait for it to be approved first."
-                )
-
-            return redirect(self.request.path)
-
-        return super().post(request, *args, **kwargs)
+            messages.error(
+                request,
+                "You don't have a visa letter request yet."
+            )
+            return redirect("visa:visa_letter_form")

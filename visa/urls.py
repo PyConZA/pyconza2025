@@ -1,9 +1,11 @@
 from django.urls import path
 
-from .views import VisaLetterCreateView
+from visa.views import VisaLetterCreateView, VisaLetterDetailView, VisaLetterUpdateView
 
-app_name = 'visa'
+app_name = "visa"
 
 urlpatterns = [
-    path('visa-application/', VisaLetterCreateView.as_view(), name='visa_letter_form'),
+    path("", VisaLetterCreateView.as_view(), name="visa_letter_form"),
+    path("letter/", VisaLetterDetailView.as_view(), name="visa_letter_detail"),
+    path("letter/edit/", VisaLetterUpdateView.as_view(), name="visa_letter_edit"),
 ]

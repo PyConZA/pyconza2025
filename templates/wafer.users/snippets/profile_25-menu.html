@@ -48,7 +48,7 @@
 
   {% if object.visa_letter %}
   <a href="{% url 'visa:visa_letter_form' %}" class="btn btn-secondary w-full">
-    {% trans 'Edit Visa Letter Request' %}
+    {% trans 'View Visa Letter Request' %}
   </a>
   {% else %}
   <a href="{% url 'visa:visa_letter_form' %}" class="btn btn-secondary w-full">{% trans 'Request Visa Letter' %}</a>

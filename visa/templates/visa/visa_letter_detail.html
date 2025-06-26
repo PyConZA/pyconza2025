@@ -1,0 +1,84 @@
+{% extends "wafer/base.html" %}
+
+{% block title %}Visa Letter Request Details{% endblock %}
+{% block page_title %}Visa Letter Request Details{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-4">
+    <div class="max-w-4xl mx-auto">
+        <div class="flex justify-between items-start pb-3">
+            {% if VISA_LETTER_REQUESTS_OPEN %}
+            <a href="{% url 'visa:visa_letter_edit' %}" class="btn">Edit Visa Letter Request</a>
+            {% endif %}
+        </div>
+
+        <div class="py-3">
+            <h3 class="text-xl font-semibold">Request Status</h3>
+            <div class="pt-2">
+                <span class="px-3 py-1 rounded-full text-sm font-medium
+                    {% if visa_letter.status == 'approved' %}bg-green-100 text-green-800
+                    {% elif visa_letter.status == 'rejected' %}bg-red-100 text-red-800
+                    {% else %}bg-yellow-100 text-yellow-800{% endif %}">
+                    {{ visa_letter.get_status_display }}
+                </span>
+            </div>
+            <div class="pt-2 text-sm text-gray-600">Submitted on: {{ visa_letter.created_at|date:"F d, Y" }}</div>
+            {% if visa_letter.approved_at %}
+            <div class="pt-1 text-sm text-gray-600">Approved on: {{ visa_letter.approved_at|date:"F d, Y" }}</div>
+            {% endif %}
+        </div>
+
+        {% if visa_letter.status == 'rejected' and visa_letter.rejection_reason %}
+        <div class="py-3">
+            <h3 class="text-xl font-semibold text-red-600">Rejection Reason</h3>
+            <div class="pt-2 bg-red-50 border border-red-200 p-4 rounded-lg">
+                {{ visa_letter.rejection_reason|linebreaks }}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="py-3">
+            <h3 class="text-xl font-semibold">Personal Information</h3>
+            <div class="grid md:grid-cols-2 gap-4 pt-2">
+                <div>
+                    <strong>Full Name:</strong> {{ visa_letter.full_name }}
+                </div>
+                <div>
+                    <strong>Passport Number:</strong> {{ visa_letter.passport_number }}
+                </div>
+            </div>
+            <div class="pt-2">
+                <strong>Country of Origin:</strong> {{ visa_letter.country_of_origin.name }}
+            </div>
+        </div>
+
+        <div class="py-3">
+            <h3 class="text-xl font-semibold">Embassy Information</h3>
+            <div class="pt-2">
+                <strong>Embassy/Consulate Address:</strong>
+                <div class="mt-1 whitespace-pre-line">{{ visa_letter.embassy_address }}</div>
+            </div>
+        </div>
+
+        {% if visa_letter.status == 'pending' %}
+        <div class="py-3">
+            <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                <p class="text-sm text-blue-800">
+                    Your visa letter request is being reviewed by our team. 
+                    Once approved, the visa letter will be sent to your email address.
+                </p>
+            </div>
+        </div>
+        {% elif visa_letter.status == 'approved' %}
+        <div class="py-3">
+            <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+                <p class="text-sm text-green-800">
+                    Your visa letter has been approved and sent to your email address. 
+                    Please check your inbox for the letter.
+                </p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

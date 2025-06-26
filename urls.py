@@ -32,7 +32,7 @@ urlpatterns = [
     re_path(r"^opportunity_grants/", include("grants.urls")),
     path("__reload__/", include("django_browser_reload.urls")),
     path("", include("website.urls")),
-    path("", include("visa.urls")),
+    path("visa_letters/", include("visa.urls")),
     path("grants/", include("grants.urls")),
 ]
 
