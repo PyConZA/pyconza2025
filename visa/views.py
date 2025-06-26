@@ -60,8 +60,8 @@ class VisaLetterCreateView(LoginRequiredMixin, CreateView):
 
             if letter.status == "approved":
                 admin_email = EmailMessage(
-                    subject=f"Visa Letter Resend Request: {letter.participant_name}",
-                    body=f"The user {request.user.username} ({request.user.email}) has requested a resend of their approved visa letter.\n\nLetter ID: {letter.id}\nParticipant: {letter.participant_name}\nEmail: {request.user.email}",
+                    subject=f"Visa Letter Resend Request: {letter.full_name}",
+                    body=f"The user {request.user.username} ({request.user.email}) has requested a resend of their approved visa letter.\n\nLetter ID: {letter.id}\nParticipant: {letter.full_name}\nEmail: {request.user.email}",
                     from_email=settings.DEFAULT_FROM_EMAIL,
                     to=["team@pycon.africa"],
                 )

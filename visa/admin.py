@@ -24,13 +24,13 @@ class RejectionForm(forms.Form):
 @admin.register(VisaInvitationLetter)
 class VisaInvitationLetterAdmin(admin.ModelAdmin):
     list_display = (
-        "participant_name",
+        "full_name",
         "country_of_origin",
         "status",
         "created_at",
     )
     list_filter = ("status", "country_of_origin")
-    search_fields = ("participant_name", "passport_number", "country_of_origin")
+    search_fields = ("full_name", "passport_number", "country_of_origin")
     date_hierarchy = "created_at"
     actions = ["approve_and_send_email", "reject_visa_letters"]
     readonly_fields = (
@@ -39,6 +39,7 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
         "email_sent_at",
         "approved_at",
         "approved_by",
+        "status",
     )
 
     fieldsets = (
@@ -58,17 +59,10 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
         ),
         (
             "Participant Information",
-            {"fields": ("participant_name", "passport_number", "country_of_origin")},
+            {"fields": ("full_name", "passport_number", "country_of_origin")},
         ),
         ("Embassy Information", {"fields": ("embassy_address",)}),
     )
-
-    def save_model(self, request, obj, form, change):
-        """
-        Simplified save_model - only handles basic model saving.
-        Email sending logic moved to explicit admin actions.
-        """
-        super().save_model(request, obj, form, change)
 
     def approve_and_send_email(self, request, queryset):
         """Approve selected visa letters and send approval emails."""
@@ -88,14 +82,14 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
                 success_count += 1
                 self.message_user(
                     request,
-                    f"Visa letter for {letter.participant_name} approved and email sent.",
+                    f"Visa letter for {letter.full_name} approved and email sent.",
                     level=messages.SUCCESS,
                 )
             else:
                 error_count += 1
                 self.message_user(
                     request,
-                    f"Error processing visa letter for {letter.participant_name}: {error_message}",
+                    f"Error processing visa letter for {letter.full_name}: {error_message}",
                     level=messages.ERROR,
                 )
 
@@ -146,20 +140,20 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
                             if error_message:
                                 self.message_user(
                                     request,
-                                    f"Rejected visa letter for {letter.participant_name} (status updated, but email failed: {error_message})",
+                                    f"Rejected visa letter for {letter.full_name} (status updated, but email failed: {error_message})",
                                     level=messages.WARNING,
                                 )
                             else:
                                 self.message_user(
                                     request,
-                                    f"Successfully rejected visa letter for {letter.participant_name} and sent notification email.",
+                                    f"Successfully rejected visa letter for {letter.full_name} and sent notification email.",
                                     level=messages.SUCCESS,
                                 )
                         else:
                             error_count += 1
                             self.message_user(
                                 request,
-                                f"Failed to reject visa letter for {letter.participant_name}: {error_message}",
+                                f"Failed to reject visa letter for {letter.full_name}: {error_message}",
                                 level=messages.ERROR,
                             )
 
@@ -167,7 +161,7 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
                         error_count += 1
                         self.message_user(
                             request,
-                            f"Unexpected error processing {letter.participant_name}: {str(e)}",
+                            f"Unexpected error processing {letter.full_name}: {str(e)}",
                             level=messages.ERROR,
                         )
                 if success_count > 0:

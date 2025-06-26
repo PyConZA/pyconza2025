@@ -32,7 +32,10 @@ class VisaInvitationLetter(models.Model):
     email_sent_at = models.DateTimeField(null=True, blank=True)
     rejection_reason = models.TextField(blank=True, null=True)
 
-    participant_name = models.CharField(max_length=255)
+    full_name = models.CharField(
+        max_length=255,
+        help_text="Full name as seen on your passport",
+    )
     passport_number = models.CharField(max_length=50)
     country_of_origin = CountryField(
         blank_label="Select Country",
@@ -42,7 +45,7 @@ class VisaInvitationLetter(models.Model):
     embassy_address = models.TextField(default=settings.VISA_DEFAULT_EMBASSY_ADDRESS)
 
     def __str__(self):
-        return f"Visa Letter for {self.participant_name} ({self.get_status_display()})"
+        return f"Visa Letter for {self.full_name} ({self.get_status_display()})"
 
     class Meta:
         ordering = ["-created_at"]

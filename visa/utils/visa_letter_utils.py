@@ -21,7 +21,7 @@ def generate_visa_letter_pdf(request, visa_letter):
 
     context = {
         "current_date": current_date,
-        "participant_name": visa_letter.participant_name,
+        "full_name": visa_letter.full_name,
         "passport_number": visa_letter.passport_number,
         "country_of_origin": visa_letter.country_of_origin.name,
         "registration_type": registration_type,
@@ -53,7 +53,7 @@ def send_visa_approval_email(request, visa_letter, pdf_file_path):
         subject = f"PyCon Africa 2025 - Your Visa Invitation Letter"
 
         context = {
-            "participant_name": visa_letter.participant_name,
+            "full_name": visa_letter.full_name,
             "conference_name": settings.CONFERENCE_NAME,
             "conference_dates": settings.CONFERENCE_DATES,
             "conference_location": settings.CONFERENCE_LOCATION,
@@ -75,7 +75,7 @@ def send_visa_approval_email(request, visa_letter, pdf_file_path):
         with open(pdf_file_path, "rb") as pdf:
             pdf_content = pdf.read()
             email.attach(
-                f"PyCon_Africa_2025_Visa_Letter_{visa_letter.participant_name}.pdf",
+                f"PyCon_Africa_2025_Visa_Letter_{visa_letter.full_name}.pdf",
                 pdf_content,
                 "application/pdf",
             )
@@ -96,7 +96,7 @@ def send_visa_rejection_email(request, visa_letter, rejection_reason):
         subject = f"PyCon Africa 2025 - Visa Invitation Letter Request"
 
         context = {
-            "participant_name": visa_letter.participant_name,
+            "full_name": visa_letter.full_name,
             "rejection_reason": rejection_reason,
             "conference_name": getattr(
                 settings, "CONFERENCE_NAME", "PyCon Africa 2025"
@@ -120,7 +120,7 @@ def send_visa_rejection_email(request, visa_letter, rejection_reason):
             <html>
             <body>
                 <h2>PyCon Africa 2025 - Visa Invitation Letter Request</h2>
-                <p>Dear {visa_letter.participant_name},</p>
+                <p>Dear {visa_letter.full_name},</p>
                 <p>Unfortunately, we cannot provide a visa invitation letter for your request.</p>
                 <p>Reason: {rejection_reason}</p>
                 <p>If you have any questions, please contact us at {settings.VISA_ORGANISER_CONTACT_EMAIL}</p>

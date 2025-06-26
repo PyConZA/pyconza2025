@@ -10,7 +10,7 @@ class VisaLetterForm(forms.ModelForm):
     class Meta:
         model = VisaInvitationLetter
         fields = [
-            "participant_name",
+            "full_name",
             "passport_number",
             "country_of_origin",
             "embassy_address",
@@ -40,7 +40,7 @@ class VisaLetterForm(forms.ModelForm):
             HTML('<h3 class="font-bold text-xl mb-4">Personal Information</h3>'),
             Div(
                 Div(
-                    Field("participant_name", wrapper_class="mb-4"),
+                    Field("full_name", wrapper_class="mb-4"),
                     Field("passport_number", wrapper_class="mb-4"),
                     css_class="md:col-span-1",
                 ),
@@ -65,9 +65,9 @@ class VisaLetterForm(forms.ModelForm):
             HTML('<h3 class="font-bold text-xl mb-4 mt-8">Embassy Information</h3>'),
             Field("embassy_address", wrapper_class="mb-4"),
             HTML(
-                '<p class="text-sm text-gray-500">' \
-                'Please provide the complete address of the South African' \
-                'Embassy/Consulate where you will submit your visa application</p>'
+                '<p class="text-sm text-gray-500">'
+                "Please provide the complete address of the South African"
+                "Embassy/Consulate where you will submit your visa application</p>"
             ),
             Div(
                 Submit("submit", "Request Visa Letter", css_class="btn mt-6"),
@@ -80,7 +80,7 @@ class VisaLetterForm(forms.ModelForm):
             ),
             Field("country_of_origin", wrapper_class="hidden"),
             HTML(
-            """
+                """
             <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const searchInput = document.getElementById('country-search');

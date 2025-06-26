@@ -197,35 +197,41 @@
             <img src="https://za.pycon.org/static/img/header-logo-w-2025.png" alt="PyCon Africa 2025 Logo" class="logo">
             <p class="header-text">Visa Invitation Letter</p>
         </div>
-        
+
         <div class="content">
             <div class="greeting">
-                Dear {{ participant_name }},
+                Dear {{ full_name }},
             </div>
 
             <div class="main-message">
                 <h3>🎉 Great News! Your Visa Letter Request Has Been Approved</h3>
-                <p>Your visa invitation letter for PyCon Africa 2025 has been reviewed and approved by our organizing team.</p>
+                <p>Your visa invitation letter for PyCon Africa 2025 has been reviewed and approved by our organizing
+                    team.</p>
             </div>
 
             <div class="attachment-info">
                 <div class="attachment-icon">📎</div>
-                <p class="attachment-text">Your official visa invitation letter is attached to this email as a PDF document.</p>
+                <p class="attachment-text">Your official visa invitation letter is attached to this email as a PDF
+                    document.</p>
             </div>
 
             <div class="instructions">
                 <h3>Next Steps for Your Visa Application:</h3>
                 <ul>
                     <li><strong>Download and Print:</strong> Save the attached PDF and print it on white paper</li>
-                    <li><strong>Submit with Application:</strong> Include this letter with your visa application to the South African embassy/consulate</li>
-                    <li><strong>Keep Original Safe:</strong> Store the original letter safely as you may need it for travel</li>
-                    <li><strong>Check Requirements:</strong> Verify any additional documents required by your local embassy</li>
+                    <li><strong>Submit with Application:</strong> Include this letter with your visa application to the
+                        South African embassy/consulate</li>
+                    <li><strong>Keep Original Safe:</strong> Store the original letter safely as you may need it for
+                        travel</li>
+                    <li><strong>Check Requirements:</strong> Verify any additional documents required by your local
+                        embassy</li>
                 </ul>
             </div>
 
             <div class="important-note">
                 <h3>Important Reminder</h3>
-                <p>Please ensure you apply for your visa well in advance of the conference dates ({{ conference_dates }}) as processing times may vary by embassy.</p>
+                <p>Please ensure you apply for your visa well in advance of the conference dates ({{ conference_dates
+                    }}) as processing times may vary by embassy.</p>
             </div>
 
             <div class="contact-section">
@@ -240,7 +246,8 @@
 
             <div class="divider"></div>
 
-            <p>We're excited to welcome you to Johannesburg for PyCon Africa 2025! This promises to be an incredible gathering of the Python community from across Africa and beyond.</p>
+            <p>We're excited to welcome you to Johannesburg for PyCon Africa 2025! This promises to be an incredible
+                gathering of the Python community from across Africa and beyond.</p>
 
             <p>Thank you for being part of this amazing event. We look forward to seeing you at the conference!</p>
 
@@ -249,7 +256,7 @@
                 <p class="team-name">PyCon Africa 2025 Organizing Team</p>
             </div>
         </div>
-        
+
         <div class="footer">
             <p>© {% now "Y" %} PyCon Africa. All rights reserved.</p>
             <p>{{ conference_name }} | {{ conference_dates }} | {{ conference_location }}</p>
