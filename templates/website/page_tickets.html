@@ -1,0 +1,38 @@
+{% extends "wafer/base.html" %}
+{% block title %}Tickets - {{ WAFER_CONFERENCE_NAME }}{% endblock %}
+{% block container_class %}tickets{% endblock %}
+
+{% block page_title %}
+Tickets
+{% endblock%}
+
+{% block content %}
+
+<section class="space-y-5">
+
+
+
+
+    <div class="alert alert-primary">
+
+        <p><strong>Please Note:</strong> All ticket prices are in South African Rands (R). We included a rough USD price
+            estimate for
+            each type of ticket, but the exchange rate fluctuates. You can check the latest exchange rate <a
+                href="https://www.google.com/search?q=usd+to+zar&oq=usd+to+zar" target="_blank">here</a></p>
+
+
+    </div>
+
+    <div class="card">
+        PyCon Africa aims to open as many doors as possible by providing financial assistance to people who cannot
+        afford to attend on their own. If you are in a position to make a donation, please consider purchasing a
+        donation ticket. It will make a big difference to someone's life.
+    </div>
+
+
+    <iframe src="https://www.quicket.co.za/embed.aspx?productid=321686&productname=pycon-africa-2025&embed=true&v=2"
+        frameborder="0" scrolling="yes" width="100%" height="600" class=""></iframe>
+
+</section>
+
+{% endblock%}

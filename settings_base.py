@@ -1,5 +1,6 @@
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
+from django.urls import reverse_lazy
 
 from wafer.settings import *
 
@@ -131,7 +132,13 @@ SOCIAL_LINKS = [
 ]
 
 
-# WAFER_MENUS += ({"menu": "sponsors", "label": _("Sponsors"), "items": []},)
+WAFER_MENUS += (
+    {
+        "menu": "tickets",
+        "label": _("Tickets"),
+        "items": [{"url": reverse_lazy("page_tickets"), "label": _("Buy Tickets")}],
+    },
+)
 
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
