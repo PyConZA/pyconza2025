@@ -58,10 +58,14 @@ class VisaLetterUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
+        # Reset status to pending when user edits their visa letter
+        form.instance.status = "pending"
+        
         response = super().form_valid(form)
         messages.success(
             self.request,
-            "Your visa letter request has been updated successfully."
+            "Your visa letter request has been updated successfully. "
+            "It will be reviewed again by our team."
         )
         return response
 

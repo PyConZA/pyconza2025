@@ -205,6 +205,78 @@ class VisaLetterUserFlowTests(TestCase):
         self.assertEqual(visa_letter.passport_number, 'CD7890123')
         self.assertEqual(visa_letter.country_of_origin, 'CA')
 
+    def test_update_form_resets_status_to_pending(self):
+        """Test that editing a visa letter resets status to pending"""
+        # Create visa letter with approved status
+        visa_letter = VisaInvitationLetter.objects.create(
+            user=self.user,
+            full_name="John Doe",
+            passport_number="AB1234567",
+            country_of_origin="US",
+            embassy_address="123 Embassy Street",
+            status="approved"  # Start with approved status
+        )
+        
+        # Verify initial status
+        self.assertEqual(visa_letter.status, "approved")
+        
+        # Update the visa letter
+        url = reverse('visa:visa_letter_edit')
+        form_data = {
+            'full_name': 'John Doe',  # Same name
+            'passport_number': 'AB1234567',  # Same passport
+            'country_of_origin': 'US',  # Same country
+            'embassy_address': '456 Different Embassy Street'  # Only change address
+        }
+        
+        response = self.client.post(url, data=form_data)
+        
+        # Should redirect to detail view
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('visa:visa_letter_detail'))
+        
+        # Check that status was reset to pending
+        visa_letter.refresh_from_db()
+        self.assertEqual(visa_letter.status, "pending")
+        self.assertEqual(visa_letter.embassy_address, "456 Different Embassy Street")
+
+    def test_update_form_resets_status_from_rejected_to_pending(self):
+        """Test that editing a rejected visa letter resets status to pending"""
+        # Create visa letter with rejected status
+        visa_letter = VisaInvitationLetter.objects.create(
+            user=self.user,
+            full_name="John Doe",
+            passport_number="AB1234567",
+            country_of_origin="US",
+            embassy_address="123 Embassy Street",
+            status="rejected",
+            rejection_reason="Incomplete documentation"
+        )
+        
+        # Verify initial status
+        self.assertEqual(visa_letter.status, "rejected")
+        self.assertIsNotNone(visa_letter.rejection_reason)
+        
+        # Update the visa letter
+        url = reverse('visa:visa_letter_edit')
+        form_data = {
+            'full_name': 'John Updated Doe',
+            'passport_number': 'AB1234567',
+            'country_of_origin': 'US',
+            'embassy_address': '123 Embassy Street'
+        }
+        
+        response = self.client.post(url, data=form_data)
+        
+        # Should redirect to detail view
+        self.assertEqual(response.status_code, 302)
+        
+        # Check that status was reset to pending and rejection reason cleared
+        visa_letter.refresh_from_db()
+        self.assertEqual(visa_letter.status, "pending")
+        self.assertEqual(visa_letter.full_name, "John Updated Doe")
+        # Note: rejection_reason should remain as it's useful historical data
+
     def test_navigation_flow_new_user(self):
         """Test complete navigation flow for user without visa letter"""
         # User starts by going to detail view (shouldn't exist)
@@ -256,6 +328,32 @@ class VisaLetterUserFlowTests(TestCase):
         self.assertEqual(len(messages), 1)
         self.assertIn('submitted successfully', str(messages[0]))
         self.assertIn('email once it has been reviewed', str(messages[0]))
+
+    def test_update_success_message_includes_review_notice(self):
+        """Test that update success message mentions it will be reviewed again"""
+        # Create visa letter first
+        VisaInvitationLetter.objects.create(
+            user=self.user,
+            full_name="John Doe",
+            passport_number="AB1234567",
+            country_of_origin="US",
+            embassy_address="123 Embassy Street"
+        )
+        
+        url = reverse('visa:visa_letter_edit')
+        form_data = {
+            'full_name': 'Jane Smith',
+            'passport_number': 'CD7890123',
+            'country_of_origin': 'CA',
+            'embassy_address': '456 Embassy Avenue'
+        }
+        
+        response = self.client.post(url, data=form_data, follow=True)
+        
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertIn('updated successfully', str(messages[0]))
+        self.assertIn('reviewed again by our team', str(messages[0]))
 
     def test_buttons_lead_to_correct_views(self):
         """Test that buttons in templates lead to correct URLs"""
