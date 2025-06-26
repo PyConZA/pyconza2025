@@ -7,6 +7,7 @@ from markitup.widgets import MarkItUpWidget
 
 
 class TalkForm(wafer.talks.forms.TalkForm):
+    # TODO: Do we need this? Can we use the default wafer form?
     class Meta:
         model = Talk
         fields = (
@@ -23,11 +24,7 @@ class TalkForm(wafer.talks.forms.TalkForm):
         )
         widgets = {
             # "abstract": forms.Textarea(attrs={"class": "input-xxlarge"}),
-            "abstract": MarkItUpWidget(
-                attrs={
-                    "class": "input-xxlarge textarea appearance-none border leading-normal block w-full border-gray-300 bg-white py-2 px-4 text-gray-700 rounded-lg focus:outline-none"
-                }
-            ),
+            "abstract": MarkItUpWidget(),
             "notes": forms.Textarea(),
             "authors": Select2MultipleWidget,
         }
