@@ -9,16 +9,31 @@ from visa.forms.visa_letter import VisaLetterForm
 from visa.models import VisaInvitationLetter
 
 
-class VisaLetterCreateView(LoginRequiredMixin, CreateView):
+class VisaLetterFormMixin:
+    """Mixin providing common configuration for visa letter form views."""
     model = VisaInvitationLetter
     form_class = VisaLetterForm
     template_name = "visa/visa_letter_form.html"
 
-    def dispatch(self, request, *args, **kwargs):
+    def get_success_url(self):
+        return reverse_lazy("visa:visa_letter_detail")
+
+    def _check_requests_open(self, request):
+        """Check if visa letter requests are open, redirect if not."""
         if not getattr(settings, "VISA_LETTER_REQUESTS_OPEN", False):
             messages.error(request, "Visa letter requests are currently closed.")
             return redirect("wafer_user_profile", username=request.user.username)
+        return None
+
+
+class VisaLetterCreateView(LoginRequiredMixin, VisaLetterFormMixin, CreateView):
+    def dispatch(self, request, *args, **kwargs):
+        # Check if requests are open
+        redirect_response = self._check_requests_open(request)
+        if redirect_response:
+            return redirect_response
         
+        # Check if user already has a visa letter
         if hasattr(request.user, "visa_letter"):
             messages.info(request, "You already have a visa letter request.")
             return redirect("visa:visa_letter_detail")
@@ -35,15 +50,8 @@ class VisaLetterCreateView(LoginRequiredMixin, CreateView):
         )
         return response
 
-    def get_success_url(self):
-        return reverse_lazy("visa:visa_letter_detail")
 
-
-class VisaLetterUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = VisaInvitationLetter
-    form_class = VisaLetterForm
-    template_name = "visa/visa_letter_form.html"
-
+class VisaLetterUpdateView(LoginRequiredMixin, UserPassesTestMixin, VisaLetterFormMixin, UpdateView):
     def test_func(self):
         return hasattr(self.request.user, "visa_letter")
 
@@ -51,9 +59,10 @@ class VisaLetterUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return self.request.user.visa_letter
 
     def dispatch(self, request, *args, **kwargs):
-        if not getattr(settings, "VISA_LETTER_REQUESTS_OPEN", False):
-            messages.error(request, "Visa letter requests are currently closed.")
-            return redirect("wafer_user_profile", username=request.user.username)
+        # Check if requests are open
+        redirect_response = self._check_requests_open(request)
+        if redirect_response:
+            return redirect_response
         
         return super().dispatch(request, *args, **kwargs)
 
@@ -68,9 +77,6 @@ class VisaLetterUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             "It will be reviewed again by our team."
         )
         return response
-
-    def get_success_url(self):
-        return reverse_lazy("visa:visa_letter_detail")
 
 
 class VisaLetterDetailView(LoginRequiredMixin, DetailView):
