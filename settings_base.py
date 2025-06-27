@@ -1,5 +1,6 @@
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
+from django.urls import reverse_lazy
 
 from wafer.settings import *
 
@@ -132,7 +133,13 @@ SOCIAL_LINKS = [
 ]
 
 
-# WAFER_MENUS += ({"menu": "sponsors", "label": _("Sponsors"), "items": []},)
+WAFER_MENUS += (
+    {
+        "menu": "tickets",
+        "label": _("Tickets"),
+        "items": [{"url": reverse_lazy("page_tickets"), "label": _("Buy Tickets")}],
+    },
+)
 
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
@@ -185,3 +192,5 @@ VISA_DEFAULT_EMBASSY_ADDRESS = "Embassy of South Africa"
 WEBSITE_URL = "https://africa.pycon.org"
 CONFERENCE_LOCATION = "Johannesburg, South Africa"
 CONFERENCE_DATES = "8 - 12 October 2025"
+
+WAFER_TALK_REVIEW_SCORES = (0, 5)
