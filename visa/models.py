@@ -8,6 +8,7 @@ class VisaInvitationLetter(models.Model):
         ("pending", "Pending"),
         ("approved", "Approved"),
         ("rejected", "Rejected"),
+        ("permanently rejected", "Permanently Rejected"),
     )
 
     user = models.OneToOneField(
@@ -51,3 +52,10 @@ class VisaInvitationLetter(models.Model):
         ordering = ["-created_at"]
         verbose_name = "Visa Invitation Letter"
         verbose_name_plural = "Visa Invitation Letters"
+
+    def approve_and_send_email(self):
+        # set
+        pass
+
+    def reject_and_send_email(self):
+        pass
