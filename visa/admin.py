@@ -37,6 +37,7 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
     date_hierarchy = "created_at"
     # actions = ["approve_and_send_email", "reject_visa_letters"]
     readonly_fields = (
+        "user",
         "created_at",
         "updated_at",
         "email_sent_at",
@@ -63,7 +64,7 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
         ),
         (
             "Participant Information",
-            {"fields": ("full_name", "passport_number", "country_of_origin")},
+            {"fields": ("user", "full_name", "passport_number", "country_of_origin")},
         ),
         ("Embassy Information", {"fields": ("embassy_address",)}),
     )
