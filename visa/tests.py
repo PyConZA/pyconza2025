@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.contrib.messages import get_messages
 
 from visa.models import VisaInvitationLetter
+from django.contrib.messages.test import MessagesTestMixin
 
 
 @override_settings(VISA_LETTER_REQUESTS_OPEN=True)
@@ -520,7 +521,7 @@ class VisaLetterDownloadTests(TestCase):
 
 
 @override_settings(VISA_LETTER_REQUESTS_OPEN=True)
-class VisaLetterBulkAdminTests(TestCase):
+class VisaLetterBulkAdminTests(MessagesTestMixin, TestCase):
     def setUp(self):
         self.client = Client()
         self.admin_user = User.objects.create_superuser(
@@ -598,25 +599,12 @@ class VisaLetterBulkAdminTests(TestCase):
             status="pending",
         )
 
-        from visa.admin import VisaInvitationLetterAdmin
-        from django.contrib.admin.sites import AdminSite
-
-        admin_instance = VisaInvitationLetterAdmin(VisaInvitationLetter, AdminSite())
-
-        # Create mock request for POST to the form view
-        from django.test import RequestFactory
-
-        request = RequestFactory().post(
-            f"/admin/visa/visainvitationletter/bulk-reject/?ids={visa_letter1.id},{visa_letter2.id}",
-            {
-                "rejection_reason": "Missing required documents",
-                "permanently_reject": False,
-            },
-        )
-        request.user = self.admin_user
-        request.GET = {"ids": f"{visa_letter1.id},{visa_letter2.id}"}
-
-        response = admin_instance.bulk_reject_visa_letters_view(request)
+        # Use the test client instead of RequestFactory for proper message support
+        url = f"/admin/visa/visainvitationletter/bulk-reject/?ids={visa_letter1.id},{visa_letter2.id}"
+        response = self.client.post(url, {
+            "rejection_reason": "Missing required documents",
+            "permanently_reject": False,
+        })
 
         # Should redirect to admin changelist
         self.assertEqual(response.status_code, 302)
@@ -642,22 +630,12 @@ class VisaLetterBulkAdminTests(TestCase):
             status="pending",
         )
 
-        from visa.admin import VisaInvitationLetterAdmin
-        from django.contrib.admin.sites import AdminSite
-
-        admin_instance = VisaInvitationLetterAdmin(VisaInvitationLetter, AdminSite())
-
-        # Create mock request for POST with permanent rejection
-        from django.test import RequestFactory
-
-        request = RequestFactory().post(
-            f"/admin/visa/visainvitationletter/bulk-reject/?ids={visa_letter.id}",
-            {"rejection_reason": "Fraudulent application", "permanently_reject": True},
-        )
-        request.user = self.admin_user
-        request.GET = {"ids": str(visa_letter.id)}
-
-        response = admin_instance.bulk_reject_visa_letters_view(request)
+        # Use the test client for proper message support
+        url = f"/admin/visa/visainvitationletter/bulk-reject/?ids={visa_letter.id}"
+        response = self.client.post(url, {
+            "rejection_reason": "Fraudulent application", 
+            "permanently_reject": True
+        })
 
         # Should redirect to admin changelist
         self.assertEqual(response.status_code, 302)
@@ -678,21 +656,9 @@ class VisaLetterBulkAdminTests(TestCase):
             status="pending",
         )
 
-        from visa.admin import VisaInvitationLetterAdmin
-        from django.contrib.admin.sites import AdminSite
-
-        admin_instance = VisaInvitationLetterAdmin(VisaInvitationLetter, AdminSite())
-
-        # Create mock request for GET to display form
-        from django.test import RequestFactory
-
-        request = RequestFactory().get(
-            f"/admin/visa/visainvitationletter/bulk-reject/?ids={visa_letter.id}"
-        )
-        request.user = self.admin_user
-        request.GET = {"ids": str(visa_letter.id)}
-
-        response = admin_instance.bulk_reject_visa_letters_view(request)
+        # Use the test client for proper message support
+        url = f"/admin/visa/visainvitationletter/bulk-reject/?ids={visa_letter.id}"
+        response = self.client.get(url)
 
         # Should render form template
         self.assertEqual(response.status_code, 200)
