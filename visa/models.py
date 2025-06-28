@@ -119,7 +119,7 @@ class VisaInvitationLetter(models.Model):
             template_name = "visa/emails/permanently_rejected.html"
 
         html_message = render_to_string(template_name, context)
-        from_email = settings.VISA_ORGANISER_CONTACT_EMAIL
+        from_email = settings.DEFAULT_FROM_EMAIL
         email = EmailMultiAlternatives(
             subject=subject,
             body=html_message,
