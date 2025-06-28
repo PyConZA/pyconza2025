@@ -1,10 +1,10 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DetailView
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse
 from django.views import View
 from visa.utils.visa_letter_utils import generate_visa_letter_pdf
 
@@ -107,10 +107,7 @@ class VisaLetterDownloadView(LoginRequiredMixin, View):
     """View to download approved visa letter as PDF."""
 
     def get(self, request, *args, **kwargs):
-        try:
-            visa_letter = request.user.visa_letter
-        except VisaInvitationLetter.DoesNotExist:
-            raise Http404("Visa letter not found")
+        visa_letter = get_object_or_404(VisaInvitationLetter, user=request.user)
 
         # Only allow download for approved letters
         if visa_letter.status != "approved":

@@ -527,3 +527,183 @@ class VisaLetterDownloadTests(TestCase):
         
         # Should return 404 when no visa letter exists
         self.assertEqual(response.status_code, 404)
+
+
+@override_settings(VISA_LETTER_REQUESTS_OPEN=True)
+class VisaLetterBulkAdminTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.admin_user = User.objects.create_superuser(
+            username='admin',
+            email='admin@example.com',
+            password='adminpass123'
+        )
+        self.regular_user1 = User.objects.create_user(
+            username='user1',
+            email='user1@example.com',
+            password='userpass123'
+        )
+        self.regular_user2 = User.objects.create_user(
+            username='user2',
+            email='user2@example.com',
+            password='userpass123'
+        )
+        self.client.login(username='admin', password='adminpass123')
+
+    def test_bulk_reject_redirects_to_form_view(self):
+        """Test that bulk reject action redirects to form view"""
+        visa_letter1 = VisaInvitationLetter.objects.create(
+            user=self.regular_user1,
+            full_name="John Doe",
+            passport_number="AB1234567",
+            country_of_origin="US",
+            embassy_address="123 Embassy Street",
+            status="pending"
+        )
+        
+        visa_letter2 = VisaInvitationLetter.objects.create(
+            user=self.regular_user2,
+            full_name="Jane Smith",
+            passport_number="CD7890123",
+            country_of_origin="CA",
+            embassy_address="456 Embassy Avenue",
+            status="pending"
+        )
+
+        from visa.admin import VisaInvitationLetterAdmin
+        from django.contrib.admin.sites import AdminSite
+        
+        admin_instance = VisaInvitationLetterAdmin(VisaInvitationLetter, AdminSite())
+        queryset = VisaInvitationLetter.objects.filter(id__in=[visa_letter1.id, visa_letter2.id])
+        
+        # Create mock request
+        from django.test import RequestFactory
+        request = RequestFactory().get('/admin/')
+        request.user = self.admin_user
+        
+        response = admin_instance.bulk_action_reject_visa_letters(request, queryset)
+        
+        # Should redirect to bulk reject view with IDs
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('bulk-reject', response.url)
+        self.assertIn('ids=', response.url)
+        # Check that both IDs are present (order might vary)
+        self.assertIn(str(visa_letter1.id), response.url)
+        self.assertIn(str(visa_letter2.id), response.url)
+
+    def test_bulk_reject_form_view_processes_submission(self):
+        """Test that bulk reject form view processes valid form submission"""
+        visa_letter1 = VisaInvitationLetter.objects.create(
+            user=self.regular_user1,
+            full_name="John Doe",
+            passport_number="AB1234567",
+            country_of_origin="US",
+            embassy_address="123 Embassy Street",
+            status="pending"
+        )
+        
+        visa_letter2 = VisaInvitationLetter.objects.create(
+            user=self.regular_user2,
+            full_name="Jane Smith",
+            passport_number="CD7890123",
+            country_of_origin="CA",
+            embassy_address="456 Embassy Avenue",
+            status="pending"
+        )
+
+        from visa.admin import VisaInvitationLetterAdmin
+        from django.contrib.admin.sites import AdminSite
+        
+        admin_instance = VisaInvitationLetterAdmin(VisaInvitationLetter, AdminSite())
+        
+        # Create mock request for POST to the form view
+        from django.test import RequestFactory
+        request = RequestFactory().post(f'/admin/visa/visainvitationletter/bulk-reject/?ids={visa_letter1.id},{visa_letter2.id}', {
+            'rejection_reason': 'Missing required documents',
+            'permanently_reject': False
+        })
+        request.user = self.admin_user
+        request.GET = {'ids': f'{visa_letter1.id},{visa_letter2.id}'}
+        
+        response = admin_instance.bulk_reject_visa_letters_view(request)
+        
+        # Should redirect to admin changelist
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('visa/visainvitationletter/', response.url)
+        
+        # Check that both letters were rejected
+        visa_letter1.refresh_from_db()
+        visa_letter2.refresh_from_db()
+        
+        self.assertEqual(visa_letter1.status, 'rejected')
+        self.assertEqual(visa_letter1.rejection_reason, 'Missing required documents')
+        self.assertEqual(visa_letter2.status, 'rejected')
+        self.assertEqual(visa_letter2.rejection_reason, 'Missing required documents')
+
+    def test_bulk_reject_permanent_rejection(self):
+        """Test that bulk reject form view handles permanent rejection"""
+        visa_letter = VisaInvitationLetter.objects.create(
+            user=self.regular_user1,
+            full_name="John Doe",
+            passport_number="AB1234567",
+            country_of_origin="US",
+            embassy_address="123 Embassy Street",
+            status="pending"
+        )
+
+        from visa.admin import VisaInvitationLetterAdmin
+        from django.contrib.admin.sites import AdminSite
+        
+        admin_instance = VisaInvitationLetterAdmin(VisaInvitationLetter, AdminSite())
+        
+        # Create mock request for POST with permanent rejection
+        from django.test import RequestFactory
+        request = RequestFactory().post(f'/admin/visa/visainvitationletter/bulk-reject/?ids={visa_letter.id}', {
+            'rejection_reason': 'Fraudulent application',
+            'permanently_reject': True
+        })
+        request.user = self.admin_user
+        request.GET = {'ids': str(visa_letter.id)}
+        
+        response = admin_instance.bulk_reject_visa_letters_view(request)
+        
+        # Should redirect to admin changelist
+        self.assertEqual(response.status_code, 302)
+        
+        # Check that letter was permanently rejected
+        visa_letter.refresh_from_db()
+        self.assertEqual(visa_letter.status, 'permanently rejected')
+        self.assertEqual(visa_letter.rejection_reason, 'Fraudulent application')
+
+    def test_bulk_reject_form_view_displays_form(self):
+        """Test that bulk reject form view displays form on GET"""
+        visa_letter = VisaInvitationLetter.objects.create(
+            user=self.regular_user1,
+            full_name="John Doe",
+            passport_number="AB1234567",
+            country_of_origin="US",
+            embassy_address="123 Embassy Street",
+            status="pending"
+        )
+
+        from visa.admin import VisaInvitationLetterAdmin
+        from django.contrib.admin.sites import AdminSite
+        
+        admin_instance = VisaInvitationLetterAdmin(VisaInvitationLetter, AdminSite())
+        
+        # Create mock request for GET to display form
+        from django.test import RequestFactory
+        request = RequestFactory().get(f'/admin/visa/visainvitationletter/bulk-reject/?ids={visa_letter.id}')
+        request.user = self.admin_user
+        request.GET = {'ids': str(visa_letter.id)}
+        
+        response = admin_instance.bulk_reject_visa_letters_view(request)
+        
+        # Should render form template
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'rejection_reason')
+        self.assertContains(response, 'permanently_reject')
+        
+        # Check that letter status was not changed
+        visa_letter.refresh_from_db()
+        self.assertEqual(visa_letter.status, 'pending')

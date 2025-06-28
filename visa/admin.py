@@ -1,25 +1,23 @@
 from .models import VisaInvitationLetter
 from django.contrib import admin
+from django.contrib import messages
 from django import forms
-
-# from django.contrib import messages
-# from django.shortcuts import render
-# from django.http import HttpResponseRedirect
-# from django.urls import reverse
-
-# from .utils.visa_letter_utils import (
-#     approve_visa_letter,
-#     reject_visa_letter,
-# )
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import path, reverse
 
 
-# class RejectionForm(forms.Form):
-#     rejection_reason = forms.CharField(
-#         widget=forms.Textarea(attrs={"rows": 4, "cols": 60}),
-#         label="Rejection Reason",
-#         help_text="Please provide a clear reason for rejecting the visa letter request.",
-#         required=True,
-#     )
+class BulkRejectionForm(forms.Form):
+    rejection_reason = forms.CharField(
+        widget=forms.Textarea(attrs={"rows": 4, "cols": 60}),
+        label="Rejection Reason",
+        help_text="Please provide a clear reason for rejecting the visa letter request.",
+        required=True,
+    )
+    permanently_reject = forms.BooleanField(
+        help_text="If you check this box, users will NOT be able to request another letter",
+        required=False,
+    )
 
 
 class RejectionForm(forms.Form):
@@ -44,7 +42,7 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
     list_filter = ("status", "country_of_origin")
     search_fields = ("full_name", "passport_number", "country_of_origin")
     date_hierarchy = "created_at"
-    # actions = ["approve_and_send_email", "reject_visa_letters"]
+    actions = ["bulk_action_approve_and_send_email", "bulk_action_reject_visa_letters"]
     readonly_fields = (
         "user",
         "created_at",
@@ -79,8 +77,6 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
     )
 
     def response_change(self, request, obj):
-        from django.http import HttpResponseRedirect
-        from django.urls import reverse
 
         if "_approve" in request.POST:
             obj.approve_and_send_email(request=request)
@@ -101,7 +97,6 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
         return super().response_change(request, obj)
 
     def get_urls(self):
-        from django.urls import path
 
         urls = super().get_urls()
         custom_urls = [
@@ -115,12 +110,15 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
                 self.admin_site.admin_view(self.permanently_reject_visa_letter_view),
                 name="visa_visainvitationletter_permanently_reject",
             ),
+            path(
+                "bulk-reject/",
+                self.admin_site.admin_view(self.bulk_reject_visa_letters_view),
+                name="visa_visainvitationletter_bulk_reject",
+            ),
         ]
         return custom_urls + urls
 
     def reject_visa_letter_view(self, request, object_id):
-        from django.shortcuts import render, get_object_or_404, redirect
-        from django.contrib import messages
 
         visa_letter = get_object_or_404(VisaInvitationLetter, pk=object_id)
 
@@ -150,12 +148,9 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
             "is_permanent": False,
         }
 
-        return render(request, "visa/admin/reject_form.html", context)
+        return render(request, "visa/admin/bulk_reject_form.html", context)
 
     def permanently_reject_visa_letter_view(self, request, object_id):
-        from django.shortcuts import render, get_object_or_404, redirect
-        from django.contrib import messages
-        from django import forms
 
         visa_letter = get_object_or_404(VisaInvitationLetter, pk=object_id)
 
@@ -186,136 +181,64 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
 
         return render(request, "visa/admin/reject_form.html", context)
 
-    # def approve_and_send_email(self, request, queryset):
-    #     """Approve selected visa letters and send approval emails."""
-    #     if not queryset.exists():
-    #         self.message_user(
-    #             request, "No visa letters selected for approval.", level=messages.ERROR
-    #         )
-    #         return
+    def bulk_reject_visa_letters_view(self, request):
+        """Handle bulk rejection form view"""
+        ids_param = request.GET.get("ids", "")
+        if not ids_param:
+            return redirect("admin:visa_visainvitationletter_changelist")
 
-    #     success_count = 0
-    #     error_count = 0
+        ids = [int(id.strip()) for id in ids_param.split(",") if id.strip()]
+        queryset = VisaInvitationLetter.objects.filter(id__in=ids)
 
-    #     for letter in queryset.filter(status="pending"):
-    #         success, error_message = approve_visa_letter(request, letter)
+        if request.method == "POST":
+            form = BulkRejectionForm(request.POST)
+            if form.is_valid():
+                rejection_reason = form.cleaned_data["rejection_reason"]
+                permanently_reject = form.cleaned_data.get("permanently_reject", False)
 
-    #         if success:
-    #             success_count += 1
-    #             self.message_user(
-    #                 request,
-    #                 f"Visa letter for {letter.full_name} approved and email sent.",
-    #                 level=messages.SUCCESS,
-    #             )
-    #         else:
-    #             error_count += 1
-    #             self.message_user(
-    #                 request,
-    #                 f"Error processing visa letter for {letter.full_name}: {error_message}",
-    #                 level=messages.ERROR,
-    #             )
+                for letter in queryset.exclude(
+                    status__in=["permanently rejected", "rejected"]
+                ):
 
-    #     if success_count > 0:
-    #         self.message_user(
-    #             request,
-    #             f"Successfully approved and sent {success_count} visa letter(s).",
-    #             level=messages.SUCCESS,
-    #         )
+                    letter.reject_and_send_email(
+                        request=request,
+                        reason=rejection_reason,
+                        permanent=permanently_reject,
+                    )
 
-    #     if error_count > 0:
-    #         self.message_user(
-    #             request,
-    #             f"Failed to process {error_count} visa letter(s). Check for errors.",
-    #             level=messages.WARNING,
-    #         )
+                return redirect("admin:visa_visainvitationletter_changelist")
+        else:
+            form = BulkRejectionForm()
 
-    # def reject_visa_letters(self, request, queryset):
-    #     """Reject selected visa letters with reason and send rejection emails."""
-    #     if request.POST.get("post") == "yes":
-    #         form = RejectionForm(request.POST)
+        context = {
+            "title": f"Bulk Reject {queryset.count()} Visa Letters",
+            "queryset": queryset,
+            "opts": self.model._meta,
+            "form": form,
+        }
+        return render(request, "visa/admin/bulk_reject.html", context)
 
-    #         if form.is_valid():
-    #             rejection_reason = form.cleaned_data["rejection_reason"]
-    #             success_count = 0
-    #             error_count = 0
+    def bulk_action_approve_and_send_email(self, request, queryset):
+        """Approve selected visa letters and send approval emails."""
+        if not queryset.exists():
+            self.message_user(
+                request, "No visa letters selected for approval.", level=messages.ERROR
+            )
+            return
 
-    #             pending_letters = queryset.filter(status="pending")
+        for letter in queryset.exclude(status__in=["permanently rejected", "approved"]):
+            letter.approve_and_send_email(request)
 
-    #             if not pending_letters.exists():
-    #                 self.message_user(
-    #                     request,
-    #                     "No pending visa letters found in selection.",
-    #                     level=messages.WARNING,
-    #                 )
-    #                 return HttpResponseRedirect(
-    #                     reverse("admin:website_visainvitationletter_changelist")
-    #                 )
+    bulk_action_approve_and_send_email.short_description = (
+        "Approve selected visa letters"
+    )
 
-    #             for letter in pending_letters:
-    #                 try:
-    #                     success, error_message = reject_visa_letter(
-    #                         request, letter, rejection_reason
-    #                     )
+    def bulk_action_reject_visa_letters(self, request, queryset):
+        """Redirect to bulk rejection form with selected IDs"""
+        selected_ids = queryset.values_list("id", flat=True)
+        ids_param = ",".join(map(str, selected_ids))
+        return HttpResponseRedirect(
+            reverse("admin:visa_visainvitationletter_bulk_reject") + f"?ids={ids_param}"
+        )
 
-    #                     if success:
-    #                         success_count += 1
-    #                         if error_message:
-    #                             self.message_user(
-    #                                 request,
-    #                                 f"Rejected visa letter for {letter.full_name} (status updated, but email failed: {error_message})",
-    #                                 level=messages.WARNING,
-    #                             )
-    #                         else:
-    #                             self.message_user(
-    #                                 request,
-    #                                 f"Successfully rejected visa letter for {letter.full_name} and sent notification email.",
-    #                                 level=messages.SUCCESS,
-    #                             )
-    #                     else:
-    #                         error_count += 1
-    #                         self.message_user(
-    #                             request,
-    #                             f"Failed to reject visa letter for {letter.full_name}: {error_message}",
-    #                             level=messages.ERROR,
-    #                         )
-
-    #                 except Exception as e:
-    #                     error_count += 1
-    #                     self.message_user(
-    #                         request,
-    #                         f"Unexpected error processing {letter.full_name}: {str(e)}",
-    #                         level=messages.ERROR,
-    #                     )
-    #             if success_count > 0:
-    #                 self.message_user(
-    #                     request,
-    #                     f"Processed {success_count} visa letter rejection(s).",
-    #                     level=messages.SUCCESS,
-    #                 )
-
-    #             if error_count > 0:
-    #                 self.message_user(
-    #                     request,
-    #                     f"Failed to process {error_count} rejection(s).",
-    #                     level=messages.ERROR,
-    #                 )
-
-    #             return HttpResponseRedirect(
-    #                 reverse("admin:website_visainvitationletter_changelist")
-    #             )
-
-    #         else:
-    #             self.message_user(
-    #                 request,
-    #                 f"Please provide a rejection reason. Form errors: {form.errors}",
-    #                 level=messages.ERROR,
-    #             )
-    #     context = {
-    #         "queryset": queryset,
-    #         "opts": self.model._meta,
-    #         "form": RejectionForm(request.POST if request.POST else None),
-    #     }
-    #     return render(request, "visa/rejection_email_admin_form.html", context)
-
-    # reject_visa_letters.short_description = "Reject selected visa letters"
-    # approve_and_send_email.short_description = "Approve selected visa letters"
+    bulk_action_reject_visa_letters.short_description = "Reject selected visa letters"

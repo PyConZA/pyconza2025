@@ -74,14 +74,18 @@ class VisaInvitationLetter(models.Model):
 
         return self.send_email(request)
 
-    def reject_and_send_email(self, request, reason, permanent=False):
+    def reject_and_send_email(self, request, reason, permanent):
         """Reject visa letter and send appropriate email."""
         if permanent:
             self.status = "permanently rejected"
         else:
             self.status = "rejected"
         self.rejection_reason = reason
-        self.save(update_fields=["status", "rejection_reason"])
+        self.rejected_at = timezone.now()
+        self.rejected_by = request.user
+        self.save(
+            update_fields=["status", "rejection_reason", "rejected_at", "rejected_by"]
+        )
 
         return self.send_email(request)
 

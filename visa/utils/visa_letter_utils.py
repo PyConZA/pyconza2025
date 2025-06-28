@@ -37,6 +37,7 @@ def generate_visa_letter_pdf(request, visa_letter):
         "contact_phone": settings.VISA_ORGANISER_CONTACT_PHONE,
         "website_url": settings.WEBSITE_URL,
         "logo_url": request.build_absolute_uri("/static/img/letter_header.png"),
+        "signature_url": request.build_absolute_uri("/static/img/adam_signature.png"),
     }
 
     html_string = render_to_string("visa/visa_letter_pdf.html", context)
