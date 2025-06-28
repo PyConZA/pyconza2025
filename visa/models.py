@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django_countries.fields import CountryField
+from django.utils import timezone
 
 
 class VisaInvitationLetter(models.Model):
@@ -53,9 +54,18 @@ class VisaInvitationLetter(models.Model):
         verbose_name = "Visa Invitation Letter"
         verbose_name_plural = "Visa Invitation Letters"
 
-    def approve_and_send_email(self):
-        # set
+    def approve_and_send_email(self, user):
+        self.status = "approved"
+        self.approved_at = timezone.now()
+        self.approved_by = user
+        self.save(update_fields=["status", "approved_at", "approved_by"])
+
+        self.send_email()
+
+    def reject_and_send_email(self, user, reason):
         pass
 
-    def reject_and_send_email(self):
-        pass
+    def send_email(self):
+        todo
+        self.email_sent_at = timezone.now()
+        self.save(update_fields=["email_sent_at"])
