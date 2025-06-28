@@ -196,14 +196,18 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
                 rejection_reason = form.cleaned_data["rejection_reason"]
                 permanently_reject = form.cleaned_data.get("permanently_reject", False)
 
-                for letter in queryset.exclude(
-                    status__in=["permanently rejected", "rejected"]
-                ):
+                message_start = (
+                    "Permanently rejected" if permanently_reject else "Rejected"
+                )
+                for letter in queryset.exclude(status__in=["permanently rejected"]):
 
                     letter.reject_and_send_email(
                         request=request,
                         reason=rejection_reason,
                         permanent=permanently_reject,
+                    )
+                    self.message_user(
+                        request, f"{message_start} {letter}", level=messages.INFO
                     )
 
                 return redirect("admin:visa_visainvitationletter_changelist")
@@ -228,6 +232,7 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
 
         for letter in queryset.exclude(status__in=["permanently rejected", "approved"]):
             letter.approve_and_send_email(request)
+            self.message_user(request, f"Approved {letter}", level=messages.INFO)
 
     bulk_action_approve_and_send_email.short_description = (
         "Approve selected visa letters"
