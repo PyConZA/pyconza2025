@@ -148,7 +148,7 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
             "is_permanent": False,
         }
 
-        return render(request, "visa/admin/bulk_reject_form.html", context)
+        return render(request, "visa/admin/reject_form.html", context)
 
     def permanently_reject_visa_letter_view(self, request, object_id):
 
