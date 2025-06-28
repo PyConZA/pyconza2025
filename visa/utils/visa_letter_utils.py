@@ -1,5 +1,5 @@
 import os
-import tempfile
+import io
 from smtplib import SMTPException
 
 from django.db import transaction
@@ -39,15 +39,15 @@ def generate_visa_letter_pdf(request, visa_letter):
         "logo_url": request.build_absolute_uri("/static/img/letter_header.png"),
     }
 
-    html_string = render_to_string("visa/visa_letter_template.html", context)
-    with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as output_file:
-        html = HTML(string=html_string, base_url=request.build_absolute_uri("/"))
-        html.write_pdf(output_file)
-        temp_file_path = output_file.name
-    return temp_file_path
+    html_string = render_to_string("visa/visa_letter_pdf.html", context)
+    pdf_buffer = io.BytesIO()
+    html = HTML(string=html_string, base_url=request.build_absolute_uri("/"))
+    html.write_pdf(pdf_buffer)
+    pdf_buffer.seek(0)
+    return pdf_buffer.read()
 
 
-def send_visa_approval_email(request, visa_letter, pdf_file_path):
+def send_visa_approval_email(request, visa_letter, pdf_buffer):
     """Send visa approval email with PDF attachment."""
     try:
         subject = f"PyCon Africa 2025 - Your Visa Invitation Letter"
@@ -72,22 +72,18 @@ def send_visa_approval_email(request, visa_letter, pdf_file_path):
             reply_to=[settings.VISA_ORGANISER_CONTACT_EMAIL],
         )
 
-        with open(pdf_file_path, "rb") as pdf:
-            pdf_content = pdf.read()
-            email.attach(
-                f"PyCon_Africa_2025_Visa_Letter_{visa_letter.full_name}.pdf",
-                pdf_content,
-                "application/pdf",
-            )
+        pdf_content = pdf_buffer.getvalue()
+        email.attach(
+            f"PyCon_Africa_2025_Visa_Letter_{visa_letter.full_name}.pdf",
+            pdf_content,
+            "application/pdf",
+        )
 
         email.send(fail_silently=False)
         return True
 
     except (SMTPException, ConnectionError, OSError, IOError) as e:
         raise e
-    finally:
-        if os.path.exists(pdf_file_path):
-            os.unlink(pdf_file_path)
 
 
 def send_visa_rejection_email(request, visa_letter, rejection_reason):
@@ -154,8 +150,8 @@ def approve_visa_letter(request, visa_letter):
         visa_letter.approved_at = timezone.now()
         visa_letter.approved_by = request.user
 
-        pdf_file_path = generate_visa_letter_pdf(request, visa_letter)
-        email_sent = send_visa_approval_email(request, visa_letter, pdf_file_path)
+        pdf_buffer = generate_visa_letter_pdf(request, visa_letter)
+        email_sent = send_visa_approval_email(request, visa_letter, pdf_buffer)
 
         if email_sent:
             visa_letter.email_sent_at = timezone.now()

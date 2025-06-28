@@ -1,7 +1,7 @@
 from .models import VisaInvitationLetter
 from django.contrib import admin
+from django import forms
 
-# from django import forms
 # from django.contrib import messages
 # from django.shortcuts import render
 # from django.http import HttpResponseRedirect
@@ -20,6 +20,15 @@ from django.contrib import admin
 #         help_text="Please provide a clear reason for rejecting the visa letter request.",
 #         required=True,
 #     )
+
+
+class RejectionForm(forms.Form):
+    rejection_reason = forms.CharField(
+        widget=forms.Textarea(attrs={"rows": 4, "cols": 60}),
+        label="Rejection Reason",
+        help_text="Please provide a clear reason for rejecting this visa letter request.",
+        required=True,
+    )
 
 
 @admin.register(VisaInvitationLetter)
@@ -74,7 +83,7 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
         from django.urls import reverse
 
         if "_approve" in request.POST:
-            obj.approve_and_send_email(user=request.user)
+            obj.approve_and_send_email(request=request)
             self.message_user(request, "Visa letter approved and email sent")
         elif "_reject" in request.POST:
             # Redirect to rejection form
@@ -112,27 +121,17 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
     def reject_visa_letter_view(self, request, object_id):
         from django.shortcuts import render, get_object_or_404, redirect
         from django.contrib import messages
-        from django import forms
 
         visa_letter = get_object_or_404(VisaInvitationLetter, pk=object_id)
-
-        class RejectionForm(forms.Form):
-            rejection_reason = forms.CharField(
-                widget=forms.Textarea(attrs={"rows": 4, "cols": 60}),
-                label="Rejection Reason",
-                help_text="Please provide a clear reason for rejecting this visa letter request.",
-                required=True,
-            )
 
         if request.method == "POST":
             form = RejectionForm(request.POST)
             if form.is_valid():
                 rejection_reason = form.cleaned_data["rejection_reason"]
 
-                # Update the visa letter
-                visa_letter.status = "rejected"
-                visa_letter.rejection_reason = rejection_reason
-                visa_letter.save(update_fields=["status", "rejection_reason"])
+                visa_letter.reject_and_send_email(
+                    request=request, reason=rejection_reason, permanent=False
+                )
 
                 messages.success(
                     request,
@@ -160,31 +159,21 @@ class VisaInvitationLetterAdmin(admin.ModelAdmin):
 
         visa_letter = get_object_or_404(VisaInvitationLetter, pk=object_id)
 
-        class PermanentRejectionForm(forms.Form):
-            rejection_reason = forms.CharField(
-                widget=forms.Textarea(attrs={"rows": 4, "cols": 60}),
-                label="Permanent Rejection Reason",
-                help_text="Please provide a clear reason for permanently rejecting this visa letter request. The user will not be able to submit another request.",
-                required=True,
-            )
-
         if request.method == "POST":
-            form = PermanentRejectionForm(request.POST)
+            form = RejectionForm(request.POST)
             if form.is_valid():
                 rejection_reason = form.cleaned_data["rejection_reason"]
 
-                # Update the visa letter
-                visa_letter.status = "permanently rejected"
-                visa_letter.rejection_reason = rejection_reason
-                visa_letter.save(update_fields=["status", "rejection_reason"])
-
+                visa_letter.reject_and_send_email(
+                    request=request, reason=rejection_reason, permanent=True
+                )
                 messages.success(
                     request,
                     f"Visa letter for {visa_letter.full_name} has been permanently rejected.",
                 )
                 return redirect("admin:visa_visainvitationletter_changelist")
         else:
-            form = PermanentRejectionForm()
+            form = RejectionForm()
 
         context = {
             "title": f"Permanently Reject Visa Letter - {visa_letter.full_name}",

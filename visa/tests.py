@@ -451,3 +451,79 @@ class VisaLetterAuthenticationTests(TestCase):
 
 # Profile menu button tests are integration tests that depend on wafer infrastructure
 # They should be tested manually or in integration test suite
+
+
+@override_settings(VISA_LETTER_REQUESTS_OPEN=True)
+class VisaLetterDownloadTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(
+            username='testuser',
+            email='test@example.com',
+            password='testpass123'
+        )
+        self.client.login(username='testuser', password='testpass123')
+
+    def test_download_button_shows_for_approved_letters(self):
+        """Test that download button appears for approved visa letters"""
+        # Create approved visa letter
+        VisaInvitationLetter.objects.create(
+            user=self.user,
+            full_name="John Doe",
+            passport_number="AB1234567",
+            country_of_origin="US",
+            embassy_address="123 Embassy Street",
+            status="approved"
+        )
+        
+        url = reverse('visa:visa_letter_detail')
+        response = self.client.get(url)
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Download PDF Letter')
+        self.assertContains(response, 'href="/visa_letters/letter/download/"')
+
+    def test_download_button_hidden_for_pending_letters(self):
+        """Test that download button is hidden for pending visa letters"""
+        # Create pending visa letter
+        VisaInvitationLetter.objects.create(
+            user=self.user,
+            full_name="John Doe",
+            passport_number="AB1234567",
+            country_of_origin="US",
+            embassy_address="123 Embassy Street",
+            status="pending"
+        )
+        
+        url = reverse('visa:visa_letter_detail')
+        response = self.client.get(url)
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, 'Download PDF Letter')
+
+    def test_download_view_requires_approved_status(self):
+        """Test that download view only works for approved letters"""
+        # Create pending visa letter
+        VisaInvitationLetter.objects.create(
+            user=self.user,
+            full_name="John Doe",
+            passport_number="AB1234567",
+            country_of_origin="US",
+            embassy_address="123 Embassy Street",
+            status="pending"
+        )
+        
+        url = reverse('visa:visa_letter_download')
+        response = self.client.get(url)
+        
+        # Should redirect back to detail view
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('visa:visa_letter_detail'))
+
+    def test_download_view_requires_existing_letter(self):
+        """Test that download view requires user to have a visa letter"""
+        url = reverse('visa:visa_letter_download')
+        response = self.client.get(url)
+        
+        # Should return 404 when no visa letter exists
+        self.assertEqual(response.status_code, 404)

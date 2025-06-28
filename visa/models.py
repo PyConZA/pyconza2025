@@ -2,6 +2,10 @@ from django.conf import settings
 from django.db import models
 from django_countries.fields import CountryField
 from django.utils import timezone
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.urls import reverse
+from smtplib import SMTPException
 
 
 class VisaInvitationLetter(models.Model):
@@ -33,6 +37,14 @@ class VisaInvitationLetter(models.Model):
 
     email_sent_at = models.DateTimeField(null=True, blank=True)
     rejection_reason = models.TextField(blank=True, null=True)
+    rejected_at = models.DateTimeField(null=True, blank=True)
+    rejected_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="rejected_visa_letters",
+    )
 
     full_name = models.CharField(
         max_length=255,
@@ -54,18 +66,65 @@ class VisaInvitationLetter(models.Model):
         verbose_name = "Visa Invitation Letter"
         verbose_name_plural = "Visa Invitation Letters"
 
-    def approve_and_send_email(self, user):
+    def approve_and_send_email(self, request):
         self.status = "approved"
         self.approved_at = timezone.now()
-        self.approved_by = user
+        self.approved_by = request.user
         self.save(update_fields=["status", "approved_at", "approved_by"])
 
-        self.send_email()
+        return self.send_email(request)
 
-    def reject_and_send_email(self, user, reason):
-        pass
+    def reject_and_send_email(self, request, reason, permanent=False):
+        """Reject visa letter and send appropriate email."""
+        if permanent:
+            self.status = "permanently rejected"
+        else:
+            self.status = "rejected"
+        self.rejection_reason = reason
+        self.save(update_fields=["status", "rejection_reason"])
 
-    def send_email(self):
-        todo
+        return self.send_email(request)
+
+    def send_email(self, request):
+        """Send email based on current status of the visa letter."""
+
+        context = {
+            "full_name": self.full_name,
+            "conference_name": settings.CONFERENCE_NAME,
+            "conference_dates": settings.CONFERENCE_DATES,
+            "conference_location": settings.CONFERENCE_LOCATION,
+            "organizer_email": settings.VISA_ORGANISER_CONTACT_EMAIL,
+            "organizer_phone": settings.VISA_ORGANISER_CONTACT_PHONE,
+            "website_url": settings.WEBSITE_URL,
+            "details_url": request.build_absolute_uri(
+                reverse("visa:visa_letter_detail")
+            ),
+            "rejection_reason": self.rejection_reason,
+        }
+
+        if self.status == "approved":
+            subject = "PyCon Africa 2025 - Your Visa Letter Request Has Been Approved"
+            template_name = "visa/emails/approved.html"
+
+        elif self.status == "rejected":
+            template_name = "visa/emails/rejected.html"
+            subject = "PyCon Africa 2025 - Your Visa Letter Request Requires Revision"
+
+        elif self.status == "permanently rejected":
+            subject = "PyCon Africa 2025 - Your Visa Letter Request Has Been Permanently Rejected"
+            template_name = "visa/emails/permanently_rejected.html"
+
+        html_message = render_to_string(template_name, context)
+        from_email = settings.VISA_ORGANISER_CONTACT_EMAIL
+        email = EmailMultiAlternatives(
+            subject=subject,
+            body=html_message,
+            from_email=from_email,
+            to=[self.user.email],
+            reply_to=[from_email],
+        )
+        email.attach_alternative(html_message, "text/html")
+        email.send(fail_silently=False)
+
         self.email_sent_at = timezone.now()
         self.save(update_fields=["email_sent_at"])
