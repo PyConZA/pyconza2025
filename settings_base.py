@@ -134,7 +134,17 @@ SOCIAL_LINKS = [
 
 
 WAFER_MENUS += (
-    {"menu": "blog", "label": _("Blog"), "url": "https://pyconafrica.blogspot.com/"},
+    {
+        "menu": "about",
+        "label": _("About"),
+        "items": [
+            {
+                "name": "blog",
+                "label": _("Blog"),
+                "url": "https://pyconafrica.blogspot.com/",
+            },
+        ],
+    },
     {
         "menu": "tickets",
         "label": _("Tickets"),
