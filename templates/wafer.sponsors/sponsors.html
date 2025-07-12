@@ -9,36 +9,59 @@
 <section class="wafer wafer-sponsors">
     {% block pre_sponsor_list %}{% endblock %}
     {% block sponsor_list %}
-    <div class="wafer list">
+    <div class="wafer list space-y-8">
         {% for sponsor in sponsor_list %}
+        {% sponsor_tagged_image sponsor "main_logo" as logo_url %}
+
         {% block sponsor_details %}
         <section class="wafer wafer-sponsor
                           wafer-sponsor-{{ sponsor.packages.first.name.lower }}">
-            <div class="card">
-                <div class="card-body">
-                    <h2 class="card-title">
-                        {% if sponsor.symbol %}
-                        {{ sponsor.symbol }}
-                        {% endif %}
-                        {% if sponsor.url %}
-                        <a href="{{ sponsor.url }}">{{ sponsor.name }}</a>
-                        {% else %}
-                        {{ sponsor.name }}
-                        {% endif %}
-                        <small class="text-right">{{ sponsor.packages.first.name }}</small>
-                    </h2>
-                    {% sponsor_tagged_image sponsor "main_logo" as logo_url %}
+            <div class="card shadow-xl {% if logo_url %} min-h-64 {% endif %}">
+
+
+
+                <div class="card-body space-y-3">
+                    <div class="flex flex-row gap-3 pb-2">
+
+                        <h2 class="card-title">
+
+                            {% if sponsor.symbol %}
+                            {{ sponsor.symbol }}
+                            {% endif %}
+
+                            {% if sponsor.url %}
+                            <a href="{{ sponsor.url }}">{{ sponsor.name }}</a>
+                            {% else %}
+                            {{ sponsor.name }}
+                            {% endif %}
+
+
+                        </h2>
+
+                        <div class="flex items-center">
+
+                            <div class="w-fit h-fit border py-1 px-2 rounded-sm ">
+                                {% if sponsor.symbol %}
+                                {{ sponsor.symbol }}
+                                {% endif %}
+                                {{ sponsor.packages.first.name }}</div>
+                        </div>
+
+                    </div>
+
+
                     {% if logo_url != '' %}
-                    <div style="float: right; margin-left:5px;">
+                    <div class="float-end border border-gray-400 rounded-xl pr-3 pl-3 m-3">
                         <a href="{{ sponsor.url }}">
                             <img style="background: white; max-width:400px; max-height:200px;" src="{{ logo_url }}">
                         </a>
                     </div>
+
+
                     {% endif %}
                     {{ sponsor.description }}
                 </div>
             </div>
-            <hr>
         </section>
         {% endblock sponsor_details %}
         {% empty %}

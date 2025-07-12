@@ -51,15 +51,23 @@
         {% endblock %}
     </main>
 
-    <footer class="border-t-2 border-gray-200 mx-5 py-5 mt-10 text-gray-500 ">
-        <div class="lg:flex lg:items-center max-w-7xl mx-auto lg:justify-between space-y-3 text-center ">
+    <footer class=" mx-5 pt-10 space-y-3 ">
+
+        <div class="pb-5  border-b-2 border-gray-200 ">
+            {% sponsors_footer %}
+        </div>
+
+
+        <div class="lg:flex lg:items-center max-w-7xl mx-auto lg:justify-between space-y-3 text-center text-gray-500 ">
+
+
+
 
             <p class="text-sm lg:text-base">
                 &copy; 2025 Python Software Society of South Africa and PyCon Africa
             </p>
 
-            <nav class="text-3xl space-x-1 ">
-
+            <nav class="text-3xl space-x-1">
                 {% for link in social_links %}
                 <a href="{{link.url}}" target="_blank" class="no-underline hover:text-gray-800">
                     <i class="{{link.icon}}"></i>
