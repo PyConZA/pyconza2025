@@ -1,15 +1,16 @@
 {% load static %}
 
-<div class="max-w-7xl mx-auto py-5 px-5 flex flex-row justify-between items-center">
-    <div>
-        <a href="/"> <img src="{% static 'img/header-logo-w-2025.png' %}" /></a>
-    </div>
-
-    <div>
-        {% include "wafer/nav.html" %}
-    </div>
-
-</div>
+<header class="w-full sticky top-0 z-30 bg-white/80 backdrop-blur-lg shadow-md transition-all duration-300">
+  <div class="max-w-7xl mx-auto flex flex-row justify-between items-center py-3 px-5">
+    <a href="/" class="flex items-center gap-2 group">
+      <img src="{% static 'img/header-logo-w-2025.png' %}" alt="PyConZA 2025 Logo" class="h-12 w-auto drop-shadow-md transition-transform duration-200 group-hover:scale-105"/>
+      <span class="hidden md:inline font-extrabold text-xl md:text-2xl text-pycon-blue tracking-tight group-hover:text-pycon-green transition-colors duration-200">PyConZA 2025</span>
+    </a>
+    <nav class="flex items-center gap-4 md:gap-8 text-base md:text-lg font-semibold">
+      {% include "wafer/nav.html" %}
+    </nav>
+  </div>
+</header>
 
 
 
