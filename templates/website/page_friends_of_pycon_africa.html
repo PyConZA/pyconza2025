@@ -1,0 +1,140 @@
+{% extends 'wafer/base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block page_title %}{% trans 'Friends of PyCon Africa' %}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-8">
+    <!-- Header Section -->
+    <div class="text-center mb-12">
+        <h2 class="text-2xl text-gray-700 mb-4">Livestream with Live Audience Q&A</h2>
+        <div class="bg-yellow-100 border border-yellow-300 rounded-lg p-4 inline-block">
+            <p class="text-lg font-semibold text-yellow-800">📅 Date: August 30th. Time TBA</p>
+        </div>
+    </div>
+
+    <!-- Main Description -->
+    <section class="mb-12">
+        <p class="text-lg text-gray-700 leading-relaxed mb-6">
+            Join us for an engaging livestream celebrating the vibrant Python community across Africa! This isn't your typical webinar – it's a dynamic, fun-filled conversation where Python community members will drop in and out throughout the event, sharing their stories, projects, and passion for Python.
+        </p>
+    </section>
+
+    <!-- What to Expect -->
+    <section class="mb-12">
+        <h3 class="text-2xl font-bold text-gray-900 mb-6">What to Expect:</h3>
+        <ul class="space-y-3">
+            <li class="flex items-start">
+                <span class="text-pycon-green text-xl mr-3">✨</span>
+                <span class="text-gray-700">Rotating guests keeping the conversation fresh and exciting</span>
+            </li>
+            <li class="flex items-start">
+                <span class="text-pycon-blue text-xl mr-3">📖</span>
+                <span class="text-gray-700">Real stories from Python developers, educators, and community builders</span>
+            </li>
+            <li class="flex items-start">
+                <span class="text-pycon-red text-xl mr-3">💬</span>
+                <span class="text-gray-700">Live audience Q&A – your questions drive the discussion</span>
+            </li>
+            <li class="flex items-start">
+                <span class="text-pycon-yellow text-xl mr-3">🔍</span>
+                <span class="text-gray-700">Behind-the-scenes insights into Python projects and community initiatives</span>
+            </li>
+        </ul>
+    </section>
+
+    <!-- Featured Guests -->
+    <section class="mb-12">
+        <h3 class="text-2xl font-bold text-gray-900 mb-6">Featured Special Guests:</h3>
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-gray-50 rounded-lg p-6 text-center">
+                <img src="{% static 'img/friends_of_pycon_africa/carlton-gibson.jpeg' %}" alt="Carlton Gibson" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                <h4 class="text-lg font-semibold text-gray-900">Carlton Gibson</h4>
+                <p class="text-sm text-gray-600 mt-2">Ex Django Fellow. Django Steering Council & Security Team Member. Co-host of Django Chat podcast and maintainer of Django REST Framework.</p>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-6 text-center">
+                <img src="{% static 'img/friends_of_pycon_africa/sarah-abderemane.jpg' %}" alt="Sarah Abderemane" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                <h4 class="text-lg font-semibold text-gray-900">Sarah Abderemane</h4>
+                <p class="text-sm text-gray-600 mt-2">Vice President of Django Software Foundation. Software Engineer at Octopus Energy and Django website contributor.</p>
+            </div>
+            <!-- <div class="bg-gray-50 rounded-lg p-6 text-center">
+                <img src="{% static 'img/friends_of_pycon_africa/michael-kennedy.webp' %}" alt="Michael Kennedy" class="w-32 h-32 rounded-full mx-auto mb-4 object-cover">
+                <h4 class="text-lg font-semibold text-gray-900">Michael Kennedy</h4>
+                <p class="text-sm text-gray-600 mt-2">Host of "Talk Python to Me" and "Python Bytes" podcasts. Python educator and founder of Talk Python Training.</p>
+            </div> -->
+        </div>
+    </section>
+
+    <!-- Supporting PyCon Africa -->
+    <section class="mb-12 bg-gradient-to-r from-blue-50 to-green-50 rounded-lg p-8">
+        <h3 class="text-2xl font-bold text-gray-900 mb-6">Supporting PyCon Africa – Opening Doors Through Code</h3>
+        <p class="text-gray-700 mb-6">
+            While you enjoy great conversations, you'll also be supporting an incredible cause. We're raising funds for two transformative initiatives:
+        </p>
+        
+        <div class="space-y-6">
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h4 class="text-xl font-semibold text-gray-900 mb-3">🎓 Beginners Day (October 8th)</h4>
+                <p class="text-gray-700">
+                    Free workshops including HumbleData, DjangoGirls, and other community-led sessions that welcome newcomers into our thriving Python ecosystem.
+                </p>
+            </div>
+            
+            <div class="bg-white rounded-lg p-6 shadow-sm">
+                <h4 class="text-xl font-semibold text-gray-900 mb-3">✈️ Travel Grants</h4>
+                <p class="text-gray-700">
+                    Supporting African community contributors, teachers, students, and young professionals who otherwise couldn't attend – because talent is everywhere, but opportunity isn't always.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why This Matters -->
+    <section class="mb-12">
+        <h3 class="text-2xl font-bold text-gray-900 mb-6">Why This Matters:</h3>
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-6">
+            <p class="text-gray-700 mb-4">
+                Python community events have transformed careers, sparked innovations, and built lasting connections across Africa. Every dollar raised opens doors for someone to discover their potential, learn new skills, or contribute to projects that matter.
+            </p>
+            <p class="text-lg font-semibold text-gray-900">
+                The more we raise together, the more lives we can impact.
+            </p>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="bg-gray-100 rounded-lg p-8">
+        <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center">Join Us & Support the Cause</h3>
+        
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-white rounded-lg p-6 shadow-sm text-center">
+                <h4 class="text-xl font-semibold text-gray-900 mb-4">📺 Stay in the Loop</h4>
+                <p class="text-gray-700 mb-4">Get notified about the livestream and receive updates</p>
+                <a 
+                href="https://www.quicket.co.za/events/321686-pycon-africa-2025/#/tickets" 
+                class="btn"
+                target="_blank">
+                    Get Free Livestream Ticket
+                </a>
+            </div>
+            
+            <div class="bg-white rounded-lg p-6 shadow-sm text-center">
+                <h4 class="text-xl font-semibold text-gray-900 mb-4">❤️ Support the Cause</h4>
+                <p class="text-gray-700 mb-4">Help fund Beginners Day and Travel Grants</p>
+                <a href="https://www.quicket.co.za/events/321686-pycon-africa-2025/#/tickets" 
+                   class="btn btn-success"
+                   target="_blank">
+                    Buy Donation Ticket
+                </a>
+            </div>
+        </div>
+        
+        <!-- Social Hashtag -->
+        <div class="text-center mt-8 p-4 bg-blue-50 rounded-lg">
+            <p class="text-lg text-blue-800 font-semibold">Share your experience with us!</p>
+            <p class="text-xl text-blue-900 font-bold mt-2">#FriendsOfPyconAfrica</p>
+        </div>
+    </section>
+</div>
+{% endblock %}
