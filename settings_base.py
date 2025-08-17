@@ -146,9 +146,16 @@ WAFER_MENUS += (
         ],
     },
     {
+        'menu': "events",
+        'label': _("Events"),
+        "items": [
+
+    {
         "menu": "friends",
         "label": _("Friends of PyCon Africa"),
         "url": reverse_lazy("page_friends_of_pycon_africa"),
+    },
+        ]
     },
     {
         "menu": "tickets",

@@ -11,6 +11,5 @@ ve/
 venv/
 wsgi.py
 __pycache__/
-package-lock.json
 wafer.db
 .claude/
