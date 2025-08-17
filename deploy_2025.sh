@@ -7,7 +7,7 @@ cd pyconza2025/
 git pull
 # Rerun tailwind if required
 npm run tailwind
-./manage.py collectstatic
+./manage.py collectstatic --noinput
 
 # Reload uwsgi workers
 uwsgi --reload /run/uwsgi/app/pyconza/pid
