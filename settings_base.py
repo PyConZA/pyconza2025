@@ -121,6 +121,7 @@ STATICFILES_FINDERS = (
 
 
 SOCIAL_LINKS = [
+    {"url": "https://bsky.app/profile/za.pycon.org", "icon": "fa-bluesky"},
     {"url": "https://mastodon.social/@pyconafrica", "icon": "fa-brands fa-mastodon"},
     {"url": "https://x.com/pyconafrica", "icon": "fa-brands fa-twitter"},
     {"url": "https://www.instagram.com/pyconafrica", "icon": "fa-brands fa-instagram"},
@@ -143,18 +144,27 @@ WAFER_MENUS += (
                 "label": _("Blog"),
                 "url": "https://pyconafrica.blogspot.com/",
             },
+            {
+                "name": "contact",
+                "label": _("Contact Us"),
+                "url": reverse_lazy("page_contact"),
+            },
         ],
     },
     {
         'menu': "events",
         'label': _("Events"),
         "items": [
-
-    {
-        "menu": "friends",
-        "label": _("Friends of PyCon Africa"),
-        "url": reverse_lazy("page_friends_of_pycon_africa"),
-    },
+            {
+                "menu": "sprints",
+                "label": _("Sprints"),
+                "url": reverse_lazy("page_sprints"),
+            },
+            {
+                "menu": "friends",
+                "label": _("Friends of PyCon Africa"),
+                "url": reverse_lazy("page_friends_of_pycon_africa"),
+            },
         ]
     },
     {
@@ -217,3 +227,9 @@ CONFERENCE_LOCATION = "Johannesburg, South Africa"
 CONFERENCE_DATES = "8 - 12 October 2025"
 
 WAFER_TALK_REVIEW_SCORES = (0, 5)
+
+
+CONTACT_US_EMAILS = {
+    'team' : 'team@pycon.org',
+    'sponsorship':'sponsorship@pycon.africa'
+}

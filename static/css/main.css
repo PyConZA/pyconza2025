@@ -2,9 +2,11 @@
 
 
 @theme {
-    /* --color-primary: @apply orange-500; */
-    /* --color-yellow */
-
+    --color-pycon-yellow: #FFD700;
+    --color-pycon-green: #4CAF50;
+    --color-pycon-blue: #2196F3;
+    --color-pycon-red: #F44336;
+    --color-pycon-light-blue: #90CAF9;
 }
 
 
@@ -18,12 +20,6 @@
 
         --font-family-kanchenjunga: 'Kanchenjunga',
             sans-serif;
-
-        --color-pycon-yellow: #FFD700;
-        --color-pycon-green: #4CAF50;
-        --color-pycon-blue: #2196F3;
-        --color-pycon-red: #F44336;
-        --color-pycon-light-blue: #90CAF9;
     }
 
     a,
@@ -40,19 +36,27 @@
     }
 
     h1 {
-        @apply font-bold text-5xl;
+        @apply font-bold text-4xl lg:text-6xl text-gray-900 mb-6 leading-tight;
     }
 
     h2 {
-        @apply font-bold text-4xl;
+        @apply font-bold text-3xl lg:text-4xl text-gray-900 mb-6 leading-tight;
     }
 
     h3 {
-        @apply font-bold text-3xl;
+        @apply font-semibold text-2xl lg:text-3xl text-gray-900 mb-4 leading-tight;
     }
 
     h4 {
-        @apply font-bold text-2xl;
+        @apply font-semibold text-xl lg:text-2xl text-gray-800 mb-3 leading-tight;
+    }
+
+    h5 {
+        @apply font-semibold text-lg lg:text-xl text-gray-800 mb-3 leading-tight;
+    }
+
+    h6 {
+        @apply font-semibold text-base lg:text-lg text-gray-700 mb-2 leading-tight;
     }
 
     a {
@@ -105,6 +109,27 @@
 }
 
 @layer components {
+    /* Heading utility classes for special cases */
+    .heading-hero {
+        @apply font-bold text-4xl lg:text-6xl text-gray-900 mb-6 leading-tight;
+    }
+
+    .heading-section {
+        @apply font-bold text-3xl lg:text-4xl text-gray-900 mb-8 text-center;
+    }
+
+    .heading-card {
+        @apply font-semibold text-xl lg:text-2xl mb-4 leading-tight;
+    }
+
+    .heading-light {
+        @apply text-white;
+    }
+
+    .heading-branded {
+        @apply text-transparent bg-clip-text bg-gradient-to-r from-pycon-green via-pycon-blue to-pycon-red;
+    }
+
     .nav-item {
         @apply font-semibold text-gray-200 hover:text-white uppercase no-underline
     }
@@ -221,5 +246,32 @@
             1px -1px 0 #fff,
             -1px 1px 0 #fff,
             1px 1px 0 #fff;
+    }
+
+    .fa-bluesky {
+        font-family: inherit;
+        font-style: normal;
+        font-weight: normal;
+        line-height: 1;
+        display: inline-block;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    .fa-bluesky::before {
+        content: "";
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        vertical-align: -0.125em;
+        background-color: currentColor;
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cpath d='M439.8 358.7C436.5 358.3 433.1 357.9 429.8 357.4C433.2 357.8 436.5 358.3 439.8 358.7zM320 291.1C293.9 240.4 222.9 145.9 156.9 99.3C93.6 54.6 69.5 62.3 53.6 69.5C35.3 77.8 32 105.9 32 122.4C32 138.9 41.1 258 47 277.9C66.5 343.6 136.1 365.8 200.2 358.6C203.5 358.1 206.8 357.7 210.2 357.2C206.9 357.7 203.6 358.2 200.2 358.6C106.3 372.6 22.9 406.8 132.3 528.5C252.6 653.1 297.1 501.8 320 425.1C342.9 501.8 369.2 647.6 505.6 528.5C608 425.1 533.7 372.5 439.8 358.6C436.5 358.2 433.1 357.8 429.8 357.3C433.2 357.7 436.5 358.2 439.8 358.6C503.9 365.7 573.4 343.5 593 277.9C598.9 258 608 139 608 122.4C608 105.8 604.7 77.7 586.4 69.5C570.6 62.4 546.4 54.6 483.2 99.3C417.1 145.9 346.1 240.4 320 291.1z'/%3E%3C/svg%3E");
+        mask-size: contain;
+        mask-repeat: no-repeat;
+        mask-position: center;
+        -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cpath d='M439.8 358.7C436.5 358.3 433.1 357.9 429.8 357.4C433.2 357.8 436.5 358.3 439.8 358.7zM320 291.1C293.9 240.4 222.9 145.9 156.9 99.3C93.6 54.6 69.5 62.3 53.6 69.5C35.3 77.8 32 105.9 32 122.4C32 138.9 41.1 258 47 277.9C66.5 343.6 136.1 365.8 200.2 358.6C203.5 358.1 206.8 357.7 210.2 357.2C206.9 357.7 203.6 358.2 200.2 358.6C106.3 372.6 22.9 406.8 132.3 528.5C252.6 653.1 297.1 501.8 320 425.1C342.9 501.8 369.2 647.6 505.6 528.5C608 425.1 533.7 372.5 439.8 358.6C436.5 358.2 433.1 357.8 429.8 357.3C433.2 357.7 436.5 358.2 439.8 358.6C503.9 365.7 573.4 343.5 593 277.9C598.9 258 608 139 608 122.4C608 105.8 604.7 77.7 586.4 69.5C570.6 62.4 546.4 54.6 483.2 99.3C417.1 145.9 346.1 240.4 320 291.1z'/%3E%3C/svg%3E");
+        -webkit-mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        -webkit-mask-position: center;
     }
 }
