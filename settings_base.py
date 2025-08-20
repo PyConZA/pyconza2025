@@ -145,6 +145,11 @@ WAFER_MENUS += (
                 "url": "https://pyconafrica.blogspot.com/",
             },
             {
+                "name": "donations",
+                "label": _("Donations"),
+                "url": reverse_lazy("page_donations"),
+            },
+            {
                 "name": "contact",
                 "label": _("Contact Us"),
                 "url": reverse_lazy("page_contact"),

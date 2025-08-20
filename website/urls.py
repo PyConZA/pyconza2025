@@ -9,4 +9,5 @@ urlpatterns = [
     path("friends-of-pycon-africa", views.page_friends_of_pycon_africa, name="page_friends_of_pycon_africa"),
     path("contact", views.page_contact, name="page_contact"),
     path("beginners-day", views.page_beginners_day, name="page_beginners_day"),
+    path("donations", views.page_donations, name="page_donations"),
 ]

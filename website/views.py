@@ -28,3 +28,7 @@ def page_contact(request):
 
 def page_beginners_day(request):
     return render(request, "website/page_beginners_day.html")
+
+
+def page_donations(request):
+    return render(request, "website/page_donations.html")
