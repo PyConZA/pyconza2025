@@ -1,11 +1,15 @@
 #!/bin/bash
 
+
 # Steps for deploying an update to the website (that doesn't involve upgrading wafer)
+
+sudo -u pyconza -i
 
 cd pyconza2025/
 . ./ve/bin/activate
 git pull
 # Rerun tailwind if required
+npm i
 npm run tailwind
 ./manage.py collectstatic --noinput
 

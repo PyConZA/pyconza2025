@@ -150,11 +150,11 @@ WAFER_MENUS += (
                 "label": _("Donations"),
                 "url": reverse_lazy("page_donations"),
             },
-            {
-                "name": "contact",
-                "label": _("Contact Us"),
-                "url": reverse_lazy("page_contact"),
-            },
+            # {
+            #     "name": "contact",
+            #     "label": _("Contact Us"),
+            #     "url": reverse_lazy("page_contact"),
+            # },
         ],
     },
     {

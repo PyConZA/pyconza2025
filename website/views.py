@@ -21,7 +21,7 @@ def page_contact(request):
     from django.conf import settings
     context = {
         'social_links': settings.SOCIAL_LINKS,
-        'contact_emails': getattr(settings, 'CONTACT_US_EMAILS', {})
+        'contact_emails': settings.CONTACT_US_EMAILS
     }
     return render(request, "website/page_contact.html", context)
 
