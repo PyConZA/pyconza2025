@@ -173,7 +173,7 @@ WAFER_MENUS += (
             },
             {
                 "menu": "remote_experience",
-                "label": _("9-10 Oct: Remote Conference"),
+                "label": _("9-10 Oct: Online Conference"),
                 "url": reverse_lazy("page_remote_experience"),
             },
             {
@@ -188,6 +188,17 @@ WAFER_MENUS += (
         "label": _("Tickets"),
         "items": [{"url": reverse_lazy("page_tickets"), "label": _("Buy Tickets")}],
     },
+    {
+        "menu": "venue",
+        "label": _("Venue"),
+        "items":[
+           {
+                "menu": "remote_experience",
+                "label": _("Online Venue"),
+                "url": reverse_lazy("page_remote_experience"),
+            }
+        ]
+    }
 )
 
 
