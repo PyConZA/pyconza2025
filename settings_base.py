@@ -131,6 +131,7 @@ SOCIAL_LINKS = [
         "icon": "fa-brands fa-linkedin",
     },
     {"url": "https://www.youtube.com/@PyconAfrica", "icon": "fa-brands fa-youtube"},
+    {"url": "https://discord.gg/zaAKDnzZGw", "icon": "fa-brands fa-discord"},
 ]
 
 
@@ -169,6 +170,11 @@ WAFER_MENUS += (
                 "menu": "beginners_day",
                 "label": _("8 Oct: Beginners Day"),
                 "url": reverse_lazy("page_beginners_day"),
+            },
+            {
+                "menu": "remote_experience",
+                "label": _("9-10 Oct: Remote Conference"),
+                "url": reverse_lazy("page_remote_experience"),
             },
             {
                 "menu": "sprints",

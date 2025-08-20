@@ -32,3 +32,7 @@ def page_beginners_day(request):
 
 def page_donations(request):
     return render(request, "website/page_donations.html")
+
+
+def page_remote_experience(request):
+    return render(request, "website/page_remote_experience.html")
