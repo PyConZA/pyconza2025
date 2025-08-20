@@ -156,14 +156,19 @@ WAFER_MENUS += (
         'label': _("Events"),
         "items": [
             {
-                "menu": "sprints",
-                "label": _("Sprints"),
-                "url": reverse_lazy("page_sprints"),
+                "menu": "friends",
+                "label": _("30 Aug: Friends of PyCon Africa"),
+                "url": reverse_lazy("page_friends_of_pycon_africa"),
             },
             {
-                "menu": "friends",
-                "label": _("Friends of PyCon Africa"),
-                "url": reverse_lazy("page_friends_of_pycon_africa"),
+                "menu": "beginners_day",
+                "label": _("8 Oct: Beginners Day"),
+                "url": reverse_lazy("page_beginners_day"),
+            },
+            {
+                "menu": "sprints",
+                "label": _("11-12 Oct: Sprints"),
+                "url": reverse_lazy("page_sprints"),
             },
         ]
     },

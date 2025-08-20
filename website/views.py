@@ -24,3 +24,7 @@ def page_contact(request):
         'contact_emails': getattr(settings, 'CONTACT_US_EMAILS', {})
     }
     return render(request, "website/page_contact.html", context)
+
+
+def page_beginners_day(request):
+    return render(request, "website/page_beginners_day.html")

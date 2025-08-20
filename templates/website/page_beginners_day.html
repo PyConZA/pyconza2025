@@ -1,0 +1,287 @@
+{% extends 'wafer/base.html' %}
+{% load static %}
+
+{% block page_title %}PyCon Africa Beginner's Day{% endblock %}
+
+{% block content %}
+<section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 lg:pb-20 space-y-12">
+    
+    <!-- Header -->
+    <div class="text-center space-y-4">
+        <h2 class="text-pycon-blue">Opening Doors to the Python Community</h2>
+        <div class="inline-flex items-center space-x-4 px-6 py-3 bg-pycon-yellow rounded-lg">
+            <span class="font-bold text-gray-900">October 8, 2025</span>
+            <span class="text-gray-600">|</span>
+            <span class="font-bold text-gray-900">Free Event</span>
+            <span class="text-gray-600">|</span>
+            <span class="font-bold text-gray-900">Application Required</span>
+        </div>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Are you curious about Python but don't know where to start? Or do you know a little Python and want to expand your horizons? PyCon Africa Beginner's Day is designed specifically for you.
+        </p>
+    </div>
+
+    <!-- What Is Beginner's Day -->
+    <div class="space-y-6">
+        <h2>What Is Beginner's Day?</h2>
+        <p>
+            Beginner's Day is a special pre-conference event dedicated to welcoming newcomers into the Python community. Through hands-on workshops and supportive mentorship, we're opening doors for aspiring developers, data scientists, and technologists from all backgrounds.
+        </p>
+        <div class="bg-pycon-blue/10 border-l-4 border-pycon-blue p-4 rounded">
+            <p class="font-semibold">Our mission:</p>
+            <p>Create an inclusive, supportive environment where anyone can start their Python journey, regardless of their technical background or experience level.</p>
+        </div>
+    </div>
+
+    <!-- Featured Workshops -->
+    <div class="space-y-8">
+        <h2>Featured Workshops</h2>
+        
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-white border border-gray-200 rounded-lg p-6 flex flex-col">
+                <h3 class="text-pycon-green">HumbleData Workshop</h3>
+                <p class="flex-grow">Learn the fundamentals of data analysis with Python. This beginner-friendly workshop will introduce you to working with data, creating visualizations, and drawing insights - perfect for aspiring data scientists and analysts.</p>
+                <div class="mt-4 pt-3 ">
+                    <a href="https://humbledata.org/" target="_blank" class="text-sm text-pycon-green hover:underline">Learn more about HumbleData →</a>
+                </div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-lg p-6 flex flex-col">
+                <h3 class="text-pycon-red">DjangoGirls Workshop</h3>
+                <p class="flex-grow">Build your first web application! This internationally-recognized workshop has introduced thousands of women and marginalized genders to web development. No prior experience needed.</p>
+                <div class="mt-4 pt-3 ">
+                    <a href="https://djangogirls.org/" target="_blank" class="text-sm text-pycon-red hover:underline">Learn more about DjangoGirls →</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white border border-gray-200 rounded-lg p-6">
+            <h3 class="text-pycon-blue">Additional Community Workshops</h3>
+            <p class="mb-4">We're partnering with local Python communities to offer additional hands-on sessions covering various aspects of Python programming, all designed with absolute beginners in mind.</p>
+            
+            <div class="space-y-3">
+                <p class="font-semibold">All workshops feature:</p>
+                <ul class="space-y-2">
+                    <li class="flex items-start">
+                        <span class="text-pycon-green font-bold mr-3">•</span>
+                        <span><strong>Step-by-step guidance</strong> from experienced mentors</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-pycon-blue font-bold mr-3">•</span>
+                        <span><strong>Hands-on coding</strong> with real projects you'll complete</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-pycon-red font-bold mr-3">•</span>
+                        <span><strong>Supportive environment</strong> where questions are encouraged</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-pycon-yellow font-bold mr-3">•</span>
+                        <span><strong>Take-home resources</strong> to continue your learning journey</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Why It Matters -->
+    <div class="bg-gray-50 rounded-lg p-8 space-y-6">
+        <h2 class="text-center">Why Beginner's Day Matters</h2>
+        <p class="text-center">Technology thrives on diverse perspectives and fresh ideas. By making Python accessible to everyone, we're:</p>
+        
+        <div class="grid md:grid-cols-2 gap-4">
+            <ul class="space-y-3">
+                <li class="flex items-start">
+                    <span class="text-pycon-green font-bold mr-3">•</span>
+                    <span><strong>Breaking down barriers</strong> that prevent people from entering tech</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-pycon-blue font-bold mr-3">•</span>
+                    <span><strong>Increasing diversity</strong> in the Python community and broader tech ecosystem</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-pycon-red font-bold mr-3">•</span>
+                    <span><strong>Creating pathways</strong> for underrepresented groups to discover their potential</span>
+                </li>
+            </ul>
+            <ul class="space-y-3">
+                <li class="flex items-start">
+                    <span class="text-pycon-yellow font-bold mr-3">•</span>
+                    <span><strong>Building confidence</strong> for those who might feel intimidated by technical conferences</span>
+                </li>
+                <li class="flex items-start">
+                    <span class="text-pycon-green font-bold mr-3">•</span>
+                    <span><strong>Fostering inclusion</strong> by providing a welcoming entry point to PyCon Africa</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Event Details -->
+    <div class="space-y-8">
+        <h2>Event Details</h2>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-white border border-gray-200 rounded-lg p-4 text-center">
+                <div class="font-bold text-pycon-blue mb-1">Date</div>
+                <div>October 8, 2025</div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-lg p-4 text-center">
+                <div class="font-bold text-pycon-green mb-1">Cost</div>
+                <div>Free to attend</div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-lg p-4 text-center">
+                <div class="font-bold text-pycon-red mb-1">Capacity</div>
+                <div>50 participants</div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-lg p-4 text-center">
+                <div class="font-bold text-pycon-yellow mb-1">Requirements</div>
+                <div>No prior experience</div>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <div>
+                <h3 class="text-pycon-blue text-center">What You'll Need</h3>
+                <ul class="space-y-2">
+                    <li>Laptop (we'll help with setup on the day)</li>
+                    <li>Enthusiasm to learn</li>
+                    <li>Willingness to ask questions and help others</li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-pycon-green text-center">What We'll Provide</h3>
+                <ul class="space-y-2">
+                    <li>Instructors and mentors</li>
+                    <li>All workshop materials and resources</li>
+                    <li>Refreshments and lunch throughout the day</li>
+                    <li>A supportive, encouraging environment</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- How to Attend -->
+    <div class="space-y-6">
+        <h2>How to Attend</h2>
+        
+        <div class="space-y-6">
+            <div class="bg-white border border-gray-200 rounded-lg p-6">
+                <h3 class="text-pycon-blue mb-4">Step 1: Submit Your Application</h3>
+                <p class="mb-4">Applications are required for this free event. Due to limited capacity and per-participant costs, we review all applications to ensure the best experience for everyone.</p>
+                <a href="https://forms.gle/6Nny2sNrYgn5rQfc6" class="btn" target="_blank">Apply for Beginner's Day</a>
+                <p class="text-sm text-gray-600 mt-4"><strong>Important:</strong> Submitting an application does not guarantee attendance. All applications will be reviewed, and selected participants will be notified by email.</p>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-lg p-6">
+                <h3 class="text-pycon-green mb-4">Step 2: Secure Your Spot</h3>
+                <p class="mb-4">If your application is approved, you'll receive access to purchase your Beginner's Day ticket for <strong>R50 (approximately $2.50)</strong>.</p>
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+                    <p><strong>Don't worry - this event is completely free!</strong> The ticket fee ensures your commitment to attend and helps us plan accurately. <strong>We will refund your full R50 payment when you check in on event day.</strong></p>
+                </div>
+                <p class="text-sm text-gray-600"><strong>Important:</strong> If you purchase a ticket but don't attend the event, we cannot provide a refund. This policy helps us maintain our limited capacity for those who are truly committed to participating.</p>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-lg p-6">
+                <h3 class="text-pycon-red mb-4">Step 3: Get Ready</h3>
+                <p>Once you've secured your ticket, we'll send you pre-event information including setup instructions, workshop details, and what to expect on the day.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action Sections -->
+    <div class="grid md:grid-cols-2 gap-8">
+        <div class="bg-gray-900 rounded-lg p-8 text-white flex flex-col">
+            <h2 class="text-white mb-4">Help Us Expand Our Impact</h2>
+            <p class="text-gray-300 mb-6">Currently, we can accommodate 50 participants due to per-person costs for materials, refreshments, and resources. Want to help us welcome more beginners into the Python community?</p>
+            <p class="text-gray-300 flex-grow mb-6">Your contribution directly increases the number of people we can support!</p>
+            <div class="text-center">
+                <a href="#" class="btn">Make a Donation</a>
+            </div>
+        </div>
+
+        <div class="bg-pycon-green/10 border border-pycon-green rounded-lg p-8 flex flex-col">
+            <h2 class="text-pycon-green mb-4">Calling All Coaches!</h2>
+            <p class="mb-4">Do you have Python experience and a passion for teaching? We need experienced developers to serve as coaches and mentors during our workshops.</p>
+            <p class="flex-grow text-sm mb-6">No formal teaching experience required - just patience, enthusiasm, and willingness to help others learn.</p>
+            <div class="text-center">
+                <a href="https://forms.gle/iDPUGMB6TBsG5pov6" class="btn btn-success" target="_blank">Volunteer as a Coach</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Stories -->
+    <div class="bg-gray-50 rounded-lg p-8 space-y-6">
+        <h2 class="text-center">Success Stories</h2>
+        <p class="text-center">Previous Beginner's Day participants have gone on to:</p>
+        
+        <div class="grid md:grid-cols-2 gap-6">
+            <ul class="space-y-2">
+                <li>Land their first tech jobs</li>
+                <li>Contribute to open source projects</li>
+                <li>Start their own Python projects</li>
+            </ul>
+            <ul class="space-y-2">
+                <li>Become active community members</li>
+                <li>Attend and even speak at future PyCon events</li>
+            </ul>
+        </div>
+        
+        <div class="space-y-4 border-l-4 border-pycon-blue pl-4">
+            <blockquote class="italic">
+                "Beginner's Day gave me the confidence to pursue a career change into data science. The supportive environment made all the difference."
+            </blockquote>
+            <cite class="text-sm text-gray-600">- Sarah, 2023 participant</cite>
+            
+            <blockquote class="italic">
+                "I never thought I could code, but the DjangoGirls workshop showed me I could build real applications. Now I'm a full-time developer!"
+            </blockquote>
+            <cite class="text-sm text-gray-600">- Amara, 2022 participant</cite>
+        </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="space-y-6">
+        <h2>Frequently Asked Questions</h2>
+        
+        <div class="space-y-4">
+            <div class="border-b border-gray-200 pb-4">
+                <p class="font-semibold">Q: Do I need any programming experience?</p>
+                <p>A: Not at all! Beginner's Day is designed for people with no prior programming experience.</p>
+            </div>
+            <div class="border-b border-gray-200 pb-4">
+                <p class="font-semibold">Q: What if I'm not selected?</p>
+                <p>A: We'll maintain a waitlist and notify you if spots become available. We also encourage you to check out our online resources and join our community channels.</p>
+            </div>
+            <div class="border-b border-gray-200 pb-4">
+                <p class="font-semibold">Q: Can I attend both Beginner's Day and the main conference?</p>
+                <p>A: Yes! You'll need separate tickets for the main conference, but we offer discounts for Beginner's Day participants.</p>
+            </div>
+            <div class="border-b border-gray-200 pb-4">
+                <p class="font-semibold">Q: What operating system should my laptop have?</p>
+                <p>A: Windows, Mac, or Linux all work fine. We'll help with setup regardless of your system.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Get Involved -->
+    <div class="text-center bg-gray-900 rounded-lg p-8 text-white space-y-6">
+        <h2 class="text-white">Get Involved</h2>
+        <p class="text-gray-300">Whether you're taking your first steps into Python or ready to mentor the next generation of developers, Beginner's Day offers something meaningful for you.</p>
+        
+        <div class="flex flex-wrap justify-center gap-4">
+            <a href="https://forms.gle/6Nny2sNrYgn5rQfc6" class="btn" target="_blank">Apply Now</a>
+            <a href="https://forms.gle/iDPUGMB6TBsG5pov6" class="btn btn-success" target="_blank">Become a Coach</a>
+            <a href="#" class="btn btn-secondary">Support Our Cause</a>
+        </div>
+        
+        <div class="border-t border-gray-700 pt-6 mt-8">
+            <p class="text-sm text-gray-400 italic">
+                PyCon Africa Beginner's Day is made possible by our dedicated volunteers, generous sponsors, and the broader Python community's commitment to inclusion and diversity. Together, we're building a more welcoming tech ecosystem for everyone.
+            </p>
+            <p class="font-bold text-pycon-yellow mt-4">
+                Join us in opening doors to the Python community - one beginner at a time.
+            </p>
+        </div>
+    </div>
+
+</section>
+{% endblock %}
