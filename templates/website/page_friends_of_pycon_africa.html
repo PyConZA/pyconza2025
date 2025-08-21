@@ -10,9 +10,22 @@
     <div class="text-center mb-12">
         <h2 class="text-2xl text-gray-700 mb-4">Livestream with Live Audience Q&A</h2>
         <div class="bg-yellow-100 border border-yellow-300 rounded-lg p-4 inline-block">
-            <p class="text-lg font-semibold text-yellow-800">📅 Date: August 30th. Time TBA</p>
+            <p class="text-lg font-semibold text-yellow-800">
+                📅 Date: August 30th • 🕐 Time: 17:00 GMT+2 until late!
+            </p>
+        </div>
+        
+        <!-- YouTube Streaming Info -->
+        <div class="bg-red-50 border border-red-200 rounded-lg p-4 mt-4 inline-block">
+            <p class="text-lg text-red-800">
+                📺 Stream will be live on YouTube • 
+                <a href="{{ settings.SOCIAL_LINKS.6.url }}" target="_blank" class="text-red-700 hover:text-red-900 underline font-semibold">
+                    Subscribe to our channel
+                </a>
+            </p>
         </div>
     </div>
+
 
     <!-- Main Description -->
     <section class="mb-12">
@@ -20,6 +33,29 @@
             Join us for an engaging livestream celebrating the vibrant Python community across Africa! This isn't your typical webinar – it's a dynamic, fun-filled conversation where Python community members will drop in and out throughout the event, sharing their stories, projects, and passion for Python.
         </p>
     </section>
+
+    <div class="grid md:grid-cols-2 gap-6 pb-10">
+            <div class="bg-white rounded-lg p-6 shadow-sm text-center">
+                <h4 class="text-xl font-semibold text-gray-900 mb-4">📺 Stay in the Loop</h4>
+                <p class="text-gray-700 mb-4">Get notified about the livestream and receive updates</p>
+                <a 
+                href="https://www.quicket.co.za/events/321686-pycon-africa-2025/#/tickets" 
+                class="btn"
+                target="_blank">
+                    Get Free Livestream Ticket
+                </a>
+            </div>
+            
+            <div class="bg-white rounded-lg p-6 shadow-sm text-center">
+                <h4 class="text-xl font-semibold text-gray-900 mb-4">❤️ Support the Cause</h4>
+                <p class="text-gray-700 mb-4">Help fund Beginners Day and Travel Grants</p>
+                <a href="https://www.quicket.co.za/events/321686-pycon-africa-2025/#/tickets" 
+                   class="btn btn-success"
+                   target="_blank">
+                    Buy Donation Ticket
+                </a>
+            </div>
+        </div>
 
     <!-- What to Expect -->
     <section class="mb-12">
