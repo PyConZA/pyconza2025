@@ -130,7 +130,9 @@ SOCIAL_LINKS = [
         "url": "https://www.linkedin.com/company/pyconafrica/",
         "icon": "fa-brands fa-linkedin",
     },
-    {"url": "https://www.youtube.com/@PyconAfrica", "icon": "fa-brands fa-youtube"},
+    # {"url": "https://www.youtube.com/@PyconAfrica", "icon": "fa-brands fa-youtube"},
+    {"url": "https://www.youtube.com/@pyconza", "icon": "fa-brands fa-youtube"},
+    
     {"url": "https://discord.gg/zaAKDnzZGw", "icon": "fa-brands fa-discord"},
 ]
 
