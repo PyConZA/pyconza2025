@@ -7,88 +7,104 @@
 
 {% block main %}
 <section class="flex flex-col">
-    <div class="lg:h-screen bg-no-repeat bg-cover bg-center w-full"
+    <div class="bg-no-repeat bg-cover bg-center w-full bg-gray-900"
         style="background-image: url('/static/img/pycon-africa-2025-header_2.png')">
-        <div class=" h-full flex flex-col">
-            <div>
-                <header class="bg-black">
-                    {% include "partial_header.html" %}
-                </header>
+        <div class="flex flex-col">
+            <header class="bg-black">
+                {% include "partial_header.html" %}
+            </header>
 
-                <div class="hidden lg:flex lg:px-12 w-full justify-between text-white flex-grow py-10 space-x-16 xl:space-x-22">
+            <div class="hidden lg:flex lg:px-12 w-full justify-between text-white py-12 xl:py-16 space-x-16 xl:space-x-22">
                     <div
-                        class="flex flex-col w-3/5 gap-y-5 text-left  backdrop-blur-sm bg-black/30 p-4 rounded-lg pl-5 pb-5">
+                        class="flex flex-col w-3/5 gap-y-6 text-left backdrop-blur-sm bg-black/50 p-6 rounded-lg">
 
-                        <h1 class="font-bold pb-4">
-                            <span
-                                class="text-6xl bg-clip-text text-transparent bg-gradient-to-r from-yellow-500 via-yellow-300 to-yellow-500">
-                                <span class="text-pycon-green text-outline-white">PyCon Africa</span> and
-                                <span class="text-pycon-blue text-outline-white">PyConZA</span> are
-                                <span class="text-pycon-red text-outline-white">joining forces!</span>
-                            </span>
+                        <h1 class="text-5xl xl:text-6xl font-bold leading-tight text-white">
+                            <span class="text-pycon-green">PyCon Africa</span> and
+                            <span class="text-pycon-blue">PyConZA</span><br>
+                            <span class="text-pycon-yellow">unite in Johannesburg!</span>
                         </h1>
 
-                        <ul class="text-2xl my-4">
+                        <p class="text-xl text-gray-200 leading-relaxed">
+                            Join Africa's premier Python conference for five days of talks, workshops, and community building with developers from across the continent and beyond.
+                        </p>
 
-                            <li class="flex items-baseline space-x-2 list-custom">
-                                <span class="text-pycon-yellow font-bold">Where:</span>
-                                <span class="text-white">The Wanderers Club,<br />Johannesburg, South Africa</span>
+                        <ul class="text-xl space-y-3">
+                            <li class="flex items-start space-x-3">
+                                <span class="text-pycon-yellow font-bold">📍</span>
+                                <div>
+                                    <span class="font-semibold text-white">The Wanderers Club</span><br>
+                                    <span class="text-gray-200">Johannesburg, South Africa</span>
+                                </div>
                             </li>
 
-                            <li class="flex items-baseline space-x-2 list-custom">
-                                <span class="text-pycon-yellow font-bold">When:</span>
-                                <span class="text-white">8 - 12 October</span>
+                            <li class="flex items-start space-x-3">
+                                <span class="text-pycon-yellow font-bold">📅</span>
+                                <div>
+                                    <span class="font-semibold text-white">8 - 12 October 2025</span><br>
+                                    <span class="text-gray-200">5 days of Python excellence</span>
+                                </div>
                             </li>
-
                         </ul>
 
-                        <!-- <p class="text-pycon-light-blue text-xl italic">
-                            More details will be shared as they become available
-                        </p> -->
+                        <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                            <a href="{% url 'page_tickets' %}" class="btn text-center px-8 py-3 text-lg font-semibold">
+                                Get Your Tickets
+                            </a>
+                            <a href="{% url 'page_beginners_day' %}" class="btn btn-success text-center px-8 py-3 text-lg font-semibold">
+                                Free Beginner's Day
+                            </a>
+                        </div>
 
                     </div>
-                    <figure class="mb-12 text-right w-2xl xl:w-3xl sm:h-auto ">
+                    <figure class="w-2xl xl:w-2xl sm:h-auto  flex justify-between items-center">
                         <img src="{% static 'img/hero-logo-2025.png' %}" alt="PyConAfrica25 Logo" class="w-full" loading="lazy" />
                     </figure>
-                </div>
-                
             </div>
         </div>
 
         <!-- For mobile/small screen -->
-        <div class="lg:hidden bg-black bg-no-repeat bg-cover bg-center py-0 px-0 h-screen flex flex-col"
+        <div class="lg:hidden bg-gray-900 bg-no-repeat bg-cover bg-center flex flex-col"
             style="background-image: url('/static/img/pycon-africa-2025-header_2-mobile.png')">
-            <div class="flex-grow-[1]"></div>
+            
+            <div class="w-full bg-gradient-to-t from-black/90 via-black/60 to-transparent py-16">
+                <div class="w-full px-4">
+                    <div class="max-w-sm mx-auto flex flex-col gap-y-4 text-center">
+                        <figure class="mb-2">
+                            <img src="{% static 'img/hero-logo-2025.png' %}" alt="PyConAfrica25 Logo" class="w-40 mx-auto" loading="lazy" />
+                        </figure>
+                        
+                        <h1 class="text-xl font-bold text-white leading-tight">
+                            <span class="text-pycon-green">PyCon Africa</span> and
+                            <span class="text-pycon-blue">PyConZA</span><br>
+                            <span class="text-pycon-yellow">unite in Johannesburg!</span>
+                        </h1>
 
-            <div class="flex-grow-[1] w-full bg-gradient-to-t from-black via-black/70 to-transparent pt-8">
-                
-                <div class="max-w-md mx-auto flex flex-col gap-y-3 text-left p-4">
-                    <figure class="mb-12 text-center w-full sm:w-lg sm:h-auto -ml-2 sm:-ml-10">
-                        <img src="{% static 'img/hero-logo-2025.png' %}" alt="PyConAfrica25 Logo" class="w-full" loading="lazy" />
-                    </figure>
-                    <div class="text-xl font-bold text-white">
-                        <span class="text-pycon-green">PyCon Africa</span> and
-                        <span class="text-pycon-blue">PyConZA</span> are
-                        <span class="text-pycon-red">joining forces!</span>
+                        <p class="text-gray-200 text-sm leading-relaxed">
+                            Join Africa's premier Python conference for five days of talks, workshops, and community building.
+                        </p>
+
+                        <div class="text-sm space-y-1 text-center">
+                            <div class="flex items-center justify-center space-x-2">
+                                <span class="text-pycon-yellow">📍</span>
+                                <span class="text-white">The Wanderers Club, Johannesburg</span>
+                            </div>
+                            <div class="flex items-center justify-center space-x-2">
+                                <span class="text-pycon-yellow">📅</span>
+                                <span class="text-white">8 - 12 October 2025</span>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-2 pt-3 w-full">
+                            <a href="{% url 'page_tickets' %}" class="btn text-center py-3 px-4 font-semibold w-full">
+                                Get Your Tickets
+                            </a>
+                            <a href="{% url 'page_beginners_day' %}" class="btn btn-success text-center py-3 px-4 font-semibold w-full">
+                                Free Beginner's Day
+                            </a>
+                        </div>
                     </div>
-
-                    <ul class="text-lg my-2">
-                        <li class="flex items-baseline space-x-2 list-custom">
-                            <span class="text-pycon-yellow font-bold">Where: </span>
-                            <span class="text-white">Johannesburg, South Africa</span>
-                        </li>
-                        <li class="flex items-baseline space-x-2 list-custom">
-                            <span class="text-pycon-yellow font-bold">When: </span>
-                            <span class="text-white">8 - 12 October</span>
-                        </li>
-                    </ul>
-
-                    <p class="text-pycon-light-blue italic text-sm">
-                        More details will be shared as they become available
-                    </p>
                 </div>
             </div>
-
         </div>
 </section>
 
@@ -100,7 +116,7 @@
             Be part of something special. Whether you're attending in person or online, contributing to our community, or just getting started with your Python journey - there's a place for you.
         </p>
         
-        <div class="grid md:grid-cols-3 gap-6 mt-12">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-12">
             <div class="bg-white border border-gray-200 rounded-lg p-6 text-center flex flex-col">
                 <h3 class="text-pycon-blue text-xl font-semibold mb-4">Get Your Tickets</h3>
                 <p class="text-gray-700 mb-6 flex-grow">Join us in Johannesburg or attend online. Early bird pricing available now.</p>
@@ -136,7 +152,7 @@
 
 <!-- About Section -->
 <section class="py-16">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-12">
         <div class="space-y-6">
             <h2>Africa's Premier Python Conference</h2>
             <p class="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -144,23 +160,26 @@
             </p>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-8">
-            <div class="text-center space-y-4">
-                <c-card image_path="img/home/jhb.jpg" subtitle="Johannesburg">
-                    A major African technology and business hub.
-                </c-card>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+            <div class="bg-white shadow-lg rounded-lg p-6 text-center flex flex-col">
+                <div class="mb-6 h-64 bg-cover bg-center rounded-lg" style="background-image: url('{% static 'img/home/jhb.jpg' %}')">
+                </div>
+                <h3 class="font-bold text-xl mb-4">Johannesburg</h3>
+                <p class="text-gray-600 flex-grow">A major African technology and business hub.</p>
             </div>
 
-            <div class="text-center space-y-4">
-                <c-card image_path="img/home/group.jpg" subtitle="Hundreds of programmers">
-                    From around Africa and the world
-                </c-card>
+            <div class="bg-white shadow-lg rounded-lg p-6 text-center flex flex-col">
+                <div class="mb-6 h-64 bg-cover bg-center rounded-lg" style="background-image: url('{% static 'img/home/group.jpg' %}')">
+                </div>
+                <h3 class="font-bold text-xl mb-4">Hundreds of programmers</h3>
+                <p class="text-gray-600 flex-grow">From around Africa and the world</p>
             </div>
 
-            <div class="text-center space-y-4">
-                <c-card image_path="img/home/sprint.jpg" subtitle="Five days">
-                    of talks, workshops and collaboration
-                </c-card>
+            <div class="bg-white shadow-lg rounded-lg p-6 text-center flex flex-col">
+                <div class="mb-6 h-64 bg-cover bg-center rounded-lg" style="background-image: url('{% static 'img/home/sprint.jpg' %}')">
+                </div>
+                <h3 class="font-bold text-xl mb-4">Five days</h3>
+                <p class="text-gray-600 flex-grow">of talks, workshops and collaboration</p>
             </div>
         </div>
     </div>
@@ -194,40 +213,55 @@
             </p>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-8">
-            <div class="bg-white border border-gray-200 rounded-lg p-6 text-center flex flex-col">
-                <div class="mb-4">
-                    <img src="{% static 'img/home/tutorials.jpg' %}" alt="Beginners Day" class="w-full h-48 object-cover rounded-lg mb-4">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+            <div class="bg-white shadow-lg rounded-lg p-6 text-center flex flex-col">
+                <div class="mb-6 h-64 bg-cover bg-center rounded-lg" style="background-image: url('{% static 'img/home/tutorials.jpg' %}')">
                 </div>
-                <h3 class="text-pycon-green text-xl font-semibold mb-4">Beginners Day</h3>
+                <h3 class="text-pycon-green text-xl font-bold mb-4">Beginners Day</h3>
                 <p class="text-gray-700 mb-6 flex-grow">Free hands-on workshops for complete newcomers to Python. No experience needed!</p>
                 <div class="mt-auto">
                     <a href="{% url 'page_beginners_day' %}" class="btn btn-success">Learn More</a>
                 </div>
             </div>
 
-            <div class="bg-white border border-gray-200 rounded-lg p-6 text-center flex flex-col">
-                <div class="mb-4">
-                    <img src="{% static 'img/home/speakers.jpg' %}" alt="Main Conference Days" class="w-full h-48 object-cover rounded-lg mb-4">
+            <div class="bg-white shadow-lg rounded-lg p-6 text-center flex flex-col">
+                <div class="mb-6 h-64 bg-cover bg-center rounded-lg" style="background-image: url('{% static 'img/home/speakers.jpg' %}')">
                 </div>
-                <h3 class="text-pycon-blue text-xl font-semibold mb-4">Main Conference Days</h3>
+                <h3 class="text-pycon-blue text-xl font-bold mb-4">Main Conference Days</h3>
                 <p class="text-gray-700 mb-6 flex-grow">Inspiring talks, hands-on workshops, and networking with amazing speakers from across the continent and beyond</p>
                 <div class="mt-auto">
                     <a href="{% url 'page_tickets' %}" class="btn">Get Tickets</a>
                 </div>
             </div>
 
-            <div class="bg-white border border-gray-200 rounded-lg p-6 text-center flex flex-col">
-                <div class="mb-4">
-                    <img src="{% static 'img/home/sprints.jpg' %}" alt="Sprints" class="w-full h-48 object-cover rounded-lg mb-4">
+            <div class="bg-white shadow-lg rounded-lg p-6 text-center flex flex-col">
+                <div class="mb-6 h-64 bg-cover bg-center rounded-lg" style="background-image: url('{% static 'img/home/sprints.jpg' %}')">
                 </div>
-                <h3 class="text-pycon-red text-xl font-semibold mb-4">Sprints</h3>
+               <h3 class="text-pycon-red text-xl font-semibold mb-4">Sprints</h3>
                 <p class="text-gray-700 mb-6 flex-grow">Collaboration on new and established open-source Python projects with fellow developers</p>
                 <div class="mt-auto">
                     <a href="{% url 'page_sprints' %}" class="btn btn-secondary">Join Sprints</a>
                 </div>
             </div>
         </div>
+
+        <!-- <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+         
+
+            <div class="bg-white border border-gray-200 rounded-lg p-6 text-center flex flex-col h-full">
+                <div class="mb-6 h-64 flex items-center justify-center overflow-hidden rounded-lg bg-gray-100">
+                    <img src="{% static 'img/home/speakers.jpg' %}" alt="Main Conference Days" class="w-full h-full object-cover">>
+                </div>
+                
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-lg p-6 text-center flex flex-col h-full">
+                <div class="mb-6 h-64 flex items-center justify-center overflow-hidden rounded-lg bg-gray-100">
+                    <img src="{% static 'img/home/sprints.jpg' %}" alt="Sprints" class="w-full h-full object-cover">>
+                </div>
+                
+            </div>
+        </div> -->
     </div>
 </section>
 
@@ -236,7 +270,7 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
         <h2>Ready to Get Involved?</h2>
         
-        <div class="grid md:grid-cols-2 gap-6">
+        <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-white border border-gray-200 rounded-lg p-6 space-y-4">
                 <h3 class="text-pycon-green text-lg font-semibold">New to Python?</h3>
                 <p class="text-gray-700">Join our free Beginner's Day workshop - no experience needed!</p>
