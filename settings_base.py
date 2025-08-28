@@ -50,6 +50,7 @@ INSTALLED_APPS = (
     "django.contrib.admin",
     "django_browser_reload",  # https://github.com/adamchainz/django-browser-reload
     "debug_toolbar",  # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
+    "import_export",
 )
 
 

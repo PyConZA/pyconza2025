@@ -4,10 +4,11 @@ from django.utils import timezone
 import openpyxl
 from openpyxl.utils import get_column_letter
 from .models import GrantApplication
+from import_export.admin import ImportExportModelAdmin
 
 
 @admin.register(GrantApplication)
-class GrantApplicationAdmin(admin.ModelAdmin):
+class GrantApplicationAdmin(ImportExportModelAdmin):
     list_display = [
         'user', 'full_name', 'travel_from_display', 'travel_amount', 
         'request_travel', 'request_accommodation', 'request_ticket', 'created_at'

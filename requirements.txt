@@ -12,3 +12,4 @@ django-template-partials==24.4
 django-countries==7.6.1
 openpyxl==3.1.5
 weasyprint==65.1
+django-import-export==4.3.9
