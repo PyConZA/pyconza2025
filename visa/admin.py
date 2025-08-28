@@ -5,6 +5,7 @@ from django import forms
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import path, reverse
+from import_export.admin import ImportExportModelAdmin
 
 
 class BulkRejectionForm(forms.Form):
@@ -30,7 +31,7 @@ class RejectionForm(forms.Form):
 
 
 @admin.register(VisaInvitationLetter)
-class VisaInvitationLetterAdmin(admin.ModelAdmin):
+class VisaInvitationLetterAdmin(ImportExportModelAdmin):
     change_form_template = "visa/admin/visa_letter_change_form.html"
 
     list_display = (
