@@ -166,17 +166,17 @@ WAFER_MENUS += (
         "items": [
             {
                 "menu": "friends",
-                "label": _("30 Aug: Friends of PyCon Africa"),
+                "label": _("30 Aug: FREE Friends of PyCon Africa (FREE)"),
                 "url": reverse_lazy("page_friends_of_pycon_africa"),
             },
             {
                 "menu": "beginners_day",
-                "label": _("8 Oct: Beginners Day"),
+                "label": _("8 Oct: Beginners Day (FREE)"),
                 "url": reverse_lazy("page_beginners_day"),
             },
             {
                 "menu": "in_person_event",
-                "label": _("9-10 Oct: In Person Event"),
+                "label": _("9-10 Oct: In Person Conference"),
                 "url": reverse_lazy("page_in_person_event"),
             },
             {
