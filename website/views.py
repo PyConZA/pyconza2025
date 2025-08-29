@@ -36,3 +36,7 @@ def page_donations(request):
 
 def page_remote_experience(request):
     return render(request, "website/page_remote_experience.html")
+
+
+def page_in_person_event(request):
+    return render(request, "website/page_in_person_event.html")

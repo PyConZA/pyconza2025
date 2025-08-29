@@ -143,11 +143,11 @@ WAFER_MENUS += (
         "menu": "about",
         "label": _("About"),
         "items": [
-            {
-                "name": "blog",
-                "label": _("Blog"),
-                "url": "https://pyconafrica.blogspot.com/",
-            },
+            # {
+            #     "name": "blog",
+            #     "label": _("Blog"),
+            #     "url": "https://pyconafrica.blogspot.com/",
+            # },
             {
                 "name": "donations",
                 "label": _("Donations"),
@@ -173,6 +173,11 @@ WAFER_MENUS += (
                 "menu": "beginners_day",
                 "label": _("8 Oct: Beginners Day"),
                 "url": reverse_lazy("page_beginners_day"),
+            },
+            {
+                "menu": "in_person_event",
+                "label": _("9-10 Oct: In Person Event"),
+                "url": reverse_lazy("page_in_person_event"),
             },
             {
                 "menu": "remote_experience",

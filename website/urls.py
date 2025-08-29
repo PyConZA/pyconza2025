@@ -11,4 +11,5 @@ urlpatterns = [
     path("beginners-day", views.page_beginners_day, name="page_beginners_day"),
     path("donations", views.page_donations, name="page_donations"),
     path("remote-experience", views.page_remote_experience, name="page_remote_experience"),
+    path("in-person-event", views.page_in_person_event, name="page_in_person_event"),
 ]
