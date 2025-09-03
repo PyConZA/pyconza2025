@@ -8,14 +8,74 @@
 
     <!-- Header -->
     <div class="text-center space-y-4">
-        <h2 class="text-pycon-blue">Help us open more doors to the Python community</h2>
+        <h2 class="text-pycon-blue">Make a donation - Help us open more doors to the Python community</h2>
+        
+        <!-- Pixel Art Display -->
+        <div class="flex justify-center mb-8">
+            <div class="flex items-center gap-6">
+                <div id="pixel-art-canvas" class="inline-block">
+                    <!-- Pixel art will be generated here -->
+                </div>
+                <div class="text-left">
+                    <div class="text-3xl font-semibold text-gray-700">Donations Progress</div>
+                    <div class="text-2xl font-bold text-pycon-green" id="current-amount"></div>
+                    <div class="text-2xl text-gray-600">of <span id="target-amount"></span> goal</div>
+                    <div class="text-xl text-gray-500 mt-1">
+                        <span id="percentage-funded"></span>% funded
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <p class="text-xl text-gray-600 max-w-3xl mx-auto">
             PyCon Africa is run entirely by volunteers who believe in making technology more accessible across the continent. We're working to connect people, share knowledge, and create opportunities - but we need your help to expand our reach.
         </p>
         <div class="pt-4">
-            <a href="https://www.quicket.co.za/events/321686-pycon-africa-2025/#/tickets" target="_blank" class="btn text-lg px-8 py-4">Support Our Community</a>
+            <a href="https://www.quicket.co.za/events/321686-pycon-africa-2025/#/tickets" target="_blank" class="btn text-lg px-8 py-4">Make a donation</a>
         </div>
     </div>
+
+    <!-- What Support Enables -->
+    <div class="space-y-8">
+        <h2 class="text-center">What your support enables</h2>
+        <p class="text-center">Different amounts help in different ways:</p>
+        
+        <div class="grid md:grid-cols-2 gap-4">
+            <div class="bg-white border border-gray-200 rounded-lg p-4 flex justify-between items-center">
+                <div>
+                    <div class="font-bold text-pycon-green">$50</div>
+                    <div class="text-gray-600">Covers our per-head cost for one Beginner's Day participant</div>
+                </div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-lg p-4 flex justify-between items-center">
+                <div>
+                    <div class="font-bold text-pycon-blue">$100</div>
+                    <div class="text-gray-600">Covers the cost of one full conference ticket</div>
+                </div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-lg p-4 flex justify-between items-center">
+                <div>
+                    <div class="font-bold text-pycon-red">$200</div>
+                    <div class="text-gray-600">Helps us support a regional traveller</div>
+                </div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-lg p-4 flex justify-between items-center">
+                <div>
+                    <div class="font-bold text-pycon-yellow">$500</div>
+                    <div class="text-gray-600">Helps us support someone from further afield</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white border-2 border-pycon-green rounded-lg p-6 text-center">
+            <div class="font-bold text-pycon-green text-xl mb-2">$1,000</div>
+            <div class="text-gray-700">Lets us expand our capacity significantly</div>
+        </div>
+
+        <p class="text-center font-semibold">Any amount helps. We're grateful for whatever you can contribute.</p>
+    </div>
+
+    
 
     <!-- What We're Building -->
     <div class="space-y-6">
@@ -62,45 +122,7 @@
         </div>
     </div>
 
-    <!-- What Support Enables -->
-    <div class="space-y-8">
-        <h2 class="text-center">What your support enables</h2>
-        <p class="text-center">Different amounts help in different ways:</p>
-        
-        <div class="grid md:grid-cols-2 gap-4">
-            <div class="bg-white border border-gray-200 rounded-lg p-4 flex justify-between items-center">
-                <div>
-                    <div class="font-bold text-pycon-green">$50</div>
-                    <div class="text-gray-600">Covers our per-head cost for one Beginner's Day participant</div>
-                </div>
-            </div>
-            <div class="bg-white border border-gray-200 rounded-lg p-4 flex justify-between items-center">
-                <div>
-                    <div class="font-bold text-pycon-blue">$100</div>
-                    <div class="text-gray-600">Covers the cost of one full conference ticket</div>
-                </div>
-            </div>
-            <div class="bg-white border border-gray-200 rounded-lg p-4 flex justify-between items-center">
-                <div>
-                    <div class="font-bold text-pycon-red">$200</div>
-                    <div class="text-gray-600">Helps us support a regional traveller</div>
-                </div>
-            </div>
-            <div class="bg-white border border-gray-200 rounded-lg p-4 flex justify-between items-center">
-                <div>
-                    <div class="font-bold text-pycon-yellow">$500</div>
-                    <div class="text-gray-600">Helps us support someone from further afield</div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="bg-white border-2 border-pycon-green rounded-lg p-6 text-center">
-            <div class="font-bold text-pycon-green text-xl mb-2">$1,000</div>
-            <div class="text-gray-700">Lets us expand our capacity significantly</div>
-        </div>
-
-        <p class="text-center font-semibold">Any amount helps. We're grateful for whatever you can contribute.</p>
-    </div>
+    
 
 
     <!-- How to Contribute -->
@@ -183,4 +205,169 @@
     </div>
 
 </section>
+
+
+
+
+
+<script>
+    // Calculate funding progress
+    const targetAmount = 7500; // Example target amount in dollars
+    const currentAmount = 2780+500; // Example current amount - this should come from your backend
+    const portionFunded = currentAmount / targetAmount;
+
+    const pattern = [
+                    [0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],
+                    [0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0],
+                    [0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0],
+                    [0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0],
+                    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0],
+                    [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0],
+                    [0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+                    [0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0],
+                    [0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0],
+                    [0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0],
+                    [0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,1,1,0],
+                    [0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,1,0,0],
+                    [0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,1,0,0],
+                    [0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0],
+                 
+                    
+                ];
+
+        const width = pattern[0].length
+        const height = pattern.length
+        class PixelArtDisplay {
+            constructor(containerId, options = {width, height}) {
+                this.container = document.getElementById(containerId);
+                this.width = options.width || 16;
+                this.height = options.height || 12;
+                this.pixelSize = options.pixelSize || 20;
+                this.colors = options.colors || ['#3B82F6', '#10B981', '#EF4444', '#F59E0B', '#8B5CF6'];
+                this.pixels = [];
+                this.init();
+            }
+
+            init() {
+                this.createGrid();
+                this.drawPattern();
+            }
+
+            createGrid() {
+                this.container.innerHTML = '';
+                this.container.style.display = 'grid';
+                this.container.style.gridTemplateColumns = `repeat(${this.width}, ${this.pixelSize}px)`;
+                this.container.style.gridTemplateRows = `repeat(${this.height}, ${this.pixelSize}px)`;
+                this.container.style.gap = '1px';
+
+                for (let i = 0; i < this.width * this.height; i++) {
+                    const pixel = document.createElement('div');
+                    pixel.style.width = `${this.pixelSize}px`;
+                    pixel.style.height = `${this.pixelSize}px`;
+                    pixel.style.backgroundColor = 'transparent';
+                    pixel.style.cursor = 'pointer';
+
+                    this.container.appendChild(pixel);
+                    this.pixels.push(pixel);
+                }
+            }
+
+            drawPattern() {
+                // Create a simple Python-themed pattern
+                
+
+                pattern.forEach((row, y) => {
+                    row.forEach((colorIndex, x) => {
+                        if (y < this.height && x < this.width) {
+                            const pixelIndex = y * this.width + x;
+                            const color = colorIndex === 0 ? 'transparent' : this.colors[colorIndex - 1];
+                            this.pixels[pixelIndex].style.backgroundColor = color;
+                        }
+                    });
+                });
+            }
+
+            setPixel(x, y, colorIndex) {
+                if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
+                    const pixelIndex = y * this.width + x;
+                    const color = colorIndex === 0 ? 'transparent' : this.colors[colorIndex - 1];
+                    this.pixels[pixelIndex].style.backgroundColor = color;
+                }
+            }
+
+            clear() {
+                this.pixels.forEach(pixel => {
+                    pixel.style.backgroundColor = 'transparent';
+                });
+            }
+
+            randomize() {
+                this.pixels.forEach(pixel => {
+                    const randomColor = Math.random() > 0.7 ? 
+                        this.colors[Math.floor(Math.random() * this.colors.length)] : 
+                        'transparent';
+                    pixel.style.backgroundColor = randomColor;
+                });
+            }
+
+            updateFundingProgress(percentage) {
+                // First, reset to original pattern
+                this.drawPattern();
+                
+                // Find all pixels that are currently set to color index 1
+                const targetPixels = [];
+                pattern.forEach((row, y) => {
+                    row.forEach((colorIndex, x) => {
+                        if (colorIndex === 1 && y < this.height && x < this.width) {
+                            targetPixels.push({x, y, pixelIndex: y * this.width + x});
+                        }
+                    });
+                });
+                
+                // Sort pixels from bottom to top (highest y first)
+                targetPixels.sort((a, b) => b.y - a.y);
+                
+                // Calculate how many pixels to change based on percentage
+                const pixelsToChange = Math.floor((percentage / 100) * targetPixels.length);
+                
+                // Change the bottom percentage of 1s to 2s
+                for (let i = 0; i < pixelsToChange && i < targetPixels.length; i++) {
+                    const pixel = targetPixels[i];
+                    this.pixels[pixel.pixelIndex].style.backgroundColor = this.colors[1]; // Color index 2
+                }
+            }
+        }
+
+        // Initialize the pixel art display when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const pixelArt = new PixelArtDisplay('pixel-art-canvas', {
+                width,
+                height,
+                pixelSize: 20,
+                colors: ['#93C5FD', '#059669', '#EF4444', '#F59E0B', '#8B5CF6']  // Light blue for 1s, emerald green for 2s
+            });
+
+            // Set initial funding progress using actual funding percentage
+            pixelArt.updateFundingProgress(parseInt(portionFunded * 100));
+
+            // Update the display values
+            document.getElementById('current-amount').textContent = '$' + currentAmount.toLocaleString();
+            document.getElementById('target-amount').textContent = '$' + targetAmount.toLocaleString();
+            document.getElementById('percentage-funded').textContent = Math.round(portionFunded * 100);
+
+            console.log(portionFunded)
+            // Add some interactivity - click to cycle through funding percentages
+            let currentPercentage = 50;
+            document.getElementById('pixel-art-canvas').addEventListener('click', function() {
+                currentPercentage = (currentPercentage + 25) % 125; // Cycle through 50%, 75%, 100%, 0%, 25%
+                pixelArt.updateFundingProgress(currentPercentage);
+            });
+        });
+    </script>
 {% endblock %}
