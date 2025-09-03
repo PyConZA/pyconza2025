@@ -206,7 +206,18 @@ WAFER_MENUS += (
                 "url": reverse_lazy("page_remote_experience"),
             }
         ]
+    },
+    {
+        "menu": "talks",
+        "label": "Talks",
+        "items": [
+            {
+                "url": reverse_lazy("wafer_users_talks"),
+                "label": _("Accepted Talks")
+            }
+        ]
     }
+
 )
 
 
