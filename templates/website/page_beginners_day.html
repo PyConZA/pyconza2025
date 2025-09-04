@@ -1,6 +1,13 @@
 {% extends 'wafer/base.html' %}
 {% load static %}
 
+{% block extra_head %}
+    <!-- Preload critical images for faster loading -->
+    <link rel="preload" as="image" href="{% static 'img/beginners_day/photo1_optimized.jpg' %}">
+    <link rel="preload" as="image" href="{% static 'img/beginners_day/photo2_optimized.jpg' %}">
+    <link rel="preload" as="image" href="{% static 'img/beginners_day/photo3_optimized.jpg' %}">
+{% endblock %}
+
 {% block page_title %}PyCon Africa Beginner's Day{% endblock %}
 
 {% block content %}
@@ -26,19 +33,25 @@
         <h2 class="text-center">Experience the Magic of Learning Together</h2>
         <div class="grid md:grid-cols-3 gap-4">
             <div class="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                <img src="{% static 'img/beginners_day/photo1.JPG' %}" 
+                <img src="{% static 'img/beginners_day/photo1_optimized.jpg' %}" 
                      alt="Beginner's Day workshop participants collaborating" 
-                     class="w-full h-64 object-cover hover:scale-105 transition-transform duration-300">
+                     class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+                     loading="eager"
+                     decoding="async">
             </div>
             <div class="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                <img src="{% static 'img/beginners_day/photo2.JPG' %}" 
+                <img src="{% static 'img/beginners_day/photo2_optimized.jpg' %}" 
                      alt="Mentors helping participants with coding challenges" 
-                     class="w-full h-64 object-cover hover:scale-105 transition-transform duration-300">
+                     class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+                     loading="eager"
+                     decoding="async">
             </div>
             <div class="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
-                <img src="{% static 'img/beginners_day/photo3.JPG' %}" 
+                <img src="{% static 'img/beginners_day/photo3_optimized.jpg' %}" 
                      alt="Happy participants celebrating their first Python program" 
-                     class="w-full h-64 object-cover hover:scale-105 transition-transform duration-300">
+                     class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+                     loading="eager"
+                     decoding="async">
             </div>
         </div>
         <p class="text-center text-gray-600 italic">
