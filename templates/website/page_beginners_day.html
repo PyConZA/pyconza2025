@@ -21,6 +21,31 @@
         </p>
     </div>
 
+    <!-- Photo Gallery -->
+    <div class="space-y-6">
+        <h2 class="text-center">Experience the Magic of Learning Together</h2>
+        <div class="grid md:grid-cols-3 gap-4">
+            <div class="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                <img src="{% static 'img/beginners_day/photo1.JPG' %}" 
+                     alt="Beginner's Day workshop participants collaborating" 
+                     class="w-full h-64 object-cover hover:scale-105 transition-transform duration-300">
+            </div>
+            <div class="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                <img src="{% static 'img/beginners_day/photo2.JPG' %}" 
+                     alt="Mentors helping participants with coding challenges" 
+                     class="w-full h-64 object-cover hover:scale-105 transition-transform duration-300">
+            </div>
+            <div class="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                <img src="{% static 'img/beginners_day/photo3.JPG' %}" 
+                     alt="Happy participants celebrating their first Python program" 
+                     class="w-full h-64 object-cover hover:scale-105 transition-transform duration-300">
+            </div>
+        </div>
+        <p class="text-center text-gray-600 italic">
+            Moments from previous Beginner's Day events - where curiosity meets community and everyone learns together
+        </p>
+    </div>
+
     <!-- What Is Beginner's Day -->
     <div class="space-y-6">
         <h2>What Is Beginner's Day?</h2>
@@ -37,19 +62,96 @@
     <div class="space-y-8">
         <h2>Featured Workshops</h2>
         
-        <div class="grid md:grid-cols-2 gap-6">
-            <div class="bg-white border border-gray-200 rounded-lg p-6 flex flex-col">
-                <h3 class="text-pycon-green">HumbleData Workshop</h3>
-                <p class="flex-grow">Learn the fundamentals of data analysis with Python. This beginner-friendly workshop will introduce you to working with data, creating visualizations, and drawing insights - perfect for aspiring data scientists and analysts.</p>
-                <div class="mt-4 pt-3 ">
-                    <a href="https://humbledata.org/" target="_blank" class="text-sm text-pycon-green hover:underline">Learn more about HumbleData →</a>
+        <div class="space-y-6">
+            <!-- HumbleData Workshop -->
+            <div class="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                <div class="bg-gradient-to-br from-green-50 to-blue-50 p-6 text-center">
+                    <img src="{% static 'img/beginners_day/hd_logo_transparent.png' %}" 
+                         alt="HumbleData Workshop" 
+                         class="h-16 mx-auto mb-4 object-contain">
+                    <h3 class="text-pycon-green text-2xl font-bold">HumbleData</h3>
+                </div>
+                <div class="p-6 flex flex-col">
+                    <div class="mb-3 flex flex-wrap gap-2">
+                        <span class="inline-block bg-green-100 text-green-800 text-sm font-bold px-2.5 py-0.5 rounded">No coding experience needed</span>
+                        <span class="inline-block bg-green-100 text-green-800 text-sm font-bold px-2.5 py-0.5 rounded">Bring your own laptop</span>
+                    </div>
+                    <p class="flex-grow text-gray-700 mb-4 font-semibold">
+                        Learn the fundamentals of data analysis with Python.
+                    </p>
+                    <p class="flex-grow text-gray-700 mb-4">
+                        This beginner-friendly workshop will introduce you to working with data, creating visualizations, and drawing insights - perfect for aspiring data scientists and analysts.
+                    </p>
+                    <div class="text-center">
+                        <a href="https://humbledata.org/" target="_blank" 
+                           class="inline-flex items-center text-pycon-green hover:text-green-700 font-semibold text-lg transition-colors">
+                            Learn more about HumbleData 
+                            <svg class="ml-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
             </div>
-            <div class="bg-white border border-gray-200 rounded-lg p-6 flex flex-col">
-                <h3 class="text-pycon-red">DjangoGirls Workshop</h3>
-                <p class="flex-grow">Build your first web application! This internationally-recognized workshop has introduced thousands of women and marginalized genders to web development. No prior experience needed.</p>
-                <div class="mt-4 pt-3 ">
-                    <a href="https://djangogirls.org/" target="_blank" class="text-sm text-pycon-red hover:underline">Learn more about DjangoGirls →</a>
+
+            <!-- DjangoGirls Workshop -->
+            <div class="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                <div class="bg-gradient-to-br from-pink-50 to-red-50 p-6 text-center">
+                    <img src="{% static 'img/beginners_day/d-girls.png' %}" 
+                         alt="DjangoGirls Workshop" 
+                         class="h-16 mx-auto mb-4 object-contain">
+                    <h3 class="text-pycon-red text-2xl font-bold">DjangoGirls+</h3>
+                </div>
+                <div class="p-6 flex flex-col">
+                    <div class="mb-3 flex flex-wrap gap-2">
+                        <span class="inline-block bg-red-50 text-pycon-red text-sm font-bold px-2.5 py-0.5 rounded">No coding experience needed</span>
+                        <span class="inline-block bg-red-50 text-pycon-red text-sm font-bold px-2.5 py-0.5 rounded">Bring your own laptop</span>
+                    </div>
+                    <p class="flex-grow text-gray-700 mb-4 font-semibold">
+                        Build your first web application!
+                    </p>
+                    <p class="flex-grow text-gray-700 mb-4">
+                         This internationally-recognized workshop has introduced thousands of women and marginalized genders to web development. No prior experience needed.
+                    </p>
+                    <div class="text-center">
+                        <a href="https://djangogirls.org/" target="_blank" 
+                           class="inline-flex items-center text-pycon-red hover:text-red-700 font-semibold text-lg transition-colors">
+                            Learn more about DjangoGirls 
+                            <svg class="ml-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Apify Workshop -->
+            <div class="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                <div class="bg-gradient-to-br from-orange-50 to-yellow-50 p-6 text-center">
+                    <img src="{% static 'img/beginners_day/Apify_Logo_dark.svg' %}" 
+                         alt="Apify Workshop" 
+                         class="h-16 mx-auto mb-4 object-contain">
+                    <h3 class="text-orange-600 text-2xl font-bold">Build, Deploy and Monitize with Apify</h3>
+                </div>
+                <div class="p-6 flex flex-col">
+                    <div class="mb-3 flex flex-wrap gap-2">
+                        <span class="inline-block bg-orange-100 text-orange-800 text-sm font-bold px-2.5 py-0.5 rounded">Basic Python knowledge required</span>
+                        <span class="inline-block bg-orange-100 text-orange-800 text-sm font-bold px-2.5 py-0.5 rounded">Advanced Pythonistas welcome</span>
+                        <span class="inline-block bg-orange-100 text-orange-800 text-sm font-bold px-2.5 py-0.5 rounded">Bring your own laptop</span>
+                    </div>
+                    <p class="flex-grow text-gray-700 mb-4 font-semibold">Write code. Earn cash</p>
+                    <p class="flex-grow text-gray-700 mb-4">
+                        The Creator Developer Economy presents a powerful opportunity for developers to transform their coding skills into a sustainable passive income stream. Learn how to go from script to product!
+                    </p>
+                    <div class="text-center">
+                        <a href="https://apify.com/" target="_blank" 
+                           class="inline-flex items-center text-orange-600 hover:text-orange-700 font-semibold text-lg transition-colors">
+                            Learn more about Apify 
+                            <svg class="ml-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
