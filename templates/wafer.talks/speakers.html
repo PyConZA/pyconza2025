@@ -1,0 +1,51 @@
+{% extends "wafer/base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Speakers" %} - {{ WAFER_CONFERENCE_NAME }}{% endblock %}
+{% block content %}
+<section class="wafer wafer-speakers">
+      {% for talk_type, type_rows in speaker_rows.items %}
+        {% if talk_type is None %}
+          <h1 class="pt-6">{% trans 'Speakers' %}</h1>
+        {% else %}
+          <h1 class="pt-6">{% blocktrans %}{{ talk_type }} Speakers{% endblocktrans %}</h1>
+        {% endif %}
+        {% if talk_type is None %}
+          <div class="container speakers-list">
+        {% else %}
+            <div class="min-h-screen text-black py-12 px-4">
+                <div class="{{ talk_type|slugify }}-speakers-list max-w-7xl mx-auto grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {% endif %}
+          {% for row in type_rows %}
+              {% for user_profile in row %}
+
+                  <a href="{% url 'wafer_user_profile' username=user_profile.user.username %}" class="block no-underline">
+                      <div class="rounded-lg overflow-hidden shadow-md p-4 border border-transparent hover:border-black hover:border transition-all duration-300">
+                          <img class="w-full object-cover rounded-md mb-4" src="{{ user_profile.avatar_url }}" alt="{{ user_profile.user.username }}">
+                          <h3 class="wafer-speakers-name text-lg font-semibold">{{ user_profile.display_name }}</h3>
+                          <p class="text-sm text-black-400 mt-2">{{ user_profile.accepted_talks.first.title }}</p>
+                      </div>
+                  </a>
+
+              {% endfor %}
+          {% endfor %}
+        </div>
+
+      {% empty %}
+        <!-- We show an empty entry wo a) there's some content here and
+                                       b) it's easier to check some of the styling -->
+        <h1>{% trans 'Speakers' %}</h1>
+        <div class="container speakers-list">
+            <div class="row">
+               <div class="wafer-speakers-name">
+                  <p>No accepted talks yet</p>
+               </div>
+            </div>
+        </div>
+      {% endfor %}
+
+
+  </div>
+</div>
+
+</section>
+{% endblock %}
