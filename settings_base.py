@@ -214,6 +214,10 @@ WAFER_MENUS += (
             {
                 "url": reverse_lazy("wafer_users_talks"),
                 "label": _("Accepted Talks")
+            },
+            {
+                "url": reverse_lazy("wafer_talks_speakers"),
+                "label": _("Speakers")
             }
         ]
     }

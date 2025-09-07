@@ -1,51 +1,56 @@
 {% extends "wafer/base.html" %}
 {% load i18n %}
 {% block title %}{% trans "Speakers" %} - {{ WAFER_CONFERENCE_NAME }}{% endblock %}
+{% block page_title %}{% trans "Speakers" %} {% endblock %}
 {% block content %}
-<section class="wafer wafer-speakers">
+<section class="wafer wafer-speakers py-12 px-4">
       {% for talk_type, type_rows in speaker_rows.items %}
         {% if talk_type is None %}
-          <h2 class="pt-6">{% trans 'Speakers' %}</h1>
+          <h2 class="heading-section text-gray-900 mb-12">{% trans 'Speakers' %}</h2>
         {% else %}
-          <h2 class="pt-6">{% blocktrans %}{{ talk_type }} Speakers{% endblocktrans %}</h1>
+          <h2 class="heading-section text-gray-900 mb-12">{% blocktrans %}{{ talk_type }} Speakers{% endblocktrans %}</h2>
         {% endif %}
-        {% if talk_type is None %}
-          <div class="container speakers-list">
-        {% else %}
-            <div class="min-h-screen text-black py-12 px-4">
-                <div class="{{ talk_type|slugify }}-speakers-list max-w-7xl mx-auto grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {% endif %}
+        
+        <div class="max-w-7xl mx-auto">
+            <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {% for row in type_rows %}
               {% for user_profile in row %}
 
-                  <a href="{% url 'wafer_user_profile' username=user_profile.user.username %}" class="block no-underline">
-                      <div class="rounded-lg overflow-hidden shadow-md p-4 border border-transparent hover:border-black hover:border transition-all duration-300">
-                          <img class="w-full object-cover rounded-md mb-4" src="{{ user_profile.avatar_url }}" alt="{{ user_profile.user.username }}">
-                          <h3 class="wafer-speakers-name text-lg font-semibold">{{ user_profile.display_name }}</h3>
-                          <p class="text-sm text-black-400 mt-2">{{ user_profile.accepted_talks.first.title }}</p>
+                  
+                      <div class="bg-white rounded-xl shadow-md hover:shadow-xl p-6 border border-gray-100 hover:border-gray-200 transition-all duration-300 flex flex-col items-center text-center space-y-4">
+                          <div class="flex-shrink-0">
+                              <img class="w-24 h-24 object-cover rounded-full border-4 border-gray-100" src="{{ user_profile.avatar_url }}" alt="{{ user_profile.user.username }}">
+                          </div>
+                          
+                          <div class="flex-grow space-y-3">
+                              <a href="{% url 'wafer_user_profile' username=user_profile.user.username %}" class="no-underline">
+                                  <h3 class="text-xl font-bold text-gray-900 hover:text-pycon-blue transition-colors duration-200">{{ user_profile.display_name }}</h3>
+                              </a>
+                              
+                              <div class="space-y-2">
+                                  {% for talk in user_profile.accepted_talks.all %}
+                                      <a href="{% url 'wafer_talk' pk=talk.pk slug=talk.slug %}" class="block no-underline">
+                                          <p class="text-sm text-gray-600 hover:text-pycon-green transition-colors duration-200 bg-gray-50 hover:bg-gray-100 rounded-lg px-3 py-2">{{ talk.title }}</p>
+                                      </a>
+                                  {% endfor %}
+                              </div>
+                          </div>
                       </div>
-                  </a>
+                  
 
               {% endfor %}
           {% endfor %}
+            </div>
         </div>
 
       {% empty %}
-        <!-- We show an empty entry wo a) there's some content here and
-                                       b) it's easier to check some of the styling -->
-        <h1>{% trans 'Speakers' %}</h1>
-        <div class="container speakers-list">
-            <div class="row">
-               <div class="wafer-speakers-name">
-                  <p>No accepted talks yet</p>
-               </div>
+        <div class="max-w-7xl mx-auto text-center py-16">
+            <h2 class="heading-section text-gray-900 mb-8">{% trans 'Speakers' %}</h2>
+            <div class="bg-white rounded-xl shadow-md p-8 border border-gray-100">
+                <p class="text-lg text-gray-600">No accepted talks yet</p>
             </div>
         </div>
       {% endfor %}
-
-
-  </div>
-</div>
 
 </section>
 {% endblock %}
