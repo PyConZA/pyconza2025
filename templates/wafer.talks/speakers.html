@@ -5,9 +5,9 @@
 <section class="wafer wafer-speakers">
       {% for talk_type, type_rows in speaker_rows.items %}
         {% if talk_type is None %}
-          <h1 class="pt-6">{% trans 'Speakers' %}</h1>
+          <h2 class="pt-6">{% trans 'Speakers' %}</h1>
         {% else %}
-          <h1 class="pt-6">{% blocktrans %}{{ talk_type }} Speakers{% endblocktrans %}</h1>
+          <h2 class="pt-6">{% blocktrans %}{{ talk_type }} Speakers{% endblocktrans %}</h1>
         {% endif %}
         {% if talk_type is None %}
           <div class="container speakers-list">
