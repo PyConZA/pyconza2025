@@ -65,4 +65,32 @@
 		{% endfor %}
 	</div>
 </section>
+{% if is_paginated %}
+<section class="wafer wafer-pagination w-full flex justify-center">
+    <ul class="pagination list-none flex space-x-4">
+        {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link no-underline"
+                href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+        <li class="page-item" class="disabled"><a class="page-link no-underline" href="#">&laquo;</a></li>
+        {% endif %}
+        {% for page in paginator.page_range %}
+        <li class="page-item">
+            {% if page == page_obj.number %}
+                <span class="text-pycon-blue">{{ page }}</span>
+            {% else %}
+                <a class="page-link no-underline" href="?page={{ page }}">{{ page }}</a>
+            {% endif %}
+        </li>
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link no-underline" href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+        </li>
+        {% else %}
+        <li class="page-item" class="disabled"><a class="page-link no-underline" href="#">&raquo;</a></li>
+        {% endif %}
+    </ul>
+</section>
+{% endif %}
 {% endblock %}
