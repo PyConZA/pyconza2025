@@ -12,4 +12,5 @@ urlpatterns = [
     path("donations", views.page_donations, name="page_donations"),
     path("remote-experience", views.page_remote_experience, name="page_remote_experience"),
     path("in-person-event", views.page_in_person_event, name="page_in_person_event"),
+    path("accommodations", views.page_accommodation_recommendations, name="page_accommodation_recommendations"),
 ]

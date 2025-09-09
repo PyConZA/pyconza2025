@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+from .models import AccommodationRecommendation
 
 def page_home(request):
     return render(request, "website/page_home.html")
@@ -40,3 +40,18 @@ def page_remote_experience(request):
 
 def page_in_person_event(request):
     return render(request, "website/page_in_person_event.html")
+
+def page_accommodation_recommendations(request):
+    SHUTTLE_CHOICES = [
+        ("yes", "Yes"),
+        ("no", "No"),
+        ("contact", "Contact to confirm"),
+    ]
+
+    SHUTTLE_CHOICES_DICT = dict(SHUTTLE_CHOICES)
+    accommodations = AccommodationRecommendation.objects.all()
+    context = {
+        "shuttle_choices": SHUTTLE_CHOICES_DICT,
+        "accommodations": accommodations,
+    }
+    return render(request, "website/page_accommodation_recommendations.html", context)

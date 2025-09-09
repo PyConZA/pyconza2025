@@ -204,7 +204,12 @@ WAFER_MENUS += (
                 "menu": "remote_experience",
                 "label": _("Online Venue"),
                 "url": reverse_lazy("page_remote_experience"),
-            }
+            },
+            {
+                "menu": "accommodations",
+                "label": _("Accommodations"),
+                "url": reverse_lazy("page_accommodation_recommendations"),
+            },
         ]
     },
     {
