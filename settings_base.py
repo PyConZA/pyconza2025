@@ -288,5 +288,6 @@ SOCIAL_MEDIA_ENTRIES = {
     'linkedin': _('LinkedIn Profile link'),
     'twitter': _('Twitter Profile link'),
     'bluesky': _('BlueSky Profile link'),
-    'website': _('Website link'),
+    'fediverse': _('Fediverse Profile link'),
+    'other': _('Other Social'),
 }
