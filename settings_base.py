@@ -289,3 +289,11 @@ CONTACT_US_EMAILS = {
     'team' : 'team@pycon.org',
     'sponsorship':'sponsorship@pycon.africa'
 }
+
+SOCIAL_MEDIA_ENTRIES = {
+    'linkedin': _('LinkedIn Profile link'),
+    'twitter': _('Twitter Profile link'),
+    'bluesky': _('BlueSky Profile link'),
+    'fediverse': _('Fediverse Profile link'),
+    'other': _('Other Social'),
+}
