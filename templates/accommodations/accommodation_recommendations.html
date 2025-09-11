@@ -12,16 +12,25 @@
 	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 		{% for acc in accommodations %}
 
-            <div class="bg-white rounded-xl shadow-md hover:shadow-xl p-6 pt-1 border border-gray-100 hover:border-gray-200 transition-all duration-300 flex flex-col items-center text-center space-y-4">
+            <div class="bg-white rounded-xl shadow-md hover:shadow-xl p-6 pt-1 border border-gray-100 hover:border-gray-200 transition-all duration-300 flex flex-col items-center text-center space-y-4 relative">
                 <p class="text-sm text-pycon-green transition-colors duration-200 bg-gray-50 hover:bg-gray-100 rounded-lg px-3 ">{{ acc.type.name }}</p>
                 <div class="flex-grow space-y-3">
                     <a href="{{ acc.website }}" class="no-underline">
-                        <h3 class="text-xl font-bold text-gray-900 hover:text-pycon-blue transition-colors duration-200">{{ acc.name }}</h3>
+                        <h3 class="text-xl font-bold text-gray-900 hover:text-pycon-blue transition-colors duration-200 m-0">{{ acc.name }}</h3>
+                        
                     </a>
+                    {% if acc.discount_code %}
+                        <p class="relative text-gray-600" style="top: -18px; margin: 0 !important">
+                            <span class="text-xs">Discount code:</span> <b class="text-sm md:text-base">{{ acc.discount_code }}</b>
+                        </p>
+                    {% endif %}
                     
                     <div class="space-y-1">
-                        <p class="text-sm text-gray-600 hover:text-pycon-green transition-colors duration-200 bg-gray-50 hover:bg-gray-100 rounded-lg px-3 py-2">{{ acc.location }}</p>
+                        <p class="text-sm text-gray-600 hover:text-pycon-green transition-colors duration-200 bg-gray-50 hover:bg-gray-100 rounded-lg px-3 py-2" style="margin-top: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important;">{{ acc.location }}</p>
                         <p class="text-sm text-gray-600 hover:text-pycon-blue transition-colors duration-200 bg-gray-50 hover:bg-gray-100 rounded-lg px-3">Avg. rate per night: <b>R{{ acc.approximate_rate }}</b></p>
+                        {% if acc.description %}
+                            <p class="text-xs text-gray-700 transition-colors duration-200 bg-gray-50 hover:bg-gray-100 rounded-lg px-3">"{{ acc.description }}"</p>
+                        {% endif %}
                         <div>
                             {% if acc.phone_number %}
                                 <a href="tel:{{ acc.phone_number }}" class="block no-underline" target="_blank">
@@ -35,7 +44,7 @@
                             {% endif %}
                             {% if acc.website %}
                                 <a href="{{ acc.website }}" class="block no-underline" target="_blank">
-                                    <p class="text-sm text-gray-600 hover:text-pycon-blue transition-colors duration-200 bg-gray-50 hover:bg-gray-100 rounded-lg px-3">Website</p>
+                                    <p class="text-sm text-pycon-blue transition-colors duration-200 bg-gray-50 hover:bg-gray-100 rounded-lg px-3">Website</p>
                                 </a>
                             {% endif %}
                         </div>
@@ -61,7 +70,7 @@
             </div>
 
 		{% empty %}
-			<li>No accommodation options available yet.</li>
+			<li class="list-none col-span-3">No accommodation options available yet.</li>
 		{% endfor %}
 	</div>
 </section>

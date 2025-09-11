@@ -1,6 +1,4 @@
 from django.shortcuts import render
-from .models import AccommodationRecommendation
-from bakery.views import BuildableListView
 
 def page_home(request):
     return render(request, "website/page_home.html")
@@ -41,38 +39,3 @@ def page_remote_experience(request):
 
 def page_in_person_event(request):
     return render(request, "website/page_in_person_event.html")
-
-def page_accommodation_recommendations(request):
-    SHUTTLE_CHOICES = [
-        ("yes", "Yes"),
-        ("no", "No"),
-        ("contact", "Contact to confirm"),
-    ]
-
-    SHUTTLE_CHOICES_DICT = dict(SHUTTLE_CHOICES)
-    accommodations = AccommodationRecommendation.objects.all()
-    context = {
-        "shuttle_choices": SHUTTLE_CHOICES_DICT,
-        "accommodations": accommodations,
-    }
-    return render(request, "website/page_accommodation_recommendations.html", context)
-
-class Accommodations(BuildableListView):
-    model = AccommodationRecommendation
-    context_object_name = 'accommodations'
-    template_name = 'website/page_accommodation_recommendations.html'
-    paginate_by = 12
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        SHUTTLE_CHOICES = [
-            ("yes", "Yes"),
-            ("no", "No"),
-            ("contact", "Contact to confirm"),
-        ]
-
-        SHUTTLE_CHOICES_DICT = dict(SHUTTLE_CHOICES)
-        context['shuttle_choices'] = SHUTTLE_CHOICES_DICT
-               
-        return context

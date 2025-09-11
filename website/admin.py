@@ -9,7 +9,6 @@ from wafer.talks.admin import TalkAdmin
 from wafer.talks.models import Talk
 from grants.models import GrantApplication
 
-from .models import AccommodationRecommendation, AccommodationType
 
 class TalkInline(admin.TabularInline):
     model = Talk
@@ -39,16 +38,5 @@ admin.site.unregister(Talk)
 admin.site.register(Talk, TalkAdmin)
 
 
-@admin.register(AccommodationType)
-class AccommodationTypeAdmin(admin.ModelAdmin):
-    list_display = ("name",)
-    search_fields = ("name",)
-
-@admin.register(AccommodationRecommendation)
-class AccommodationRecommendationAdmin(admin.ModelAdmin):
-    list_display = ("name", "type", "location", "approximate_rate")
-    list_filter = ("type",)
-    search_fields = ("name", "location")
-    save_as = True
 
 
