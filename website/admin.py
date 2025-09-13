@@ -9,6 +9,7 @@ from wafer.talks.admin import TalkAdmin
 from wafer.talks.models import Talk
 from grants.models import GrantApplication
 
+
 class TalkInline(admin.TabularInline):
     model = Talk
     extra = 0
@@ -35,5 +36,7 @@ class TalkAdmin(TalkAdmin,ImportExportModelAdmin):
 
 admin.site.unregister(Talk)
 admin.site.register(Talk, TalkAdmin)
+
+
 
 

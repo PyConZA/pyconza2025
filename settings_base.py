@@ -51,6 +51,7 @@ INSTALLED_APPS = (
     "django_browser_reload",  # https://github.com/adamchainz/django-browser-reload
     "debug_toolbar",  # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
     "import_export",
+    "accommodations",
 )
 
 
@@ -204,7 +205,12 @@ WAFER_MENUS += (
                 "menu": "remote_experience",
                 "label": _("Online Venue"),
                 "url": reverse_lazy("page_remote_experience"),
-            }
+            },
+            {
+                "menu": "accommodations",
+                "label": _("Accommodations"),
+                "url": reverse_lazy("accommodation_recommendations"),
+            },
         ]
     },
     {
