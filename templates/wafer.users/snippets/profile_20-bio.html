@@ -40,9 +40,12 @@
       <p><b>Username</b>: {{object.username }}</p>
       <p><b>Email</b>: {{ object.email }}</p>
       {% endif %}
+      {% if object.first_name %}
       <p><b>First Name</b>: {{object.first_name }}</p>
+      {% endif %}
+      {% if object.last_name %}
       <p><b>Last Name</b>: {{ object.last_name}}</p>
-      
+      {% endif %}
     </div>
 
     {% endblock name %}
