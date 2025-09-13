@@ -207,8 +207,8 @@ WAFER_MENUS += (
                 "url": reverse_lazy("page_remote_experience"),
             },
             {
-                "menu": "accommodations",
-                "label": _("Accommodations"),
+                "menu": "accommodation",
+                "label": _("Accommodation"),
                 "url": reverse_lazy("accommodation_recommendations"),
             },
         ]

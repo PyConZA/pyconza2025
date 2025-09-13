@@ -19,7 +19,7 @@ class AccommodationRecommendation(models.Model):
 	type = models.ForeignKey(AccommodationType, on_delete=models.CASCADE, related_name="accommodations")
 	name = models.CharField(max_length=1024)
 	location = models.CharField(max_length=1024)
-	description  = models.CharField(max_length=1024, blank=True, null=True)
+	description  = models.TextField(blank=True, null=True)
 	approximate_rate = models.DecimalField(
 		max_digits=8,
 		decimal_places=2,
