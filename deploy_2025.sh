@@ -8,6 +8,10 @@ sudo -u pyconza -i
 cd pyconza2025/
 . ./ve/bin/activate
 git pull
+
+export DJANGO_SETTINGS_MODULE=settings_prod
+
+
 # Rerun tailwind if required
 npm i
 npm run tailwind
