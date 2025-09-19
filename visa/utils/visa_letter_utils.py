@@ -8,13 +8,13 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from weasyprint import HTML
-from wafer.talks.models import Talk
+from wafer.talks.models import Talk, ACCEPTED
 
 
 def generate_visa_letter_pdf(request, visa_letter):
     """Generate PDF file for visa invitation letter."""
     current_date = timezone.now().strftime("%B %d, %Y")
-    talk = Talk.objects.filter(authors=visa_letter.user, status="A").first()
+    talk = Talk.objects.filter(authors=visa_letter.user, status=ACCEPTED).first()
     is_speaker = talk is not None
     presentation_title = talk.title if talk else None
     registration_type = "Speaker" if is_speaker else "Attendee"
