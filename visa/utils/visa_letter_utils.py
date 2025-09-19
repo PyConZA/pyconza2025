@@ -14,7 +14,7 @@ from wafer.talks.models import Talk
 def generate_visa_letter_pdf(request, visa_letter):
     """Generate PDF file for visa invitation letter."""
     current_date = timezone.now().strftime("%B %d, %Y")
-    talk = Talk.objects.filter(authors=visa_letter.user, status="accepted").first()
+    talk = Talk.objects.filter(authors=visa_letter.user, status="A").first()
     is_speaker = talk is not None
     presentation_title = talk.title if talk else None
     registration_type = "Speaker" if is_speaker else "Attendee"
