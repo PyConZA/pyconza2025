@@ -154,6 +154,11 @@ WAFER_MENUS += (
                 "label": _("Donations"),
                 "url": reverse_lazy("page_donations"),
             },
+            {
+                "name": "volunteering",
+                "label": _("Volunteering"),
+                "url": reverse_lazy("page_volunteering"),
+            },
             # {
             #     "name": "contact",
             #     "label": _("Contact Us"),

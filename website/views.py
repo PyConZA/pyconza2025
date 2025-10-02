@@ -39,3 +39,7 @@ def page_remote_experience(request):
 
 def page_in_person_event(request):
     return render(request, "website/page_in_person_event.html")
+
+
+def page_volunteering(request):
+    return render(request, "website/page_volunteering.html")
