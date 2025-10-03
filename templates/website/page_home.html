@@ -108,6 +108,43 @@
         </div>
 </section>
 
+<!-- Latest Updates Section -->
+<section class="bg-gradient-to-r from-pycon-blue to-pycon-green py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center space-y-6">
+            <h2 class="text-white text-2xl lg:text-3xl font-bold">🎉 Latest Updates</h2>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg p-6 shadow-lg">
+                    <div class="space-y-4">
+                        <div class="text-4xl">📅</div>
+                        <h3 class="text-xl font-bold text-gray-800">Schedule is Live!</h3>
+                        <p class="text-gray-600">
+                            Our full conference schedule is now available. See all the amazing talks, workshops, and sessions planned for PyCon Africa 2025.
+                        </p>
+                        <a href="{% url 'wafer_full_schedule' %}" class="btn btn-secondary inline-block">
+                            View Schedule
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg p-6 shadow-lg">
+                    <div class="space-y-4">
+                        <div class="text-4xl">🤝</div>
+                        <h3 class="text-xl font-bold text-gray-800">Volunteers Wanted!</h3>
+                        <p class="text-gray-600">
+                            Help us make PyCon Africa amazing! We're looking for enthusiastic volunteers to join our team and be part of something special.
+                        </p>
+                        <a href="{% url 'page_volunteering' %}" class="btn btn-success inline-block">
+                            Volunteer With Us
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Call to Action Section -->
 <section class="bg-gray-50 py-16">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
