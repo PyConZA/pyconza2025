@@ -222,6 +222,8 @@ WAFER_MENUS += (
         "menu": "talks",
         "label": "Talks",
         "items": [
+            {"name": "schedule", "label": _("Schedule"),
+              "url": reverse_lazy("wafer_full_schedule")},
             {
                 "url": reverse_lazy("wafer_users_talks"),
                 "label": _("Accepted Talks")
