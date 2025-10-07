@@ -13,5 +13,6 @@ urlpatterns = [
     path("remote-experience", views.page_remote_experience, name="page_remote_experience"),
     path("in-person-event", views.page_in_person_event, name="page_in_person_event"),
     path("volunteering", views.page_volunteering, name="page_volunteering"),
+    path("dinner", views.page_dinner, name="page_dinner"),
     path("accommodations", include('accommodations.urls'))
 ]

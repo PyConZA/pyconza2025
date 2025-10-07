@@ -186,6 +186,11 @@ WAFER_MENUS += (
                 "url": reverse_lazy("page_remote_experience"),
             },
             {
+                "menu": "dinner",
+                "label": _("9 Oct: Dinner for Speakers, Organisers & Sponsors"),
+                "url": reverse_lazy("page_dinner"),
+            },
+            {
                 "menu": "sprints",
                 "label": _("11-12 Oct: Sprints"),
                 "url": reverse_lazy("page_sprints"),
@@ -195,6 +200,7 @@ WAFER_MENUS += (
                 "label": _("30 Aug: Friends of PyCon Africa (FREE)"),
                 "url": reverse_lazy("page_friends_of_pycon_africa"),
             },
+            
         ]
     },
     {

@@ -43,3 +43,7 @@ def page_in_person_event(request):
 
 def page_volunteering(request):
     return render(request, "website/page_volunteering.html")
+
+
+def page_dinner(request):
+    return render(request, "website/page_dinner.html")
