@@ -70,22 +70,22 @@
             </h3>
           </div>
 
-          {# Schedule table #}
-          <div class="overflow-x-auto">
-            <table class="w-full table-fixed">
+          {# Desktop/Tablet Schedule table - hidden on mobile #}
+          <div class="hidden md:block overflow-x-auto">
+            <table class="w-full table-fixed min-w-[640px]">
               <colgroup>
-                <col class="w-32">
+                <col class="w-24 lg:w-32">
                 {% for venue in page.venues %}
                   <col class="flex-1">
                 {% endfor %}
               </colgroup>
               <thead class="bg-gray-100">
                 <tr>
-                  <th class="text-center p-4 font-semibold text-gray-700 border-r border-gray-200 w-32">
+                  <th class="text-center p-2 lg:p-4 font-semibold text-gray-700 border-r border-gray-200 text-sm lg:text-base">
                     {% trans "Time" %}
                   </th>
                   {% for venue in page.venues %}
-                    <th class="text-center p-4 font-semibold text-gray-700 border-r border-gray-200 last:border-r-0
+                    <th class="text-center p-2 lg:p-4 font-semibold text-gray-700 border-r border-gray-200 last:border-r-0 text-sm lg:text-base
                        {% if venue.pk == highlight_venue_pk %}bg-pycon-blue/10{% endif %}">
                       <a href="{{ venue.get_absolute_url }}" class="text-pycon-blue hover:underline">
                         {{ venue.name }}
@@ -97,16 +97,16 @@
               <tbody class="divide-y divide-gray-200">
                 {% for row in page.rows %}
                   <tr class="hover:bg-gray-50">
-                    <td class="p-4 font-medium text-gray-800 border-r border-gray-200 bg-gray-50/50 whitespace-nowrap w-32 text-center">
+                    <td class="p-2 lg:p-4 font-medium text-gray-800 border-r border-gray-200 bg-gray-50/50 whitespace-nowrap text-center text-xs lg:text-sm">
                       {{ row.slot.get_start_time|time:"H:i" }} - {{ row.slot.end_time|time:"H:i" }}
                     </td>
                     {% for item in row.get_sorted_items %}
                       {% if item.item == "unavailable" %}
                         <td colspan="{{ item.colspan }}" rowspan="{{ item.rowspan }}"
-                            class="p-4 bg-gray-100 border-r border-gray-200 last:border-r-0 text-center"></td>
+                            class="p-2 lg:p-4 bg-gray-100 border-r border-gray-200 last:border-r-0 text-center"></td>
                       {% else %}
                         <td colspan="{{ item.colspan }}" rowspan="{{ item.rowspan }}"
-                            class="p-4 border-r border-gray-200 last:border-r-0 text-center {{ item.item.get_css_classes|join:' ' }}
+                            class="p-2 lg:p-4 border-r border-gray-200 last:border-r-0 text-center text-xs lg:text-sm {{ item.item.get_css_classes|join:' ' }}
                             {% if item.item.venue.pk == highlight_venue_pk %}bg-pycon-blue/5{% endif %}">
                           {% include "wafer.schedule/schedule_item.html" with item=item.item %}
                         </td>
@@ -116,6 +116,39 @@
                 {% endfor %}
               </tbody>
             </table>
+          </div>
+
+          {# Mobile card-based layout #}
+          <div class="md:hidden divide-y divide-gray-200">
+            {% for row in page.rows %}
+              <div class="p-4 space-y-3">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="font-semibold text-pycon-blue text-sm">
+                    {{ row.slot.get_start_time|time:"H:i" }} - {{ row.slot.end_time|time:"H:i" }}
+                  </span>
+                </div>
+
+                {% for item in row.get_sorted_items %}
+                  {% if item.item != "unavailable" %}
+                    <div class="bg-gray-50 rounded-lg p-3 border border-gray-200 {{ item.item.get_css_classes|join:' ' }}
+                         {% if item.item.venue.pk == highlight_venue_pk %}ring-2 ring-pycon-blue/30{% endif %}">
+                      <div class="text-xs font-semibold text-pycon-blue mb-1">
+                        {% for venue in page.venues %}
+                          {% if venue == item.item.venue %}
+                            <a href="{{ venue.get_absolute_url }}" class="hover:underline">
+                              {{ venue.name }}
+                            </a>
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                      <div class="text-sm text-gray-800">
+                        {% include "wafer.schedule/schedule_item.html" with item=item.item %}
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% endfor %}
           </div>
         </div>
       {% endfor %}
