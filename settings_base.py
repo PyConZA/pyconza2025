@@ -206,7 +206,7 @@ WAFER_MENUS += (
     {
         "menu": "tickets",
         "label": _("Tickets"),
-        "items": [{"url": reverse_lazy("page_tickets"), "label": _("Buy Tickets")}],
+        "items": [{"url": reverse_lazy("page_tickets"), "label": _("Tickets")}],
     },
     {
         "menu": "venue",
