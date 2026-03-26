@@ -8,6 +8,9 @@ class Accommodations(BuildableListView):
     context_object_name = 'accommodations'
     template_name = 'accommodations/accommodation_recommendations.html'
     paginate_by = 12
+    build_path = 'accommodations/index.html'
+    kwargs = {}
+    ordering = ['name']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

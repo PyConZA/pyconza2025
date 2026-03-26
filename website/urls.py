@@ -3,16 +3,16 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path("", views.page_home, name="page_home"),
-    path("tickets", views.page_tickets, name="page_tickets"),
-    path("sprints", views.page_sprints, name="page_sprints"),
-    path("friends-of-pycon-africa", views.page_friends_of_pycon_africa, name="page_friends_of_pycon_africa"),
+    path("", views.PageHome.as_view(), name="page_home"),
+    path("tickets", views.PageTickets.as_view(), name="page_tickets"),
+    path("sprints", views.PageSprints.as_view(), name="page_sprints"),
+    path("friends-of-pycon-africa", views.PageFriendsOfPyconAfrica.as_view(), name="page_friends_of_pycon_africa"),
     # path("contact", views.page_contact, name="page_contact"),
-    path("beginners-day", views.page_beginners_day, name="page_beginners_day"),
-    path("donations", views.page_donations, name="page_donations"),
-    path("remote-experience", views.page_remote_experience, name="page_remote_experience"),
-    path("in-person-event", views.page_in_person_event, name="page_in_person_event"),
-    path("volunteering", views.page_volunteering, name="page_volunteering"),
-    path("dinner", views.page_dinner, name="page_dinner"),
+    path("beginners-day", views.PageBeginnersDay.as_view(), name="page_beginners_day"),
+    path("donations", views.PageDonations.as_view(), name="page_donations"),
+    path("remote-experience", views.PageRemoteExperience.as_view(), name="page_remote_experience"),
+    path("in-person-event", views.PageInPersonEvent.as_view(), name="page_in_person_event"),
+    path("volunteering", views.PageVolunteering.as_view(), name="page_volunteering"),
+    path("dinner", views.PageDinner.as_view(), name="page_dinner"),
     path("accommodations", include('accommodations.urls'))
 ]

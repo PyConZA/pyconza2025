@@ -134,7 +134,6 @@ SOCIAL_LINKS = [
     },
     # {"url": "https://www.youtube.com/@PyconAfrica", "icon": "fa-brands fa-youtube"},
     {"url": "https://www.youtube.com/@pyconza", "icon": "fa-brands fa-youtube"},
-    
     {"url": "https://discord.gg/zaAKDnzZGw", "icon": "fa-brands fa-discord"},
 ]
 
@@ -167,8 +166,8 @@ WAFER_MENUS += (
         ],
     },
     {
-        'menu': "events",
-        'label': _("Events"),
+        "menu": "events",
+        "label": _("Events"),
         "items": [
             {
                 "menu": "beginners_day",
@@ -200,8 +199,7 @@ WAFER_MENUS += (
                 "label": _("30 Aug: Friends of PyCon Africa (FREE)"),
                 "url": reverse_lazy("page_friends_of_pycon_africa"),
             },
-            
-        ]
+        ],
     },
     {
         "menu": "tickets",
@@ -211,8 +209,8 @@ WAFER_MENUS += (
     {
         "menu": "venue",
         "label": _("Venue"),
-        "items":[
-           {
+        "items": [
+            {
                 "menu": "remote_experience",
                 "label": _("Online Venue"),
                 "url": reverse_lazy("page_remote_experience"),
@@ -222,25 +220,21 @@ WAFER_MENUS += (
                 "label": _("Accommodation"),
                 "url": reverse_lazy("accommodation_recommendations"),
             },
-        ]
+        ],
     },
     {
         "menu": "talks",
         "label": "Talks",
         "items": [
-            {"name": "schedule", "label": _("Schedule"),
-              "url": reverse_lazy("wafer_full_schedule")},
             {
-                "url": reverse_lazy("wafer_users_talks"),
-                "label": _("Accepted Talks")
+                "name": "schedule",
+                "label": _("Schedule"),
+                "url": reverse_lazy("wafer_full_schedule"),
             },
-            {
-                "url": reverse_lazy("wafer_talks_speakers"),
-                "label": _("Speakers")
-            }
-        ]
-    }
-
+            {"url": reverse_lazy("wafer_users_talks"), "label": _("Accepted Talks")},
+            {"url": reverse_lazy("wafer_talks_speakers"), "label": _("Speakers")},
+        ],
+    },
 )
 
 
@@ -276,7 +270,7 @@ MEDIA_ROOT = BASE_DIR / "localmedia"
 
 # Point static mirror away from the default, which is relative to the
 # wafer package
-BUILD_DIR = BASE_DIR / "mirror"
+BUILD_DIR = str(BASE_DIR / "mirror")
 
 # Hide non-speaker profiles
 WAFER_PUBLIC_ATTENDEE_LIST = False
@@ -299,14 +293,44 @@ WAFER_TALK_REVIEW_SCORES = (0, 5)
 
 
 CONTACT_US_EMAILS = {
-    'team' : 'team@pycon.org',
-    'sponsorship':'sponsorship@pycon.africa'
+    "team": "team@pycon.org",
+    "sponsorship": "sponsorship@pycon.africa",
 }
 
 SOCIAL_MEDIA_ENTRIES = {
-    'linkedin': _('LinkedIn Profile link'),
-    'twitter': _('Twitter Profile link'),
-    'bluesky': _('BlueSky Profile link'),
-    'fediverse': _('Fediverse Profile link'),
-    'other': _('Other Social'),
+    "linkedin": _("LinkedIn Profile link"),
+    "twitter": _("Twitter Profile link"),
+    "bluesky": _("BlueSky Profile link"),
+    "fediverse": _("Fediverse Profile link"),
+    "other": _("Other Social"),
 }
+
+
+BAKERY_VIEWS = (
+    "wafer.pages.views.ShowPage",
+    "wafer.schedule.views.VenueView",
+    "wafer.schedule.views.ScheduleView",
+    "wafer.schedule.views.ScheduleXmlView",
+    "wafer.schedule.views.ICalView",
+    "wafer.sponsors.views.ShowSponsors",
+    "wafer.sponsors.views.ShowPackages",
+    "wafer.sponsors.views.SponsorView",
+    "wafer.talks.views.TalkView",
+    "wafer.talks.views.Speakers",
+    "wafer.talks.views.TracksView",
+    "wafer.talks.views.TalkTypesView",
+    "wafer.talks.views.UsersTalks",
+    "wafer.users.views.UsersView",
+    "wafer.users.views.ProfileView",
+    "website.views.PageHome",
+    "website.views.PageTickets",
+    "website.views.PageSprints",
+    "website.views.PageFriendsOfPyconAfrica",
+    "website.views.PageBeginnersDay",
+    "website.views.PageDonations",
+    "website.views.PageRemoteExperience",
+    "website.views.PageInPersonEvent",
+    "website.views.PageVolunteering",
+    "website.views.PageDinner",
+    "accommodations.views.Accommodations",
+)
