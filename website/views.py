@@ -1,19 +1,26 @@
 from django.shortcuts import render
 
-def page_home(request):
-    return render(request, "website/page_home.html")
+from bakery.views import BuildableTemplateView
 
 
-def page_tickets(request):
-    return render(request, "website/page_tickets.html")
+class PageHome(BuildableTemplateView):
+    template_name = "website/page_home.html"
+    build_path = "index.html"
 
 
-def page_sprints(request):
-    return render(request, "website/page_sprints.html")
+class PageTickets(BuildableTemplateView):
+    template_name = "website/page_tickets.html"
+    build_path = "tickets/index.html"
 
 
-def page_friends_of_pycon_africa(request):
-    return render(request, "website/page_friends_of_pycon_africa.html")
+class PageSprints(BuildableTemplateView):
+    template_name = "website/page_sprints.html"
+    build_path = "sprints/index.html"
+
+
+class PageFriendsOfPyconAfrica(BuildableTemplateView):
+    template_name = "website/page_friends_of_pycon_africa.html"
+    build_path = "friends-of-pycon-africa/index.html"
 
 
 def page_contact(request):
@@ -25,25 +32,31 @@ def page_contact(request):
     return render(request, "website/page_contact.html", context)
 
 
-def page_beginners_day(request):
-    return render(request, "website/page_beginners_day.html")
+class PageBeginnersDay(BuildableTemplateView):
+    template_name = "website/page_beginners_day.html"
+    build_path = "beginners-day/index.html"
 
 
-def page_donations(request):
-    return render(request, "website/page_donations.html")
+class PageDonations(BuildableTemplateView):
+    template_name = "website/page_donations.html"
+    build_path = "donations/index.html"
 
 
-def page_remote_experience(request):
-    return render(request, "website/page_remote_experience.html")
+class PageRemoteExperience(BuildableTemplateView):
+    template_name = "website/page_remote_experience.html"
+    build_path = "remote-experience/index.html"
 
 
-def page_in_person_event(request):
-    return render(request, "website/page_in_person_event.html")
+class PageInPersonEvent(BuildableTemplateView):
+    template_name = "website/page_in_person_event.html"
+    build_path = "in-person-event/index.html"
 
 
-def page_volunteering(request):
-    return render(request, "website/page_volunteering.html")
+class PageVolunteering(BuildableTemplateView):
+    template_name = "website/page_volunteering.html"
+    build_path = "volunteering/index.html"
 
 
-def page_dinner(request):
-    return render(request, "website/page_dinner.html")
+class PageDinner(BuildableTemplateView):
+    template_name = "website/page_dinner.html"
+    build_path = "dinner/index.html"

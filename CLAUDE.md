@@ -1,3 +1,7 @@
+# virtual environment 
+
+source venv/bin/activate
+
 # Tailwind 
 - Input css file: static/css/main.css
 - Use our tailwind utility classes whenever possible. For example `class="btn"`

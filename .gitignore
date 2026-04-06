@@ -12,4 +12,5 @@ venv/
 wsgi.py
 __pycache__/
 wafer.db
-.claude/
+.claude/settings.local
+mirror/

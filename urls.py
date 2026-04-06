@@ -2,7 +2,6 @@ from django.urls import include, re_path, path, reverse_lazy
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
-from debug_toolbar.toolbar import debug_toolbar_urls
 from django.contrib.auth import views as auth_views
 
 
@@ -30,14 +29,16 @@ urlpatterns = [
     re_path(r"^tickets/", include("wafer.tickets.urls")),
     re_path(r"^kv/", include("wafer.kv.urls")),
     re_path(r"^opportunity_grants/", include("grants.urls")),
-    path("__reload__/", include("django_browser_reload.urls")),
     path("", include("website.urls")),
     path("visa_letters/", include("visa.urls")),
     path("grants/", include("grants.urls")),
 ]
 
-# Serve media
+# Serve media and dev tools
 if settings.DEBUG:
+    from debug_toolbar.toolbar import debug_toolbar_urls
+
+    urlpatterns += [path("__reload__/", include("django_browser_reload.urls"))]
     urlpatterns += debug_toolbar_urls()
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # Pages occupy the entire URL space, and must come last
